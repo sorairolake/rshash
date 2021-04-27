@@ -11,3 +11,10 @@ license = "GPL-3.0-or-later"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
+anyhow = "1.0.40"
+atty = "0.2.14"
+blake2 = "0.9.1"
+const_format = "0.2.14"
+sha2 = "0.9.3"
+sha3 = "0.9.1"
+structopt = "0.3.21"
