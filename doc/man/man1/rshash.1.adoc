@@ -6,7 +6,7 @@
 
 = rshash(1)
 // Specify in UTC.
-:docdate: 2021-02-14
+:docdate: 2021-04-27
 :doctype: manpage
 :mansource: RSHash {manversion}
 :manmanual: General Commands Manual
@@ -23,7 +23,7 @@ rshash - a utility for computing various message digests
 == DESCRIPTION
 
 *RSHash* is a command-line utility for computing and checking various message digests.
-If _FILE_ is not specified, or when _FILE_ is "*-*", the input is read from stdin.
+If _FILE_ is not specified, the input is read from stdin.
 
 == OPTIONS
 
@@ -34,9 +34,9 @@ If _FILE_ is not specified, or when _FILE_ is "*-*", the input is read from stdi
 
   _NAME_ can be:{blank}:::
 
-    * *blake2b*, *blake2s* (BLAKE2)
-    * *sha256*, *sha512* (SHA-2)
-    * *sha3-256*, *sha3-512* (SHA-3)
+    * *BLAKE2b*, *BLAKE2s* (BLAKE2)
+    * *SHA256*, *SHA512* (SHA-2)
+    * *SHA3-256*, *SHA3-512* (SHA-3)
 
 *--list-hash-algorithms*::
   List supported hash algorithms.
@@ -57,14 +57,14 @@ If _FILE_ is not specified, or when _FILE_ is "*-*", the input is read from stdi
 *-o* _FILE_, *--output*=_FILE_::
   Output to _FILE_ instead of stdout.
 
-*--output-format*=_FORMAT_::
-  Specify output format.
+*--style*=_FORMAT_::
+  Specify style of the checksums.
   If this option is not specified, it is the same as selecting the default value.
 
   _FORMAT_ can be:{blank}:::
 
-    * *sfv* (SFV output format, default)
-    * *bsd* (BSD output format)
+    * *SFV* (SFV output format, default)
+    * *BSD* (BSD output format)
 
 === General options
 
@@ -73,6 +73,7 @@ If _FILE_ is not specified, or when _FILE_ is "*-*", the input is read from stdi
 
 *-V*, *--version*::
   Print the version number and exit.
+  When the long option is specified, additional information will also be printed.
 
 include::{includedir}/section-exit-status.adoc[]
 
