@@ -5,11 +5,19 @@
 //
 
 use std::fmt;
+use std::path::PathBuf;
 use std::str::FromStr;
 
 use anyhow::{Error, Result};
 
 #[derive(Debug)]
+pub struct Checksum {
+    pub algorithm: HashAlgorithm,
+    pub digest: String,
+    pub path: PathBuf,
+}
+
+#[derive(Clone, Copy, Debug)]
 pub enum HashAlgorithm {
     Blake2b,
     Blake2s,

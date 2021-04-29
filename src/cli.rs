@@ -61,8 +61,11 @@ pub struct Opt {
 
 impl Opt {
     /// Guess the hash algorithm from BSD-style checksums.
-    fn guess_hash_algorithm(mut self, checksums: &str) -> Self {
+    pub fn guess_hash_algorithm(mut self, checksums: &str) -> Self {
         if !self.check {
+            return self;
+        }
+        if self.hash_algorithm.is_some() {
             return self;
         }
 
@@ -75,16 +78,9 @@ impl Opt {
                 "SHA512" => Some(HashAlgorithm::Sha512),
                 "SHA3-256" => Some(HashAlgorithm::Sha3_256),
                 "SHA3-512" => Some(HashAlgorithm::Sha3_512),
-                _ => None,
+                _ => self.hash_algorithm,
             };
         }
-
-        self
-    }
-
-    /// Do processing related to options.
-    pub fn process(mut self, checksums: &str) -> Self {
-        self = self.guess_hash_algorithm(checksums);
 
         self
     }
