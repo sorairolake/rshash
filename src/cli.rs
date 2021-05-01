@@ -7,7 +7,7 @@
 use std::path::PathBuf;
 
 use const_format::formatcp;
-use structopt::clap::crate_version;
+use structopt::clap::{crate_version, AppSettings};
 use structopt::StructOpt;
 
 use crate::value::{HashAlgorithm, Style};
@@ -24,7 +24,7 @@ const LONG_VERSION: &str = formatcp!(
 );
 
 #[derive(Debug, StructOpt)]
-#[structopt(name = "RSHash", long_version = LONG_VERSION, about)]
+#[structopt(name = "RSHash", long_version = LONG_VERSION, about, setting = AppSettings::ColoredHelp)]
 pub struct Opt {
     /// Specify hash algorithm.
     #[structopt(short = "H", long, value_name = "NAME", possible_values = &["BLAKE2b", "BLAKE2s", "SHA256", "SHA512", "SHA3-256", "SHA3-512"], case_insensitive = true)]
