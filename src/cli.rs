@@ -80,6 +80,10 @@ impl Opt {
                 "SHA3-512" => Some(HashAlgorithm::Sha3_512),
                 _ => self.hash_algorithm,
             };
+
+            if self.hash_algorithm.is_some() {
+                self.style = Style::Bsd;
+            }
         }
 
         self

@@ -5,7 +5,7 @@
 //
 
 use std::fmt;
-use std::path::PathBuf;
+use std::path::{Path, PathBuf};
 use std::str::FromStr;
 
 use anyhow::{Error, Result};
@@ -13,8 +13,18 @@ use anyhow::{Error, Result};
 #[derive(Debug)]
 pub struct Checksum {
     pub algorithm: HashAlgorithm,
-    pub digest: String,
     pub path: PathBuf,
+    pub digest: String,
+}
+
+impl Checksum {
+    pub fn new(algo: &HashAlgorithm, input: (&Path, &str)) -> Self {
+        Checksum {
+            algorithm: *algo,
+            path: input.0.to_path_buf(),
+            digest: input.1.to_string(),
+        }
+    }
 }
 
 #[derive(Clone, Copy, Debug)]
