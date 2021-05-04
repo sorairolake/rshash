@@ -36,6 +36,7 @@ If _FILE_ is not specified, the input is read from stdin.
 
     * *BLAKE2b*, *BLAKE2s* (BLAKE2)
     * *BLAKE3* (BLAKE3)
+    * *Groestl-256*, *Groestl-512* (Groestl)
     * *SHA256*, *SHA512* (SHA-2)
     * *SHA3-256*, *SHA3-512* (SHA-3)
 

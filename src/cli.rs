@@ -24,7 +24,7 @@ const LONG_VERSION: &str = formatcp!(
 #[structopt(name = "RSHash", long_version = LONG_VERSION, about, setting = AppSettings::ColoredHelp)]
 pub struct Opt {
     /// Specify hash algorithm.
-    #[structopt(short = "H", long, value_name = "NAME", possible_values = &["BLAKE2b", "BLAKE2s", "BLAKE3", "SHA256", "SHA512", "SHA3-256", "SHA3-512"], case_insensitive = true)]
+    #[structopt(short = "H", long, value_name = "NAME", possible_values = &["BLAKE2b", "BLAKE2s", "BLAKE3", "Groestl-256", "Groestl-512", "SHA256", "SHA512", "SHA3-256", "SHA3-512"], case_insensitive = true)]
     pub hash_algorithm: Option<HashAlgorithm>,
 
     /// List supported hash algorithms.
@@ -67,6 +67,8 @@ impl Opt {
             Some("BLAKE2b") => Some(HashAlgorithm::Blake2b),
             Some("BLAKE2s") => Some(HashAlgorithm::Blake2s),
             Some("BLAKE3") => Some(HashAlgorithm::Blake3),
+            Some("Groestl-256") => Some(HashAlgorithm::Groestl256),
+            Some("Groestl-512") => Some(HashAlgorithm::Groestl512),
             Some("SHA256") => Some(HashAlgorithm::Sha256),
             Some("SHA512") => Some(HashAlgorithm::Sha512),
             Some("SHA3-256") => Some(HashAlgorithm::Sha3_256),

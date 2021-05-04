@@ -7,6 +7,7 @@
 use std::path::Path;
 
 use blake2::{Blake2b, Blake2s};
+use groestl::{Groestl256, Groestl512};
 use sha2::{Sha256, Sha512};
 use sha3::{Sha3_256, Sha3_512};
 
@@ -30,6 +31,20 @@ impl Checksum {
     /// Compute BLAKE3 message digest.
     fn blake3(data: &[u8]) -> String {
         hex::encode(blake3::hash(data).as_bytes())
+    }
+
+    /// Compute Groestl-256 message digest.
+    fn groestl256(data: &[u8]) -> String {
+        use groestl::Digest;
+
+        hex::encode(Groestl256::digest(data))
+    }
+
+    /// Compute Groestl-512 message digest.
+    fn groestl512(data: &[u8]) -> String {
+        use groestl::Digest;
+
+        hex::encode(Groestl512::digest(data))
     }
 
     /// Compute SHA-256 message digest.
@@ -66,6 +81,8 @@ impl Checksum {
             HashAlgorithm::Blake2b => Self::blake2b(input.1),
             HashAlgorithm::Blake2s => Self::blake2s(input.1),
             HashAlgorithm::Blake3 => Self::blake3(input.1),
+            HashAlgorithm::Groestl256 => Self::groestl256(input.1),
+            HashAlgorithm::Groestl512 => Self::groestl512(input.1),
             HashAlgorithm::Sha256 => Self::sha256(input.1),
             HashAlgorithm::Sha512 => Self::sha512(input.1),
             HashAlgorithm::Sha3_256 => Self::sha3_256(input.1),
@@ -111,6 +128,29 @@ mod tests {
             checksum.digest,
             "ede5c0b10f2ec4979c69b52f61e42ff5b413519ce09be0f14d098dcfe5f6f98d"
         );
+    }
+
+    #[test]
+    fn verify_groestl256() {
+        let checksum = Checksum::compute(
+            &HashAlgorithm::Groestl256,
+            (Path::new("-"), b"Hello, world!"),
+        );
+
+        assert_eq!(
+            checksum.digest,
+            "63e4ab2044e38c1fb1725313f2229e038926af839c86eaf96553027d2c851e18"
+        );
+    }
+
+    #[test]
+    fn verify_groestl512() {
+        let checksum = Checksum::compute(
+            &HashAlgorithm::Groestl512,
+            (Path::new("-"), b"Hello, world!"),
+        );
+
+        assert_eq!(checksum.digest,"b60658e723a8eb1743823a8002175486bc24223ba3dc6d8cb435a948f6d2b9744ac9e307e1d38021ea18c4d536d28fc23491d7771a5a5b0d02ffad9a073dcc28");
     }
 
     #[test]
