@@ -35,6 +35,7 @@ If _FILE_ is not specified, the input is read from stdin.
   _NAME_ can be:{blank}:::
 
     * *BLAKE2b*, *BLAKE2s* (BLAKE2)
+    * *BLAKE3* (BLAKE3)
     * *SHA256*, *SHA512* (SHA-2)
     * *SHA3-256*, *SHA3-512* (SHA-3)
 

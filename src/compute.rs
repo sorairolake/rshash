@@ -27,6 +27,11 @@ impl Checksum {
         hex::encode(Blake2s::digest(data))
     }
 
+    /// Compute BLAKE3 message digest.
+    fn blake3(data: &[u8]) -> String {
+        hex::encode(blake3::hash(data).as_bytes())
+    }
+
     /// Compute SHA-256 message digest.
     fn sha256(data: &[u8]) -> String {
         use sha2::Digest;
@@ -60,6 +65,7 @@ impl Checksum {
         let digest = match algo {
             HashAlgorithm::Blake2b => Self::blake2b(input.1),
             HashAlgorithm::Blake2s => Self::blake2s(input.1),
+            HashAlgorithm::Blake3 => Self::blake3(input.1),
             HashAlgorithm::Sha256 => Self::sha256(input.1),
             HashAlgorithm::Sha512 => Self::sha512(input.1),
             HashAlgorithm::Sha3_256 => Self::sha3_256(input.1),
@@ -93,6 +99,17 @@ mod tests {
         assert_eq!(
             checksum.digest,
             "30d8777f0e178582ec8cd2fcdc18af57c828ee2f89e978df52c8e7af078bd5cf"
+        );
+    }
+
+    #[test]
+    fn verify_blake3() {
+        let checksum =
+            Checksum::compute(&HashAlgorithm::Blake3, (Path::new("-"), b"Hello, world!"));
+
+        assert_eq!(
+            checksum.digest,
+            "ede5c0b10f2ec4979c69b52f61e42ff5b413519ce09be0f14d098dcfe5f6f98d"
         );
     }
 

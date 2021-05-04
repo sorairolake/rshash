@@ -63,6 +63,7 @@ impl FromStr for Checksum {
 pub enum HashAlgorithm {
     Blake2b,
     Blake2s,
+    Blake3,
     Sha256,
     Sha512,
     Sha3_256,
@@ -76,6 +77,7 @@ impl FromStr for HashAlgorithm {
         match format.to_ascii_lowercase().as_str() {
             "blake2b" => Ok(HashAlgorithm::Blake2b),
             "blake2s" => Ok(HashAlgorithm::Blake2s),
+            "blake3" => Ok(HashAlgorithm::Blake3),
             "sha256" => Ok(HashAlgorithm::Sha256),
             "sha512" => Ok(HashAlgorithm::Sha512),
             "sha3-256" => Ok(HashAlgorithm::Sha3_256),
@@ -90,6 +92,7 @@ impl fmt::Display for HashAlgorithm {
         match self {
             HashAlgorithm::Blake2b => write!(f, "BLAKE2b"),
             HashAlgorithm::Blake2s => write!(f, "BLAKE2s"),
+            HashAlgorithm::Blake3 => write!(f, "BLAKE3"),
             HashAlgorithm::Sha256 => write!(f, "SHA256"),
             HashAlgorithm::Sha512 => write!(f, "SHA512"),
             HashAlgorithm::Sha3_256 => write!(f, "SHA3-256"),
