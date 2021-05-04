@@ -8,21 +8,53 @@ use std::fmt;
 use std::path::{Path, PathBuf};
 use std::str::FromStr;
 
-use anyhow::{Error, Result};
+use anyhow::{Context, Error, Result};
 
 #[derive(Debug)]
 pub struct Checksum {
-    pub algorithm: HashAlgorithm,
     pub path: PathBuf,
     pub digest: String,
 }
 
 impl Checksum {
-    pub fn new(algo: &HashAlgorithm, input: (&Path, &str)) -> Self {
+    pub fn new(input: (&Path, &str)) -> Self {
         Checksum {
-            algorithm: *algo,
             path: input.0.to_path_buf(),
             digest: input.1.to_string(),
+        }
+    }
+}
+
+impl FromStr for Checksum {
+    type Err = Error;
+
+    fn from_str(checksum: &str) -> Result<Self> {
+        if let Some(p) = checksum.splitn(2, "  ").nth(1) {
+            // Parse as SFV-style checksum.
+            let path: PathBuf = p.into();
+            let digest = checksum
+                .split_whitespace()
+                .next()
+                .context("Invalid format of checksum lines.")?;
+
+            Ok(Self::new((path.as_path(), digest)))
+        } else {
+            // Parse as BSD-style checksum.
+            let path = checksum
+                .splitn(2, " (")
+                .nth(1)
+                .context("Invalid format of checksum lines.")?;
+            let path = path
+                .rsplitn(2, ") = ")
+                .nth(1)
+                .context("Invalid format of checksum lines.")?;
+            let path: PathBuf = path.into();
+            let digest = checksum
+                .rsplit(' ')
+                .next()
+                .context("Invalid format of checksum lines.")?;
+
+            Ok(Self::new((path.as_path(), digest)))
         }
     }
 }

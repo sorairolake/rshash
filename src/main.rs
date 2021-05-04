@@ -12,7 +12,7 @@ mod verify;
 
 use std::fs;
 use std::io::{self, Read};
-use std::path::{Path, PathBuf};
+use std::path::Path;
 use std::str;
 
 use anyhow::{bail, Context, Result};
@@ -20,7 +20,7 @@ use indexmap::IndexMap;
 use structopt::StructOpt;
 
 use crate::cli::Opt;
-use crate::value::{Checksum, HashAlgorithm, Style};
+use crate::value::{Checksum, HashAlgorithm};
 use crate::verify::Verify;
 
 fn main() -> Result<()> {
@@ -63,137 +63,51 @@ fn main() -> Result<()> {
         let data: Result<Vec<_>, _> = files.iter().map(fs::read).collect();
         let data = data?;
 
-        let inputs: IndexMap<_, _> = files.into_iter().zip(data.into_iter()).collect();
-
-        inputs
+        files.into_iter().zip(data.into_iter()).collect()
     };
 
-    let opt = if opt.check {
-        let first_file = input.first().context("Failed to read a file.")?;
-        let first_file_data = first_file.1;
-        let checksums = str::from_utf8(first_file_data)?;
+    let output: Vec<_> = if opt.check {
+        let input = input.first().context("Failed to read a file.")?;
+        let data = input.1;
+        let checksums = str::from_utf8(data)?;
 
-        opt.guess_hash_algorithm(checksums)
-    } else {
-        opt
-    };
+        let algo = opt
+            .guess_hash_algorithm(checksums)
+            .context("Unable to determine hash algorithm.")?;
 
-    let algo = match opt.hash_algorithm {
-        Some(v) => v,
-        None => bail!("Unable to determine hash algorithm."),
-    };
+        let checksums: Result<Vec<_>> = checksums.lines().map(|c| c.parse()).collect();
+        let checksums = checksums?;
 
-    let output = if opt.check {
-        let first_file = input.first().context("Failed to read a file.")?;
-        let first_file_data = first_file.1;
-        let checksums = str::from_utf8(first_file_data)?;
-
-        let checksums: Vec<_> = match opt.style {
-            Style::Sfv => {
-                let paths: Result<Vec<_>> = checksums
-                    .lines()
-                    .map(|c| {
-                        c.splitn(2, "  ")
-                            .nth(1)
-                            .context("Invalid format of checksum lines.")
-                    })
-                    .collect();
-                let paths = paths?;
-                let paths: Vec<PathBuf> = paths.into_iter().map(|p| p.into()).collect();
-                let digests: Result<Vec<_>> = checksums
-                    .lines()
-                    .map(|c| {
-                        c.split_whitespace()
-                            .next()
-                            .context("Invalid format of checksum lines.")
-                    })
-                    .collect();
-                let digests = digests?;
-                let checksums: Vec<_> = paths.into_iter().zip(digests.into_iter()).collect();
-                let checksums: Vec<_> = checksums
-                    .into_iter()
-                    .map(|(p, d)| Checksum::new(&algo, (p.as_path(), d)))
-                    .collect();
-
-                checksums
-            }
-            Style::Bsd => {
-                let paths: Result<Vec<_>> = checksums
-                    .lines()
-                    .map(|c| {
-                        c.splitn(2, " (")
-                            .nth(1)
-                            .context("Invalid format of checksum lines.")
-                    })
-                    .collect();
-                let paths = paths?;
-                let paths: Result<Vec<_>> = paths
-                    .into_iter()
-                    .map(|c| {
-                        c.rsplitn(2, ") = ")
-                            .nth(1)
-                            .context("Invalid format of checksum lines.")
-                    })
-                    .collect();
-                let paths = paths?;
-                let paths: Vec<PathBuf> = paths.into_iter().map(|p| p.into()).collect();
-                let digests: Result<Vec<_>> = checksums
-                    .lines()
-                    .map(|c| {
-                        c.rsplit(' ')
-                            .next()
-                            .context("Invalid format of checksum lines.")
-                    })
-                    .collect();
-                let digests = digests?;
-                let checksums: Vec<_> = paths.into_iter().zip(digests.into_iter()).collect();
-                let checksums: Vec<_> = checksums
-                    .into_iter()
-                    .map(|(p, d)| Checksum::new(&algo, (p.as_path(), d)))
-                    .collect();
-
-                checksums
-            }
-        };
-
-        let result: Result<Vec<_>> = checksums.iter().map(|c| Verify::verify(c)).collect();
+        let result: Result<Vec<_>> = checksums.iter().map(|c| Verify::verify(&algo, c)).collect();
         let result = result?;
 
         if opt.status {
-            let ok_all = result
-                .iter()
-                .map(|r| r.result)
-                .filter(|r| r.is_some())
-                .map(|r| r.unwrap())
-                .all(|r| r);
-            if ok_all {
+            let is_all_paths_exist = result.iter().all(|r| r.is_path_exist);
+            let is_all_results_successful = result.iter().filter_map(|r| r.result).all(|r| r);
+            if is_all_paths_exist && is_all_results_successful {
                 return Ok(());
             } else {
                 std::process::exit(1);
             }
         }
 
-        let output = if opt.quiet {
+        if opt.quiet {
             let output: Vec<_> = result.iter().map(|r| r.output()).collect();
-            let output: Vec<_> = output.into_iter().filter(|o| !o.ends_with("OK")).collect();
-
-            output
+            output.into_iter().filter(|o| !o.ends_with("OK")).collect()
         } else {
-            let output: Vec<_> = result.iter().map(|r| r.output()).collect();
-
-            output
-        };
-
-        output
+            result.iter().map(|r| r.output()).collect()
+        }
     } else {
-        let checksums: Vec<_> = input
+        let algo = opt
+            .hash_algorithm
+            .context("Unable to determine hash algorithm.")?;
+
+        input
             .iter()
             .map(|(p, d)| (p.as_path(), d.as_slice()))
             .map(|i| Checksum::compute(&algo, i))
-            .map(|c| c.output(&opt.style))
-            .collect();
-
-        checksums
+            .map(|c| c.output(&algo, &opt.style))
+            .collect()
     };
 
     match opt.output {

@@ -12,15 +12,12 @@ use structopt::StructOpt;
 
 use crate::value::{HashAlgorithm, Style};
 
-const COPYRIGHT: &str = "Copyright (C) 2021 Shun Sakai";
-const LICENSE: &str = "License: GNU General Public License v3.0 or later";
-const REPORTING_BUGS: &str = "Reporting bugs: https://github.com/sorairolake/rshash/issues";
 const LONG_VERSION: &str = formatcp!(
     "{}\n\n{}\n{}\n{}",
     crate_version!(),
-    COPYRIGHT,
-    LICENSE,
-    REPORTING_BUGS
+    "Copyright (C) 2021 Shun Sakai",
+    "License: GNU General Public License v3.0 or later",
+    "Reporting bugs: https://github.com/sorairolake/rshash/issues"
 );
 
 #[derive(Debug, StructOpt)]
@@ -61,31 +58,19 @@ pub struct Opt {
 
 impl Opt {
     /// Guess the hash algorithm from BSD-style checksums.
-    pub fn guess_hash_algorithm(mut self, checksums: &str) -> Self {
-        if !self.check {
-            return self;
-        }
-        if self.hash_algorithm.is_some() {
-            return self;
+    pub fn guess_hash_algorithm(&self, checksums: &str) -> Option<HashAlgorithm> {
+        if let Some(a) = self.hash_algorithm {
+            return Some(a);
         }
 
-        let algo = checksums.split_whitespace().next();
-        if let Some(v) = algo {
-            self.hash_algorithm = match v {
-                "BLAKE2b" => Some(HashAlgorithm::Blake2b),
-                "BLAKE2s" => Some(HashAlgorithm::Blake2s),
-                "SHA256" => Some(HashAlgorithm::Sha256),
-                "SHA512" => Some(HashAlgorithm::Sha512),
-                "SHA3-256" => Some(HashAlgorithm::Sha3_256),
-                "SHA3-512" => Some(HashAlgorithm::Sha3_512),
-                _ => self.hash_algorithm,
-            };
-
-            if self.hash_algorithm.is_some() {
-                self.style = Style::Bsd;
-            }
+        match checksums.split_whitespace().next() {
+            Some("BLAKE2b") => Some(HashAlgorithm::Blake2b),
+            Some("BLAKE2s") => Some(HashAlgorithm::Blake2s),
+            Some("SHA256") => Some(HashAlgorithm::Sha256),
+            Some("SHA512") => Some(HashAlgorithm::Sha512),
+            Some("SHA3-256") => Some(HashAlgorithm::Sha3_256),
+            Some("SHA3-512") => Some(HashAlgorithm::Sha3_512),
+            _ => None,
         }
-
-        self
     }
 }

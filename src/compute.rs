@@ -67,7 +67,6 @@ impl Checksum {
         };
 
         Checksum {
-            algorithm: *algo,
             path: input.0.to_path_buf(),
             digest,
         }

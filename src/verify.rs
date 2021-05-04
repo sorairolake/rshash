@@ -10,7 +10,7 @@ use std::path::PathBuf;
 
 use anyhow::Result;
 
-use crate::value::Checksum;
+use crate::value::{Checksum, HashAlgorithm};
 
 #[derive(Debug)]
 pub struct Verify {
@@ -21,7 +21,7 @@ pub struct Verify {
 
 impl Verify {
     /// Verify a checksum.
-    pub fn verify(checksum: &Checksum) -> Result<Self> {
+    pub fn verify(algo: &HashAlgorithm, checksum: &Checksum) -> Result<Self> {
         if !checksum.path.exists() && atty::is(atty::Stream::Stdin) {
             return Ok(Verify {
                 path: checksum.path.clone(),
@@ -38,10 +38,7 @@ impl Verify {
             fs::read(checksum.path.as_path())?
         };
 
-        let compute_result = Checksum::compute(
-            &checksum.algorithm,
-            (checksum.path.as_path(), data.as_slice()),
-        );
+        let compute_result = Checksum::compute(algo, (checksum.path.as_path(), data.as_slice()));
 
         if compute_result.digest == checksum.digest.to_ascii_lowercase() {
             Ok(Verify {
@@ -65,13 +62,9 @@ impl Verify {
         }
 
         if self.result.unwrap() {
-            let output = format!("{}: OK", self.path.display());
-
-            output
+            format!("{}: OK", self.path.display())
         } else {
-            let output = format!("{}: FAILED", self.path.display());
-
-            output
+            format!("{}: FAILED", self.path.display())
         }
     }
 }

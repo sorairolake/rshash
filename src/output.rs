@@ -4,33 +4,29 @@
 // Copyright (C) 2021 Shun Sakai
 //
 
-use crate::value::{Checksum, Style};
+use crate::value::{Checksum, HashAlgorithm, Style};
 
 impl Checksum {
     /// Create a SFV-style checksum.
     fn sfv(&self) -> String {
-        let output = format!("{}  {}", self.digest, self.path.as_path().display());
-
-        output
+        format!("{}  {}", self.digest, self.path.as_path().display())
     }
 
     /// Create a BSD-style checksum.
-    fn bsd(&self) -> String {
-        let output = format!(
+    fn bsd(&self, algo: &HashAlgorithm) -> String {
+        format!(
             "{} ({}) = {}",
-            self.algorithm,
+            algo,
             self.path.as_path().display(),
             self.digest
-        );
-
-        output
+        )
     }
 
     /// Create a checksum for the specified style.
-    pub fn output(&self, style: &Style) -> String {
+    pub fn output(&self, algo: &HashAlgorithm, style: &Style) -> String {
         match style {
             Style::Sfv => self.sfv(),
-            Style::Bsd => self.bsd(),
+            Style::Bsd => self.bsd(algo),
         }
     }
 }
@@ -39,8 +35,6 @@ impl Checksum {
 mod tests {
     use std::path::Path;
 
-    use crate::value::HashAlgorithm;
-
     use super::*;
 
     #[test]
@@ -48,7 +42,7 @@ mod tests {
         let checksum =
             Checksum::compute(&HashAlgorithm::Blake2b, (Path::new("-"), b"Hello, world!"));
 
-        assert_eq!(checksum.output(&Style::Sfv),"a2764d133a16816b5847a737a786f2ece4c148095c5faa73e24b4cc5d666c3e45ec271504e14dc6127ddfce4e144fb23b91a6f7b04b53d695502290722953b0f  -");
+        assert_eq!(checksum.output(&HashAlgorithm::Blake2b,&Style::Sfv),"a2764d133a16816b5847a737a786f2ece4c148095c5faa73e24b4cc5d666c3e45ec271504e14dc6127ddfce4e144fb23b91a6f7b04b53d695502290722953b0f  -");
     }
 
     #[test]
@@ -56,6 +50,6 @@ mod tests {
         let checksum =
             Checksum::compute(&HashAlgorithm::Blake2b, (Path::new("-"), b"Hello, world!"));
 
-        assert_eq!(checksum.output(&Style::Bsd),"BLAKE2b (-) = a2764d133a16816b5847a737a786f2ece4c148095c5faa73e24b4cc5d666c3e45ec271504e14dc6127ddfce4e144fb23b91a6f7b04b53d695502290722953b0f");
+        assert_eq!(checksum.output(&HashAlgorithm::Blake2b,&Style::Bsd),"BLAKE2b (-) = a2764d133a16816b5847a737a786f2ece4c148095c5faa73e24b4cc5d666c3e45ec271504e14dc6127ddfce4e144fb23b91a6f7b04b53d695502290722953b0f");
     }
 }
