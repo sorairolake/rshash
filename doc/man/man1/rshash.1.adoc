@@ -1,0 +1,93 @@
+//
+// SPDX-License-Identifier: GPL-3.0-or-later
+//
+// Copyright (C) 2021 Shun Sakai
+//
+
+= rshash(1)
+// Specify in UTC.
+:docdate: 2021-04-27
+:doctype: manpage
+:mansource: RSHash {manversion}
+:manmanual: General Commands Manual
+:includedir: ../include
+
+== NAME
+
+rshash - a utility for computing various message digests
+
+== SYNOPSIS
+
+*{manname}* [_OPTION_...] [_FILE_...]
+
+== DESCRIPTION
+
+*RSHash* is a command-line utility for computing and checking various message digests.
+If _FILE_ is not specified, the input is read from stdin.
+
+== OPTIONS
+
+=== Hash algorithms options
+
+*-H* _NAME_, *--hash-algorithm*=_NAME_::
+  Specify hash algorithm.
+
+  _NAME_ can be:{blank}:::
+
+    * *BLAKE2b*, *BLAKE2s* (BLAKE2)
+    * *SHA256*, *SHA512* (SHA-2)
+    * *SHA3-256*, *SHA3-512* (SHA-3)
+
+*--list-hash-algorithms*::
+  List supported hash algorithms.
+
+=== Verification options
+
+*-c*, *--check*::
+  Read the checksums from the file and check them.
+
+*--quiet*::
+  Don't print OK for each successfully verified file.
+
+*--status*::
+  Don't output anything, return the verification result as the exit status.
+
+=== I/O options
+
+*-o* _FILE_, *--output*=_FILE_::
+  Output to _FILE_ instead of stdout.
+
+*--style*=_FORMAT_::
+  Specify style of the checksums.
+  If this option is not specified, it is the same as selecting the default value.
+
+  _FORMAT_ can be:{blank}:::
+
+    * *SFV* (SFV output format, default)
+    * *BSD* (BSD output format)
+
+=== General options
+
+*-h*, *--help*::
+  Print help message and exit.
+
+*-V*, *--version*::
+  Print the version number and exit.
+  When the long option is specified, additional information will also be printed.
+
+include::{includedir}/section-exit-status.adoc[]
+
+include::{includedir}/section-notes.adoc[]
+
+== EXAMPLES
+
+Compute BLAKE2b message digest:{blank}::
+  $ *{manname} -H blake2b file.txt*
+
+include::{includedir}/section-reporting-bugs.adoc[]
+
+include::{includedir}/section-copyright.adoc[]
+
+== SEE ALSO
+
+*md5sum*(1), *rhash*(1)
