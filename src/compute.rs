@@ -105,7 +105,10 @@ mod tests {
         let checksum =
             Checksum::compute(&HashAlgorithm::Blake2b, (Path::new("-"), b"Hello, world!"));
 
-        assert_eq!(checksum.digest,"a2764d133a16816b5847a737a786f2ece4c148095c5faa73e24b4cc5d666c3e45ec271504e14dc6127ddfce4e144fb23b91a6f7b04b53d695502290722953b0f");
+        assert_eq!(
+            checksum.digest,
+            "a2764d133a16816b5847a737a786f2ece4c148095c5faa73e24b4cc5d666c3e45ec271504e14dc6127ddfce4e144fb23b91a6f7b04b53d695502290722953b0f"
+        );
     }
 
     #[test]
@@ -150,7 +153,10 @@ mod tests {
             (Path::new("-"), b"Hello, world!"),
         );
 
-        assert_eq!(checksum.digest,"b60658e723a8eb1743823a8002175486bc24223ba3dc6d8cb435a948f6d2b9744ac9e307e1d38021ea18c4d536d28fc23491d7771a5a5b0d02ffad9a073dcc28");
+        assert_eq!(
+            checksum.digest,
+            "b60658e723a8eb1743823a8002175486bc24223ba3dc6d8cb435a948f6d2b9744ac9e307e1d38021ea18c4d536d28fc23491d7771a5a5b0d02ffad9a073dcc28"
+        );
     }
 
     #[test]
@@ -169,7 +175,10 @@ mod tests {
         let checksum =
             Checksum::compute(&HashAlgorithm::Sha512, (Path::new("-"), b"Hello, world!"));
 
-        assert_eq!(checksum.digest,"c1527cd893c124773d811911970c8fe6e857d6df5dc9226bd8a160614c0cd963a4ddea2b94bb7d36021ef9d865d5cea294a82dd49a0bb269f51f6e7a57f79421");
+        assert_eq!(
+            checksum.digest,
+            "c1527cd893c124773d811911970c8fe6e857d6df5dc9226bd8a160614c0cd963a4ddea2b94bb7d36021ef9d865d5cea294a82dd49a0bb269f51f6e7a57f79421"
+        );
     }
 
     #[test]
@@ -188,6 +197,9 @@ mod tests {
         let checksum =
             Checksum::compute(&HashAlgorithm::Sha3_512, (Path::new("-"), b"Hello, world!"));
 
-        assert_eq!(checksum.digest,"8e47f1185ffd014d238fabd02a1a32defe698cbf38c037a90e3c0a0a32370fb52cbd641250508502295fcabcbf676c09470b27443868c8e5f70e26dc337288af");
+        assert_eq!(
+            checksum.digest,
+            "8e47f1185ffd014d238fabd02a1a32defe698cbf38c037a90e3c0a0a32370fb52cbd641250508502295fcabcbf676c09470b27443868c8e5f70e26dc337288af"
+        );
     }
 }

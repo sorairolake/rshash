@@ -42,7 +42,10 @@ mod tests {
         let checksum =
             Checksum::compute(&HashAlgorithm::Blake2b, (Path::new("-"), b"Hello, world!"));
 
-        assert_eq!(checksum.output(&HashAlgorithm::Blake2b,&Style::Sfv),"a2764d133a16816b5847a737a786f2ece4c148095c5faa73e24b4cc5d666c3e45ec271504e14dc6127ddfce4e144fb23b91a6f7b04b53d695502290722953b0f  -");
+        assert_eq!(
+            checksum.output(&HashAlgorithm::Blake2b, &Style::Sfv),
+            "a2764d133a16816b5847a737a786f2ece4c148095c5faa73e24b4cc5d666c3e45ec271504e14dc6127ddfce4e144fb23b91a6f7b04b53d695502290722953b0f  -"
+        );
     }
 
     #[test]
@@ -50,6 +53,9 @@ mod tests {
         let checksum =
             Checksum::compute(&HashAlgorithm::Blake2b, (Path::new("-"), b"Hello, world!"));
 
-        assert_eq!(checksum.output(&HashAlgorithm::Blake2b,&Style::Bsd),"BLAKE2b (-) = a2764d133a16816b5847a737a786f2ece4c148095c5faa73e24b4cc5d666c3e45ec271504e14dc6127ddfce4e144fb23b91a6f7b04b53d695502290722953b0f");
+        assert_eq!(
+            checksum.output(&HashAlgorithm::Blake2b, &Style::Bsd),
+            "BLAKE2b (-) = a2764d133a16816b5847a737a786f2ece4c148095c5faa73e24b4cc5d666c3e45ec271504e14dc6127ddfce4e144fb23b91a6f7b04b53d695502290722953b0f"
+        );
     }
 }

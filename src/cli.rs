@@ -19,12 +19,35 @@ const LONG_VERSION: &str = formatcp!(
     "License: GNU General Public License v3.0 or later",
     "Reporting bugs: https://github.com/sorairolake/rshash/issues"
 );
+const HASH_ALGORITHMS: [&str; 9] = [
+    "BLAKE2b",
+    "BLAKE2s",
+    "BLAKE3",
+    "Groestl-256",
+    "Groestl-512",
+    "SHA256",
+    "SHA512",
+    "SHA3-256",
+    "SHA3-512",
+];
+const CHECKSUM_STYLES: [&str; 2] = ["SFV", "BSD"];
 
 #[derive(Debug, StructOpt)]
-#[structopt(name = "RSHash", long_version = LONG_VERSION, about, setting = AppSettings::ColoredHelp)]
+#[structopt(
+    name = "RSHash",
+    long_version = LONG_VERSION,
+    about,
+    setting = AppSettings::ColoredHelp
+)]
 pub struct Opt {
     /// Specify hash algorithm.
-    #[structopt(short = "H", long, value_name = "NAME", possible_values = &["BLAKE2b", "BLAKE2s", "BLAKE3", "Groestl-256", "Groestl-512", "SHA256", "SHA512", "SHA3-256", "SHA3-512"], case_insensitive = true)]
+    #[structopt(
+        short = "H",
+        long,
+        value_name = "NAME",
+        possible_values = &HASH_ALGORITHMS,
+        case_insensitive = true
+    )]
     pub hash_algorithm: Option<HashAlgorithm>,
 
     /// List supported hash algorithms.
@@ -48,7 +71,13 @@ pub struct Opt {
     pub output: Option<PathBuf>,
 
     /// Specify style of the checksums.
-    #[structopt(long, value_name = "STYLE", possible_values = &["SFV", "BSD"], case_insensitive = true, default_value)]
+    #[structopt(
+        long,
+        value_name = "STYLE",
+        possible_values = &CHECKSUM_STYLES,
+        case_insensitive = true,
+        default_value
+    )]
     pub style: Style,
 
     /// Input from <FILE>.
