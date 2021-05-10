@@ -34,11 +34,11 @@ If _FILE_ is not specified, the input is read from stdin.
 
   _NAME_ can be:{blank}:::
 
-    * *BLAKE2b* and *BLAKE2s* (BLAKE2)
-    * *BLAKE3* (BLAKE3)
-    * *Groestl-224*, *Groestl-256*, *Groestl-384* and *Groestl-512* (Groestl)
-    * *SHA224*, *SHA256*, *SHA384* and *SHA512* (SHA-2)
-    * *SHA3-224*, *SHA3-256*, *SHA3-384* and *SHA3-512* (SHA-3)
+    * *blake2b* and *blake2s* (BLAKE2)
+    * *blake3* (BLAKE3)
+    * *groestl-224*, *groestl-256*, *groestl-384* and *groestl-512* (Groestl)
+    * *sha224*, *sha256*, *sha384* and *sha512* (SHA-2)
+    * *sha3-224*, *sha3-256*, *sha3-384* and *sha3-512* (SHA-3)
 
 *--list-hash-algorithms*::
   List supported hash algorithms.
@@ -65,8 +65,8 @@ If _FILE_ is not specified, the input is read from stdin.
 
   _FORMAT_ can be:{blank}:::
 
-    * *SFV* (SFV output format, default)
-    * *BSD* (BSD output format)
+    * *sfv* (SFV output format, default)
+    * *bsd* (BSD output format)
 
 === General options
 

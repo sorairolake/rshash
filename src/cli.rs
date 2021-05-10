@@ -20,23 +20,23 @@ const LONG_VERSION: &str = formatcp!(
     "Reporting bugs: https://github.com/sorairolake/rshash/issues"
 );
 const HASH_ALGORITHMS: [&str; 15] = [
-    "BLAKE2b",
-    "BLAKE2s",
-    "BLAKE3",
-    "Groestl-224",
-    "Groestl-256",
-    "Groestl-384",
-    "Groestl-512",
-    "SHA224",
-    "SHA256",
-    "SHA384",
-    "SHA512",
-    "SHA3-224",
-    "SHA3-256",
-    "SHA3-384",
-    "SHA3-512",
+    "blake2b",
+    "blake2s",
+    "blake3",
+    "groestl-224",
+    "groestl-256",
+    "groestl-384",
+    "groestl-512",
+    "sha224",
+    "sha256",
+    "sha384",
+    "sha512",
+    "sha3-224",
+    "sha3-256",
+    "sha3-384",
+    "sha3-512",
 ];
-const CHECKSUM_STYLES: [&str; 2] = ["SFV", "BSD"];
+const CHECKSUM_STYLES: [&str; 2] = ["sfv", "bsd"];
 
 #[derive(Debug, StructOpt)]
 #[structopt(
