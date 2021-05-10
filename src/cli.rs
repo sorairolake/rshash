@@ -19,15 +19,21 @@ const LONG_VERSION: &str = formatcp!(
     "License: GNU General Public License v3.0 or later",
     "Reporting bugs: https://github.com/sorairolake/rshash/issues"
 );
-const HASH_ALGORITHMS: [&str; 9] = [
+const HASH_ALGORITHMS: [&str; 15] = [
     "BLAKE2b",
     "BLAKE2s",
     "BLAKE3",
+    "Groestl-224",
     "Groestl-256",
+    "Groestl-384",
     "Groestl-512",
+    "SHA224",
     "SHA256",
+    "SHA384",
     "SHA512",
+    "SHA3-224",
     "SHA3-256",
+    "SHA3-384",
     "SHA3-512",
 ];
 const CHECKSUM_STYLES: [&str; 2] = ["SFV", "BSD"];
@@ -96,11 +102,17 @@ impl Opt {
             Some("BLAKE2b") => Some(HashAlgorithm::Blake2b),
             Some("BLAKE2s") => Some(HashAlgorithm::Blake2s),
             Some("BLAKE3") => Some(HashAlgorithm::Blake3),
+            Some("Groestl-224") => Some(HashAlgorithm::Groestl224),
             Some("Groestl-256") => Some(HashAlgorithm::Groestl256),
+            Some("Groestl-384") => Some(HashAlgorithm::Groestl384),
             Some("Groestl-512") => Some(HashAlgorithm::Groestl512),
+            Some("SHA224") => Some(HashAlgorithm::Sha224),
             Some("SHA256") => Some(HashAlgorithm::Sha256),
+            Some("SHA384") => Some(HashAlgorithm::Sha384),
             Some("SHA512") => Some(HashAlgorithm::Sha512),
+            Some("SHA3-224") => Some(HashAlgorithm::Sha3_224),
             Some("SHA3-256") => Some(HashAlgorithm::Sha3_256),
+            Some("SHA3-384") => Some(HashAlgorithm::Sha3_384),
             Some("SHA3-512") => Some(HashAlgorithm::Sha3_512),
             _ => None,
         }

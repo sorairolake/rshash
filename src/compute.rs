@@ -7,9 +7,9 @@
 use std::path::Path;
 
 use blake2::{Blake2b, Blake2s};
-use groestl::{Groestl256, Groestl512};
-use sha2::{Sha256, Sha512};
-use sha3::{Sha3_256, Sha3_512};
+use groestl::{Groestl224, Groestl256, Groestl384, Groestl512};
+use sha2::{Sha224, Sha256, Sha384, Sha512};
+use sha3::{Sha3_224, Sha3_256, Sha3_384, Sha3_512};
 
 use crate::value::{Checksum, HashAlgorithm};
 
@@ -33,11 +33,25 @@ impl Checksum {
         hex::encode(blake3::hash(data).as_bytes())
     }
 
+    /// Compute Groestl-224 message digest.
+    fn groestl224(data: &[u8]) -> String {
+        use groestl::Digest;
+
+        hex::encode(Groestl224::digest(data))
+    }
+
     /// Compute Groestl-256 message digest.
     fn groestl256(data: &[u8]) -> String {
         use groestl::Digest;
 
         hex::encode(Groestl256::digest(data))
+    }
+
+    /// Compute Groestl-384 message digest.
+    fn groestl384(data: &[u8]) -> String {
+        use groestl::Digest;
+
+        hex::encode(Groestl384::digest(data))
     }
 
     /// Compute Groestl-512 message digest.
@@ -47,11 +61,25 @@ impl Checksum {
         hex::encode(Groestl512::digest(data))
     }
 
+    /// Compute SHA-224 message digest.
+    fn sha224(data: &[u8]) -> String {
+        use sha2::Digest;
+
+        hex::encode(Sha224::digest(data))
+    }
+
     /// Compute SHA-256 message digest.
     fn sha256(data: &[u8]) -> String {
         use sha2::Digest;
 
         hex::encode(Sha256::digest(data))
+    }
+
+    /// Compute SHA-384 message digest.
+    fn sha384(data: &[u8]) -> String {
+        use sha2::Digest;
+
+        hex::encode(Sha384::digest(data))
     }
 
     /// Compute SHA-512 message digest.
@@ -61,11 +89,25 @@ impl Checksum {
         hex::encode(Sha512::digest(data))
     }
 
+    /// Compute SHA3-224 message digest.
+    fn sha3_224(data: &[u8]) -> String {
+        use sha3::Digest;
+
+        hex::encode(Sha3_224::digest(data))
+    }
+
     /// Compute SHA3-256 message digest.
     fn sha3_256(data: &[u8]) -> String {
         use sha3::Digest;
 
         hex::encode(Sha3_256::digest(data))
+    }
+
+    /// Compute SHA3-384 message digest.
+    fn sha3_384(data: &[u8]) -> String {
+        use sha3::Digest;
+
+        hex::encode(Sha3_384::digest(data))
     }
 
     /// Compute SHA3-512 message digest.
@@ -81,11 +123,17 @@ impl Checksum {
             HashAlgorithm::Blake2b => Self::blake2b(input.1),
             HashAlgorithm::Blake2s => Self::blake2s(input.1),
             HashAlgorithm::Blake3 => Self::blake3(input.1),
+            HashAlgorithm::Groestl224 => Self::groestl224(input.1),
             HashAlgorithm::Groestl256 => Self::groestl256(input.1),
+            HashAlgorithm::Groestl384 => Self::groestl384(input.1),
             HashAlgorithm::Groestl512 => Self::groestl512(input.1),
+            HashAlgorithm::Sha224 => Self::sha224(input.1),
             HashAlgorithm::Sha256 => Self::sha256(input.1),
+            HashAlgorithm::Sha384 => Self::sha384(input.1),
             HashAlgorithm::Sha512 => Self::sha512(input.1),
+            HashAlgorithm::Sha3_224 => Self::sha3_224(input.1),
             HashAlgorithm::Sha3_256 => Self::sha3_256(input.1),
+            HashAlgorithm::Sha3_384 => Self::sha3_384(input.1),
             HashAlgorithm::Sha3_512 => Self::sha3_512(input.1),
         };
 
@@ -134,6 +182,19 @@ mod tests {
     }
 
     #[test]
+    fn verify_groestl224() {
+        let checksum = Checksum::compute(
+            &HashAlgorithm::Groestl224,
+            (Path::new("-"), b"Hello, world!"),
+        );
+
+        assert_eq!(
+            checksum.digest,
+            "c6f16583ebfb2544969f673d1fb43d73a3a51cd6927cdc1b7ff5e20a"
+        );
+    }
+
+    #[test]
     fn verify_groestl256() {
         let checksum = Checksum::compute(
             &HashAlgorithm::Groestl256,
@@ -143,6 +204,19 @@ mod tests {
         assert_eq!(
             checksum.digest,
             "63e4ab2044e38c1fb1725313f2229e038926af839c86eaf96553027d2c851e18"
+        );
+    }
+
+    #[test]
+    fn verify_groestl384() {
+        let checksum = Checksum::compute(
+            &HashAlgorithm::Groestl384,
+            (Path::new("-"), b"Hello, world!"),
+        );
+
+        assert_eq!(
+            checksum.digest,
+            "fc49edd6b61c5630c6111e51b7b721ff18454e451f829498cc0d76018c11f9f13836545f5d61ac3209a2a9fb2b5cdcfd"
         );
     }
 
@@ -160,6 +234,17 @@ mod tests {
     }
 
     #[test]
+    fn verify_sha224() {
+        let checksum =
+            Checksum::compute(&HashAlgorithm::Sha224, (Path::new("-"), b"Hello, world!"));
+
+        assert_eq!(
+            checksum.digest,
+            "8552d8b7a7dc5476cb9e25dee69a8091290764b7f2a64fe6e78e9568"
+        );
+    }
+
+    #[test]
     fn verify_sha256() {
         let checksum =
             Checksum::compute(&HashAlgorithm::Sha256, (Path::new("-"), b"Hello, world!"));
@@ -167,6 +252,17 @@ mod tests {
         assert_eq!(
             checksum.digest,
             "315f5bdb76d078c43b8ac0064e4a0164612b1fce77c869345bfc94c75894edd3"
+        );
+    }
+
+    #[test]
+    fn verify_sha384() {
+        let checksum =
+            Checksum::compute(&HashAlgorithm::Sha384, (Path::new("-"), b"Hello, world!"));
+
+        assert_eq!(
+            checksum.digest,
+            "55bc556b0d2fe0fce582ba5fe07baafff035653638c7ac0d5494c2a64c0bea1cc57331c7c12a45cdbca7f4c34a089eeb"
         );
     }
 
@@ -182,6 +278,17 @@ mod tests {
     }
 
     #[test]
+    fn verify_sha3_224() {
+        let checksum =
+            Checksum::compute(&HashAlgorithm::Sha3_224, (Path::new("-"), b"Hello, world!"));
+
+        assert_eq!(
+            checksum.digest,
+            "6a33e22f20f16642697e8bd549ff7b759252ad56c05a1b0acc31dc69"
+        );
+    }
+
+    #[test]
     fn verify_sha3_256() {
         let checksum =
             Checksum::compute(&HashAlgorithm::Sha3_256, (Path::new("-"), b"Hello, world!"));
@@ -189,6 +296,17 @@ mod tests {
         assert_eq!(
             checksum.digest,
             "f345a219da005ebe9c1a1eaad97bbf38a10c8473e41d0af7fb617caa0c6aa722"
+        );
+    }
+
+    #[test]
+    fn verify_sha3_384() {
+        let checksum =
+            Checksum::compute(&HashAlgorithm::Sha3_384, (Path::new("-"), b"Hello, world!"));
+
+        assert_eq!(
+            checksum.digest,
+            "6ba9ea268965916f5937228dde678c202f9fe756a87d8b1b7362869583a45901fd1a27289d72fc0e3ff48b1b78827d3a"
         );
     }
 

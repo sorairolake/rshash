@@ -6,7 +6,7 @@
 
 = rshash(1)
 // Specify in UTC.
-:docdate: 2021-04-27
+:docdate: 2021-05-10
 :doctype: manpage
 :mansource: RSHash {manversion}
 :manmanual: General Commands Manual
@@ -34,11 +34,11 @@ If _FILE_ is not specified, the input is read from stdin.
 
   _NAME_ can be:{blank}:::
 
-    * *BLAKE2b*, *BLAKE2s* (BLAKE2)
+    * *BLAKE2b* and *BLAKE2s* (BLAKE2)
     * *BLAKE3* (BLAKE3)
-    * *Groestl-256*, *Groestl-512* (Groestl)
-    * *SHA256*, *SHA512* (SHA-2)
-    * *SHA3-256*, *SHA3-512* (SHA-3)
+    * *Groestl-224*, *Groestl-256*, *Groestl-384* and *Groestl-512* (Groestl)
+    * *SHA224*, *SHA256*, *SHA384* and *SHA512* (SHA-2)
+    * *SHA3-224*, *SHA3-256*, *SHA3-384* and *SHA3-512* (SHA-3)
 
 *--list-hash-algorithms*::
   List supported hash algorithms.
