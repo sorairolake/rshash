@@ -12,6 +12,7 @@ use ripemd160::Ripemd160;
 use ripemd320::Ripemd320;
 use sha2::{Sha224, Sha256, Sha384, Sha512};
 use sha3::{Sha3_224, Sha3_256, Sha3_384, Sha3_512};
+use streebog::{Streebog256, Streebog512};
 use whirlpool::Whirlpool;
 
 use crate::value::{Checksum, HashAlgorithm};
@@ -134,6 +135,20 @@ impl Checksum {
         hex::encode(Sha3_512::digest(data))
     }
 
+    /// Compute Streebog-256 message digest.
+    fn streebog256(data: &[u8]) -> String {
+        use streebog::Digest;
+
+        hex::encode(Streebog256::digest(data))
+    }
+
+    /// Compute Streebog-512 message digest.
+    fn streebog512(data: &[u8]) -> String {
+        use streebog::Digest;
+
+        hex::encode(Streebog512::digest(data))
+    }
+
     /// Compute Whirlpool message digest.
     fn whirlpool(data: &[u8]) -> String {
         use whirlpool::Digest;
@@ -161,6 +176,8 @@ impl Checksum {
             HashAlgorithm::Sha3_256 => Self::sha3_256(input.1),
             HashAlgorithm::Sha3_384 => Self::sha3_384(input.1),
             HashAlgorithm::Sha3_512 => Self::sha3_512(input.1),
+            HashAlgorithm::Streebog256 => Self::streebog256(input.1),
+            HashAlgorithm::Streebog512 => Self::streebog512(input.1),
             HashAlgorithm::Whirlpool => Self::whirlpool(input.1),
         };
 
@@ -368,6 +385,32 @@ mod tests {
         assert_eq!(
             checksum.digest,
             "8e47f1185ffd014d238fabd02a1a32defe698cbf38c037a90e3c0a0a32370fb52cbd641250508502295fcabcbf676c09470b27443868c8e5f70e26dc337288af"
+        );
+    }
+
+    #[test]
+    fn verify_streebog256() {
+        let checksum = Checksum::compute(
+            &HashAlgorithm::Streebog256,
+            (Path::new("-"), b"Hello, world!"),
+        );
+
+        assert_eq!(
+            checksum.digest,
+            "ccb6fae3553c101715da535328de718f6f6e412db8611a38025c510ac8f85aeb"
+        );
+    }
+
+    #[test]
+    fn verify_streebog512() {
+        let checksum = Checksum::compute(
+            &HashAlgorithm::Streebog512,
+            (Path::new("-"), b"Hello, world!"),
+        );
+
+        assert_eq!(
+            checksum.digest,
+            "a83352d35dc8f07ca8048e6752415e5e991527e29415ade0eaad6e48d67bf37b60dfd7bb4475cbcbe297ed016128391c312dfe3a00e0a9bd0e497389c888eedc"
         );
     }
 
