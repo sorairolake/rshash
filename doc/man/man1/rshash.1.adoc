@@ -37,6 +37,7 @@ If _FILE_ is not specified, the input is read from stdin.
     * *blake2b* and *blake2s* (BLAKE2)
     * *blake3* (BLAKE3)
     * *groestl-224*, *groestl-256*, *groestl-384* and *groestl-512* (Groestl)
+    * *ripemd-160* and *ripemd-320* (RIPEMD)
     * *sha224*, *sha256*, *sha384* and *sha512* (SHA-2)
     * *sha3-224*, *sha3-256*, *sha3-384* and *sha3-512* (SHA-3)
     * *whirlpool* (Whirlpool)

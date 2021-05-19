@@ -28,7 +28,7 @@ fn main() -> Result<()> {
 
     if opt.list_hash_algorithms {
         println!(
-            "{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}",
+            "{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}",
             HashAlgorithm::Blake2b,
             HashAlgorithm::Blake2s,
             HashAlgorithm::Blake3,
@@ -36,6 +36,8 @@ fn main() -> Result<()> {
             HashAlgorithm::Groestl256,
             HashAlgorithm::Groestl384,
             HashAlgorithm::Groestl512,
+            HashAlgorithm::Ripemd160,
+            HashAlgorithm::Ripemd320,
             HashAlgorithm::Sha224,
             HashAlgorithm::Sha256,
             HashAlgorithm::Sha384,

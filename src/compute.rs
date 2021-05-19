@@ -8,6 +8,8 @@ use std::path::Path;
 
 use blake2::{Blake2b, Blake2s};
 use groestl::{Groestl224, Groestl256, Groestl384, Groestl512};
+use ripemd160::Ripemd160;
+use ripemd320::Ripemd320;
 use sha2::{Sha224, Sha256, Sha384, Sha512};
 use sha3::{Sha3_224, Sha3_256, Sha3_384, Sha3_512};
 use whirlpool::Whirlpool;
@@ -60,6 +62,20 @@ impl Checksum {
         use groestl::Digest;
 
         hex::encode(Groestl512::digest(data))
+    }
+
+    /// Compute RIPEMD-160 message digest.
+    fn ripemd160(data: &[u8]) -> String {
+        use ripemd160::Digest;
+
+        hex::encode(Ripemd160::digest(data))
+    }
+
+    /// Compute RIPEMD-320 message digest.
+    fn ripemd320(data: &[u8]) -> String {
+        use ripemd320::Digest;
+
+        hex::encode(Ripemd320::digest(data))
     }
 
     /// Compute SHA-224 message digest.
@@ -135,6 +151,8 @@ impl Checksum {
             HashAlgorithm::Groestl256 => Self::groestl256(input.1),
             HashAlgorithm::Groestl384 => Self::groestl384(input.1),
             HashAlgorithm::Groestl512 => Self::groestl512(input.1),
+            HashAlgorithm::Ripemd160 => Self::ripemd160(input.1),
+            HashAlgorithm::Ripemd320 => Self::ripemd320(input.1),
             HashAlgorithm::Sha224 => Self::sha224(input.1),
             HashAlgorithm::Sha256 => Self::sha256(input.1),
             HashAlgorithm::Sha384 => Self::sha384(input.1),
@@ -239,6 +257,29 @@ mod tests {
         assert_eq!(
             checksum.digest,
             "b60658e723a8eb1743823a8002175486bc24223ba3dc6d8cb435a948f6d2b9744ac9e307e1d38021ea18c4d536d28fc23491d7771a5a5b0d02ffad9a073dcc28"
+        );
+    }
+
+    #[test]
+    fn verify_ripemd160() {
+        let checksum = Checksum::compute(
+            &HashAlgorithm::Ripemd160,
+            (Path::new("-"), b"Hello, world!"),
+        );
+
+        assert_eq!(checksum.digest, "58262d1fbdbe4530d8865d3518c6d6e41002610f");
+    }
+
+    #[test]
+    fn verify_ripemd320() {
+        let checksum = Checksum::compute(
+            &HashAlgorithm::Ripemd320,
+            (Path::new("-"), b"Hello, world!"),
+        );
+
+        assert_eq!(
+            checksum.digest,
+            "38e0636b7efa3c6c3cce53a334f4ff12cfee2a9704cdf9c2e7d0fe0399cf6ee66a71babb49f5870d"
         );
     }
 
