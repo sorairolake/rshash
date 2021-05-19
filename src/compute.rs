@@ -10,6 +10,7 @@ use blake2::{Blake2b, Blake2s};
 use groestl::{Groestl224, Groestl256, Groestl384, Groestl512};
 use sha2::{Sha224, Sha256, Sha384, Sha512};
 use sha3::{Sha3_224, Sha3_256, Sha3_384, Sha3_512};
+use whirlpool::Whirlpool;
 
 use crate::value::{Checksum, HashAlgorithm};
 
@@ -117,6 +118,13 @@ impl Checksum {
         hex::encode(Sha3_512::digest(data))
     }
 
+    /// Compute Whirlpool message digest.
+    fn whirlpool(data: &[u8]) -> String {
+        use whirlpool::Digest;
+
+        hex::encode(Whirlpool::digest(data))
+    }
+
     /// Compute message digest for the specified hash algorithm.
     pub fn compute(algo: &HashAlgorithm, input: (&Path, &[u8])) -> Self {
         let digest = match algo {
@@ -135,6 +143,7 @@ impl Checksum {
             HashAlgorithm::Sha3_256 => Self::sha3_256(input.1),
             HashAlgorithm::Sha3_384 => Self::sha3_384(input.1),
             HashAlgorithm::Sha3_512 => Self::sha3_512(input.1),
+            HashAlgorithm::Whirlpool => Self::whirlpool(input.1),
         };
 
         Checksum {
@@ -318,6 +327,19 @@ mod tests {
         assert_eq!(
             checksum.digest,
             "8e47f1185ffd014d238fabd02a1a32defe698cbf38c037a90e3c0a0a32370fb52cbd641250508502295fcabcbf676c09470b27443868c8e5f70e26dc337288af"
+        );
+    }
+
+    #[test]
+    fn verify_whirlpool() {
+        let checksum = Checksum::compute(
+            &HashAlgorithm::Whirlpool,
+            (Path::new("-"), b"Hello, world!"),
+        );
+
+        assert_eq!(
+            checksum.digest,
+            "a1a8703be5312b139b42eb331aa800ccaca0c34d58c6988e44f45489cfb16beb4b6bf0ce20be1db22a10b0e4bb680480a3d2429e6c483085453c098b65852495"
         );
     }
 }

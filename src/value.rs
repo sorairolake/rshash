@@ -76,6 +76,7 @@ pub enum HashAlgorithm {
     Sha3_256,
     Sha3_384,
     Sha3_512,
+    Whirlpool,
 }
 
 impl FromStr for HashAlgorithm {
@@ -98,6 +99,7 @@ impl FromStr for HashAlgorithm {
             "sha3-256" => Ok(HashAlgorithm::Sha3_256),
             "sha3-384" => Ok(HashAlgorithm::Sha3_384),
             "sha3-512" => Ok(HashAlgorithm::Sha3_512),
+            "whirlpool" => Ok(HashAlgorithm::Whirlpool),
             _ => unreachable!(),
         }
     }
@@ -121,6 +123,7 @@ impl fmt::Display for HashAlgorithm {
             HashAlgorithm::Sha3_256 => write!(f, "SHA3-256"),
             HashAlgorithm::Sha3_384 => write!(f, "SHA3-384"),
             HashAlgorithm::Sha3_512 => write!(f, "SHA3-512"),
+            HashAlgorithm::Whirlpool => write!(f, "Whirlpool"),
         }
     }
 }
