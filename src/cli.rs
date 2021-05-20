@@ -19,7 +19,7 @@ const LONG_VERSION: &str = formatcp!(
     "License: GNU General Public License v3.0 or later",
     "Reporting bugs: https://github.com/sorairolake/rshash/issues"
 );
-const HASH_ALGORITHMS: [&str; 20] = [
+const HASH_ALGORITHMS: [&str; 24] = [
     "blake2b",
     "blake2s",
     "blake3",
@@ -27,8 +27,12 @@ const HASH_ALGORITHMS: [&str; 20] = [
     "groestl-256",
     "groestl-384",
     "groestl-512",
+    "md2",
+    "md4",
+    "md5",
     "ripemd-160",
     "ripemd-320",
+    "sha1",
     "sha224",
     "sha256",
     "sha384",
@@ -111,8 +115,12 @@ impl Opt {
             Some("Groestl-256") => Some(HashAlgorithm::Groestl256),
             Some("Groestl-384") => Some(HashAlgorithm::Groestl384),
             Some("Groestl-512") => Some(HashAlgorithm::Groestl512),
+            Some("MD2") => Some(HashAlgorithm::Md2),
+            Some("MD4") => Some(HashAlgorithm::Md4),
+            Some("MD5") => Some(HashAlgorithm::Md5),
             Some("RIPEMD-160") => Some(HashAlgorithm::Ripemd160),
             Some("RIPEMD-320") => Some(HashAlgorithm::Ripemd320),
+            Some("SHA1") => Some(HashAlgorithm::Sha1),
             Some("SHA224") => Some(HashAlgorithm::Sha224),
             Some("SHA256") => Some(HashAlgorithm::Sha256),
             Some("SHA384") => Some(HashAlgorithm::Sha384),
