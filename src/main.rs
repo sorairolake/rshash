@@ -28,7 +28,7 @@ fn main() -> Result<()> {
 
     if opt.list_hash_algorithms {
         println!(
-            "{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}",
+            "{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}",
             HashAlgorithm::Blake2b,
             HashAlgorithm::Blake2s,
             HashAlgorithm::Blake3,
@@ -36,8 +36,12 @@ fn main() -> Result<()> {
             HashAlgorithm::Groestl256,
             HashAlgorithm::Groestl384,
             HashAlgorithm::Groestl512,
+            HashAlgorithm::Md2,
+            HashAlgorithm::Md4,
+            HashAlgorithm::Md5,
             HashAlgorithm::Ripemd160,
             HashAlgorithm::Ripemd320,
+            HashAlgorithm::Sha1,
             HashAlgorithm::Sha224,
             HashAlgorithm::Sha256,
             HashAlgorithm::Sha384,
@@ -89,6 +93,10 @@ fn main() -> Result<()> {
             .guess_hash_algorithm(checksums)
             .context("Unable to determine hash algorithm.")?;
 
+        if value::INSECURE_HASH_ALGORITHMS.contains(&algo) && !opt.allow_insecure_hash_algorithm {
+            bail!("{} is not allowed to use.", algo)
+        }
+
         let checksums: Result<Vec<_>> = checksums.lines().map(|c| c.parse()).collect();
         let checksums = checksums?;
 
@@ -115,6 +123,10 @@ fn main() -> Result<()> {
         let algo = opt
             .hash_algorithm
             .context("Unable to determine hash algorithm.")?;
+
+        if value::INSECURE_HASH_ALGORITHMS.contains(&algo) && !opt.allow_insecure_hash_algorithm {
+            bail!("{} is not allowed to use.", algo)
+        }
 
         input
             .iter()

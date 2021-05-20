@@ -8,8 +8,12 @@ use std::path::Path;
 
 use blake2::{Blake2b, Blake2s};
 use groestl::{Groestl224, Groestl256, Groestl384, Groestl512};
+use md2::Md2;
+use md4::Md4;
+use md5::Md5;
 use ripemd160::Ripemd160;
 use ripemd320::Ripemd320;
+use sha1::Sha1;
 use sha2::{Sha224, Sha256, Sha384, Sha512};
 use sha3::{Sha3_224, Sha3_256, Sha3_384, Sha3_512};
 use streebog::{Streebog256, Streebog512};
@@ -65,6 +69,27 @@ impl Checksum {
         hex::encode(Groestl512::digest(data))
     }
 
+    /// Compute MD2 message digest.
+    fn md2(data: &[u8]) -> String {
+        use md2::Digest;
+
+        hex::encode(Md2::digest(data))
+    }
+
+    /// Compute MD4 message digest.
+    fn md4(data: &[u8]) -> String {
+        use md4::Digest;
+
+        hex::encode(Md4::digest(data))
+    }
+
+    /// Compute MD5 message digest.
+    fn md5(data: &[u8]) -> String {
+        use md5::Digest;
+
+        hex::encode(Md5::digest(data))
+    }
+
     /// Compute RIPEMD-160 message digest.
     fn ripemd160(data: &[u8]) -> String {
         use ripemd160::Digest;
@@ -77,6 +102,13 @@ impl Checksum {
         use ripemd320::Digest;
 
         hex::encode(Ripemd320::digest(data))
+    }
+
+    /// Compute SHA-1 message digest.
+    fn sha1(data: &[u8]) -> String {
+        use sha1::Digest;
+
+        hex::encode(Sha1::digest(data))
     }
 
     /// Compute SHA-224 message digest.
@@ -166,8 +198,12 @@ impl Checksum {
             HashAlgorithm::Groestl256 => Self::groestl256(input.1),
             HashAlgorithm::Groestl384 => Self::groestl384(input.1),
             HashAlgorithm::Groestl512 => Self::groestl512(input.1),
+            HashAlgorithm::Md2 => Self::md2(input.1),
+            HashAlgorithm::Md4 => Self::md4(input.1),
+            HashAlgorithm::Md5 => Self::md5(input.1),
             HashAlgorithm::Ripemd160 => Self::ripemd160(input.1),
             HashAlgorithm::Ripemd320 => Self::ripemd320(input.1),
+            HashAlgorithm::Sha1 => Self::sha1(input.1),
             HashAlgorithm::Sha224 => Self::sha224(input.1),
             HashAlgorithm::Sha256 => Self::sha256(input.1),
             HashAlgorithm::Sha384 => Self::sha384(input.1),
@@ -278,6 +314,27 @@ mod tests {
     }
 
     #[test]
+    fn verify_md2() {
+        let checksum = Checksum::compute(&HashAlgorithm::Md2, (Path::new("-"), b"Hello, world!"));
+
+        assert_eq!(checksum.digest, "8cca0e965edd0e223b744f9cedf8e141");
+    }
+
+    #[test]
+    fn verify_md4() {
+        let checksum = Checksum::compute(&HashAlgorithm::Md4, (Path::new("-"), b"Hello, world!"));
+
+        assert_eq!(checksum.digest, "0abe9ee1f376caa1bcecad9042f16e73");
+    }
+
+    #[test]
+    fn verify_md5() {
+        let checksum = Checksum::compute(&HashAlgorithm::Md5, (Path::new("-"), b"Hello, world!"));
+
+        assert_eq!(checksum.digest, "6cd3556deb0da54bca060b4c39479839");
+    }
+
+    #[test]
     fn verify_ripemd160() {
         let checksum = Checksum::compute(
             &HashAlgorithm::Ripemd160,
@@ -298,6 +355,13 @@ mod tests {
             checksum.digest,
             "38e0636b7efa3c6c3cce53a334f4ff12cfee2a9704cdf9c2e7d0fe0399cf6ee66a71babb49f5870d"
         );
+    }
+
+    #[test]
+    fn verify_sha1() {
+        let checksum = Checksum::compute(&HashAlgorithm::Sha1, (Path::new("-"), b"Hello, world!"));
+
+        assert_eq!(checksum.digest, "943a702d06f34599aee1f8da8ef9f7296031d699");
     }
 
     #[test]

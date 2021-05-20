@@ -59,7 +59,7 @@ impl FromStr for Checksum {
     }
 }
 
-#[derive(Clone, Copy, Debug)]
+#[derive(Clone, Copy, Debug, PartialEq)]
 pub enum HashAlgorithm {
     Blake2b,
     Blake2s,
@@ -68,8 +68,12 @@ pub enum HashAlgorithm {
     Groestl256,
     Groestl384,
     Groestl512,
+    Md2,
+    Md4,
+    Md5,
     Ripemd160,
     Ripemd320,
+    Sha1,
     Sha224,
     Sha256,
     Sha384,
@@ -95,8 +99,12 @@ impl FromStr for HashAlgorithm {
             "groestl-256" => Ok(HashAlgorithm::Groestl256),
             "groestl-384" => Ok(HashAlgorithm::Groestl384),
             "groestl-512" => Ok(HashAlgorithm::Groestl512),
+            "md2" => Ok(HashAlgorithm::Md2),
+            "md4" => Ok(HashAlgorithm::Md4),
+            "md5" => Ok(HashAlgorithm::Md5),
             "ripemd-160" => Ok(HashAlgorithm::Ripemd160),
             "ripemd-320" => Ok(HashAlgorithm::Ripemd320),
+            "sha1" => Ok(HashAlgorithm::Sha1),
             "sha224" => Ok(HashAlgorithm::Sha224),
             "sha256" => Ok(HashAlgorithm::Sha256),
             "sha384" => Ok(HashAlgorithm::Sha384),
@@ -123,8 +131,12 @@ impl fmt::Display for HashAlgorithm {
             HashAlgorithm::Groestl256 => write!(f, "Groestl-256"),
             HashAlgorithm::Groestl384 => write!(f, "Groestl-384"),
             HashAlgorithm::Groestl512 => write!(f, "Groestl-512"),
+            HashAlgorithm::Md2 => write!(f, "MD2"),
+            HashAlgorithm::Md4 => write!(f, "MD4"),
+            HashAlgorithm::Md5 => write!(f, "MD5"),
             HashAlgorithm::Ripemd160 => write!(f, "RIPEMD-160"),
             HashAlgorithm::Ripemd320 => write!(f, "RIPEMD-320"),
+            HashAlgorithm::Sha1 => write!(f, "SHA1"),
             HashAlgorithm::Sha224 => write!(f, "SHA224"),
             HashAlgorithm::Sha256 => write!(f, "SHA256"),
             HashAlgorithm::Sha384 => write!(f, "SHA384"),
@@ -139,6 +151,13 @@ impl fmt::Display for HashAlgorithm {
         }
     }
 }
+
+pub const INSECURE_HASH_ALGORITHMS: [HashAlgorithm; 4] = [
+    HashAlgorithm::Md2,
+    HashAlgorithm::Md4,
+    HashAlgorithm::Md5,
+    HashAlgorithm::Sha1,
+];
 
 #[derive(Debug)]
 pub enum Style {

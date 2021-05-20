@@ -6,7 +6,7 @@
 
 = rshash(1)
 // Specify in UTC.
-:docdate: 2021-05-19
+:docdate: 2021-05-20
 :doctype: manpage
 :mansource: RSHash {manversion}
 :manmanual: General Commands Manual
@@ -37,11 +37,19 @@ If _FILE_ is not specified, the input is read from stdin.
     * *blake2b* and *blake2s* (BLAKE2)
     * *blake3* (BLAKE3)
     * *groestl-224*, *groestl-256*, *groestl-384* and *groestl-512* (Groestl)
+    * *md2* (MD2)
+    * *md4* (MD4)
+    * *md5* (MD5)
     * *ripemd-160* and *ripemd-320* (RIPEMD)
+    * *sha1* (SHA-1)
     * *sha224*, *sha256*, *sha384* and *sha512* (SHA-2)
     * *sha3-224*, *sha3-256*, *sha3-384* and *sha3-512* (SHA-3)
     * *streebog-256* and *streebog-512* (Streebog)
     * *whirlpool* (Whirlpool)
+
+*--allow-insecure-hash-algorithm*::
+  Allow insecure hash algorithm.
+  This option is required when using MD2, MD4, MD5 or SHA-1 as the hash algorithm.
 
 *--list-hash-algorithms*::
   List supported hash algorithms.
