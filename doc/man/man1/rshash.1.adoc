@@ -47,6 +47,10 @@ If _FILE_ is not specified, the input is read from stdin.
     * *streebog-256* and *streebog-512* (Streebog)
     * *whirlpool* (Whirlpool)
 
+*--allow-insecure-hash-algorithm*::
+  Allow insecure hash algorithm.
+  This option is required when using MD2, MD4, MD5 or SHA-1 as the hash algorithm.
+
 *--list-hash-algorithms*::
   List supported hash algorithms.
 

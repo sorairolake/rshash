@@ -59,7 +59,7 @@ impl FromStr for Checksum {
     }
 }
 
-#[derive(Clone, Copy, Debug)]
+#[derive(Clone, Copy, Debug, PartialEq)]
 pub enum HashAlgorithm {
     Blake2b,
     Blake2s,
@@ -151,6 +151,13 @@ impl fmt::Display for HashAlgorithm {
         }
     }
 }
+
+pub const INSECURE_HASH_ALGORITHMS: [HashAlgorithm; 4] = [
+    HashAlgorithm::Md2,
+    HashAlgorithm::Md4,
+    HashAlgorithm::Md5,
+    HashAlgorithm::Sha1,
+];
 
 #[derive(Debug)]
 pub enum Style {

@@ -65,6 +65,10 @@ pub struct Opt {
     )]
     pub hash_algorithm: Option<HashAlgorithm>,
 
+    /// Allow insecure hash algorithm.
+    #[structopt(long)]
+    pub allow_insecure_hash_algorithm: bool,
+
     /// List supported hash algorithms.
     #[structopt(long)]
     pub list_hash_algorithms: bool,

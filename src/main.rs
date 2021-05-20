@@ -93,6 +93,10 @@ fn main() -> Result<()> {
             .guess_hash_algorithm(checksums)
             .context("Unable to determine hash algorithm.")?;
 
+        if value::INSECURE_HASH_ALGORITHMS.contains(&algo) && !opt.allow_insecure_hash_algorithm {
+            bail!("{} is not allowed to use.", algo)
+        }
+
         let checksums: Result<Vec<_>> = checksums.lines().map(|c| c.parse()).collect();
         let checksums = checksums?;
 
@@ -119,6 +123,10 @@ fn main() -> Result<()> {
         let algo = opt
             .hash_algorithm
             .context("Unable to determine hash algorithm.")?;
+
+        if value::INSECURE_HASH_ALGORITHMS.contains(&algo) && !opt.allow_insecure_hash_algorithm {
+            bail!("{} is not allowed to use.", algo)
+        }
 
         input
             .iter()
