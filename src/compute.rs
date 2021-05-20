@@ -16,6 +16,7 @@ use ripemd320::Ripemd320;
 use sha1::Sha1;
 use sha2::{Sha224, Sha256, Sha384, Sha512};
 use sha3::{Sha3_224, Sha3_256, Sha3_384, Sha3_512};
+use shabal::{Shabal192, Shabal224, Shabal256, Shabal384, Shabal512};
 use streebog::{Streebog256, Streebog512};
 use whirlpool::Whirlpool;
 
@@ -167,6 +168,41 @@ impl Checksum {
         hex::encode(Sha3_512::digest(data))
     }
 
+    /// Compute Shabal-192 message digest.
+    fn shabal192(data: &[u8]) -> String {
+        use shabal::Digest;
+
+        hex::encode(Shabal192::digest(data))
+    }
+
+    /// Compute Shabal-224 message digest.
+    fn shabal224(data: &[u8]) -> String {
+        use shabal::Digest;
+
+        hex::encode(Shabal224::digest(data))
+    }
+
+    /// Compute Shabal-256 message digest.
+    fn shabal256(data: &[u8]) -> String {
+        use shabal::Digest;
+
+        hex::encode(Shabal256::digest(data))
+    }
+
+    /// Compute Shabal-384 message digest.
+    fn shabal384(data: &[u8]) -> String {
+        use shabal::Digest;
+
+        hex::encode(Shabal384::digest(data))
+    }
+
+    /// Compute Shabal-512 message digest.
+    fn shabal512(data: &[u8]) -> String {
+        use shabal::Digest;
+
+        hex::encode(Shabal512::digest(data))
+    }
+
     /// Compute Streebog-256 message digest.
     fn streebog256(data: &[u8]) -> String {
         use streebog::Digest;
@@ -212,6 +248,11 @@ impl Checksum {
             HashAlgorithm::Sha3_256 => Self::sha3_256(input.1),
             HashAlgorithm::Sha3_384 => Self::sha3_384(input.1),
             HashAlgorithm::Sha3_512 => Self::sha3_512(input.1),
+            HashAlgorithm::Shabal192 => Self::shabal192(input.1),
+            HashAlgorithm::Shabal224 => Self::shabal224(input.1),
+            HashAlgorithm::Shabal256 => Self::shabal256(input.1),
+            HashAlgorithm::Shabal384 => Self::shabal384(input.1),
+            HashAlgorithm::Shabal512 => Self::shabal512(input.1),
             HashAlgorithm::Streebog256 => Self::streebog256(input.1),
             HashAlgorithm::Streebog512 => Self::streebog512(input.1),
             HashAlgorithm::Whirlpool => Self::whirlpool(input.1),
@@ -449,6 +490,71 @@ mod tests {
         assert_eq!(
             checksum.digest,
             "8e47f1185ffd014d238fabd02a1a32defe698cbf38c037a90e3c0a0a32370fb52cbd641250508502295fcabcbf676c09470b27443868c8e5f70e26dc337288af"
+        );
+    }
+
+    #[test]
+    fn verify_shabal192() {
+        let checksum = Checksum::compute(
+            &HashAlgorithm::Shabal192,
+            (Path::new("-"), b"Hello, world!"),
+        );
+
+        assert_eq!(
+            checksum.digest,
+            "5530ace9c4f72542da200b109f2f31acdfd0f5cb599917a6"
+        );
+    }
+
+    #[test]
+    fn verify_shabal224() {
+        let checksum = Checksum::compute(
+            &HashAlgorithm::Shabal224,
+            (Path::new("-"), b"Hello, world!"),
+        );
+
+        assert_eq!(
+            checksum.digest,
+            "64e06cbe06f9822731bdd2a2cc8e01637202e2ecd3ef6b3360b873b5"
+        );
+    }
+
+    #[test]
+    fn verify_shabal256() {
+        let checksum = Checksum::compute(
+            &HashAlgorithm::Shabal256,
+            (Path::new("-"), b"Hello, world!"),
+        );
+
+        assert_eq!(
+            checksum.digest,
+            "e58d8d764ad4db5e716df1840283681a4010a77dfe59b494fc7ac9fc8c64af76"
+        );
+    }
+
+    #[test]
+    fn verify_shabal384() {
+        let checksum = Checksum::compute(
+            &HashAlgorithm::Shabal384,
+            (Path::new("-"), b"Hello, world!"),
+        );
+
+        assert_eq!(
+            checksum.digest,
+            "bfae21d6dcb252249f8df385dfa4382bb34748c81854a42c8ed947f57ee9102169f443560a72e553fb65d3f14fd54d35"
+        );
+    }
+
+    #[test]
+    fn verify_shabal512() {
+        let checksum = Checksum::compute(
+            &HashAlgorithm::Shabal512,
+            (Path::new("-"), b"Hello, world!"),
+        );
+
+        assert_eq!(
+            checksum.digest,
+            "7048f0a589339d2d26890701ed3b2d1ed7c8dd1ac37fec517c7a8c39d5d51548e96ea8dfaceb5b99f9d1db3b18a7652e0412348ebfd61d32d755d6098bff8cb3"
         );
     }
 

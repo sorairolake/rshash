@@ -44,6 +44,7 @@ If _FILE_ is not specified, the input is read from stdin.
     * *sha1* (SHA-1)
     * *sha224*, *sha256*, *sha384* and *sha512* (SHA-2)
     * *sha3-224*, *sha3-256*, *sha3-384* and *sha3-512* (SHA-3)
+    * *shabal-192*, *shabal-224*, *shabal-256*, *shabal-384* and *shabal-512* (Shabal)
     * *streebog-256* and *streebog-512* (Streebog)
     * *whirlpool* (Whirlpool)
 
