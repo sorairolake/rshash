@@ -28,7 +28,7 @@ fn main() -> Result<()> {
 
     if opt.list_hash_algorithms {
         println!(
-            "{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}",
+            "{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}",
             HashAlgorithm::Blake2b,
             HashAlgorithm::Blake2s,
             HashAlgorithm::Blake3,
@@ -59,6 +59,7 @@ fn main() -> Result<()> {
             HashAlgorithm::Shabal512,
             HashAlgorithm::Streebog256,
             HashAlgorithm::Streebog512,
+            HashAlgorithm::Tiger,
             HashAlgorithm::Whirlpool
         );
 

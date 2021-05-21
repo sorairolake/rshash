@@ -19,6 +19,7 @@ use sha2::{Sha224, Sha256, Sha384, Sha512};
 use sha3::{Sha3_224, Sha3_256, Sha3_384, Sha3_512};
 use shabal::{Shabal192, Shabal224, Shabal256, Shabal384, Shabal512};
 use streebog::{Streebog256, Streebog512};
+use tiger::Tiger;
 use whirlpool::Whirlpool;
 
 use crate::value::{Checksum, HashAlgorithm};
@@ -232,6 +233,13 @@ impl Checksum {
         hex::encode(Streebog512::digest(data))
     }
 
+    /// Compute Tiger message digest.
+    fn tiger(data: &[u8]) -> String {
+        use tiger::digest::Digest;
+
+        hex::encode(Tiger::digest(data))
+    }
+
     /// Compute Whirlpool message digest.
     fn whirlpool(data: &[u8]) -> String {
         use whirlpool::Digest;
@@ -272,6 +280,7 @@ impl Checksum {
             HashAlgorithm::Shabal512 => Self::shabal512(input.1),
             HashAlgorithm::Streebog256 => Self::streebog256(input.1),
             HashAlgorithm::Streebog512 => Self::streebog512(input.1),
+            HashAlgorithm::Tiger => Self::tiger(input.1),
             HashAlgorithm::Whirlpool => Self::whirlpool(input.1),
         };
 
@@ -621,6 +630,16 @@ mod tests {
         assert_eq!(
             checksum.digest,
             "a83352d35dc8f07ca8048e6752415e5e991527e29415ade0eaad6e48d67bf37b60dfd7bb4475cbcbe297ed016128391c312dfe3a00e0a9bd0e497389c888eedc"
+        );
+    }
+
+    #[test]
+    fn verify_tiger() {
+        let checksum = Checksum::compute(&HashAlgorithm::Tiger, (Path::new("-"), b"Hello, world!"));
+
+        assert_eq!(
+            checksum.digest,
+            "b5e5dd73a5894236937084131bb845189cdc5477579b9f36"
         );
     }
 

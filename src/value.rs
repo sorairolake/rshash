@@ -91,6 +91,7 @@ pub enum HashAlgorithm {
     Shabal512,
     Streebog256,
     Streebog512,
+    Tiger,
     Whirlpool,
 }
 
@@ -129,6 +130,7 @@ impl FromStr for HashAlgorithm {
             "shabal-512" => Ok(HashAlgorithm::Shabal512),
             "streebog-256" => Ok(HashAlgorithm::Streebog256),
             "streebog-512" => Ok(HashAlgorithm::Streebog512),
+            "tiger" => Ok(HashAlgorithm::Tiger),
             "whirlpool" => Ok(HashAlgorithm::Whirlpool),
             _ => unreachable!(),
         }
@@ -168,6 +170,7 @@ impl fmt::Display for HashAlgorithm {
             HashAlgorithm::Shabal512 => write!(f, "Shabal-512"),
             HashAlgorithm::Streebog256 => write!(f, "Streebog-256"),
             HashAlgorithm::Streebog512 => write!(f, "Streebog-512"),
+            HashAlgorithm::Tiger => write!(f, "Tiger"),
             HashAlgorithm::Whirlpool => write!(f, "Whirlpool"),
         }
     }

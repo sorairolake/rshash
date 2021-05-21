@@ -19,7 +19,7 @@ const LONG_VERSION: &str = formatcp!(
     "License: GNU General Public License v3.0 or later",
     "Reporting bugs: https://github.com/sorairolake/rshash/issues"
 );
-const HASH_ALGORITHMS: [&str; 31] = [
+const HASH_ALGORITHMS: [&str; 32] = [
     "blake2b",
     "blake2s",
     "blake3",
@@ -50,6 +50,7 @@ const HASH_ALGORITHMS: [&str; 31] = [
     "shabal-512",
     "streebog-256",
     "streebog-512",
+    "tiger",
     "whirlpool",
 ];
 const CHECKSUM_STYLES: [&str; 2] = ["sfv", "bsd"];
@@ -149,6 +150,7 @@ impl Opt {
             Some("Shabal-512") => Some(HashAlgorithm::Shabal512),
             Some("Streebog-256") => Some(HashAlgorithm::Streebog256),
             Some("Streebog-512") => Some(HashAlgorithm::Streebog512),
+            Some("Tiger") => Some(HashAlgorithm::Tiger),
             Some("Whirlpool") => Some(HashAlgorithm::Whirlpool),
             _ => None,
         }
