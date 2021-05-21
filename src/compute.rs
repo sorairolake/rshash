@@ -7,6 +7,7 @@
 use std::path::Path;
 
 use blake2::{Blake2b, Blake2s};
+use gost94::{Gost94CryptoPro, Gost94Test};
 use groestl::{Groestl224, Groestl256, Groestl384, Groestl512};
 use md2::Md2;
 use md4::Md4;
@@ -40,6 +41,20 @@ impl Checksum {
     /// Compute BLAKE3 message digest.
     fn blake3(data: &[u8]) -> String {
         hex::encode(blake3::hash(data).as_bytes())
+    }
+
+    /// Compute GOST message digest.
+    fn gost(data: &[u8]) -> String {
+        use gost94::Digest;
+
+        hex::encode(Gost94Test::digest(data))
+    }
+
+    /// Compute GOST-CryptoPro message digest.
+    fn gost_cryptopro(data: &[u8]) -> String {
+        use gost94::Digest;
+
+        hex::encode(Gost94CryptoPro::digest(data))
     }
 
     /// Compute Groestl-224 message digest.
@@ -230,6 +245,8 @@ impl Checksum {
             HashAlgorithm::Blake2b => Self::blake2b(input.1),
             HashAlgorithm::Blake2s => Self::blake2s(input.1),
             HashAlgorithm::Blake3 => Self::blake3(input.1),
+            HashAlgorithm::Gost => Self::gost(input.1),
+            HashAlgorithm::GostCryptoPro => Self::gost_cryptopro(input.1),
             HashAlgorithm::Groestl224 => Self::groestl224(input.1),
             HashAlgorithm::Groestl256 => Self::groestl256(input.1),
             HashAlgorithm::Groestl384 => Self::groestl384(input.1),
@@ -299,6 +316,29 @@ mod tests {
         assert_eq!(
             checksum.digest,
             "ede5c0b10f2ec4979c69b52f61e42ff5b413519ce09be0f14d098dcfe5f6f98d"
+        );
+    }
+
+    #[test]
+    fn verify_gost() {
+        let checksum = Checksum::compute(&HashAlgorithm::Gost, (Path::new("-"), b"Hello, world!"));
+
+        assert_eq!(
+            checksum.digest,
+            "711e00e034a9254765f6270bd02b6badf9dfe380a16593eff6e1ef1eec7ca023"
+        );
+    }
+
+    #[test]
+    fn verify_gost_cryptopro() {
+        let checksum = Checksum::compute(
+            &HashAlgorithm::GostCryptoPro,
+            (Path::new("-"), b"Hello, world!"),
+        );
+
+        assert_eq!(
+            checksum.digest,
+            "c003abf7ee48c42fe23cad86d56d2c982461f94d46b109a9f6b2e960f583cf52"
         );
     }
 

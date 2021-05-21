@@ -6,7 +6,7 @@
 
 = rshash(1)
 // Specify in UTC.
-:docdate: 2021-05-20
+:docdate: 2021-05-21
 :doctype: manpage
 :mansource: RSHash {manversion}
 :manmanual: General Commands Manual
@@ -36,6 +36,7 @@ If _FILE_ is not specified, the input is read from stdin.
 
     * *blake2b* and *blake2s* (BLAKE2)
     * *blake3* (BLAKE3)
+    * *gost* and *gost-cryptopro* (GOST)
     * *groestl-224*, *groestl-256*, *groestl-384* and *groestl-512* (Groestl)
     * *md2* (MD2)
     * *md4* (MD4)

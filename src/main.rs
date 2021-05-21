@@ -28,10 +28,12 @@ fn main() -> Result<()> {
 
     if opt.list_hash_algorithms {
         println!(
-            "{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}",
+            "{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}",
             HashAlgorithm::Blake2b,
             HashAlgorithm::Blake2s,
             HashAlgorithm::Blake3,
+            HashAlgorithm::Gost,
+            HashAlgorithm::GostCryptoPro,
             HashAlgorithm::Groestl224,
             HashAlgorithm::Groestl256,
             HashAlgorithm::Groestl384,
