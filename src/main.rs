@@ -26,6 +26,12 @@ use crate::verify::Verify;
 fn main() -> Result<()> {
     let opt = Opt::from_args();
 
+    if opt.generate_completions {
+        Opt::generate_completions()?;
+
+        return Ok(());
+    }
+
     if opt.list_hash_algorithms {
         println!(
             "{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}",
