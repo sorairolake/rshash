@@ -45,3 +45,6 @@ asm = ["md5-asm", "sha1-asm", "sha2-asm", "whirlpool-asm"]
 # For BLAKE3 optimization.
 blake3-neon = ["blake3/neon"]
 blake3-rayon = ["blake3/rayon"]
+
+[profile.release]
+lto = true
