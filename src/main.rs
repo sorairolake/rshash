@@ -33,41 +33,38 @@ fn main() -> Result<()> {
     }
 
     if opt.list_hash_algorithms {
-        println!(
-            "{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}",
-            HashAlgorithm::Blake2b,
-            HashAlgorithm::Blake2s,
-            HashAlgorithm::Blake3,
-            HashAlgorithm::Gost,
-            HashAlgorithm::GostCryptoPro,
-            HashAlgorithm::Groestl224,
-            HashAlgorithm::Groestl256,
-            HashAlgorithm::Groestl384,
-            HashAlgorithm::Groestl512,
-            HashAlgorithm::Md2,
-            HashAlgorithm::Md4,
-            HashAlgorithm::Md5,
-            HashAlgorithm::Ripemd160,
-            HashAlgorithm::Ripemd320,
-            HashAlgorithm::Sha1,
-            HashAlgorithm::Sha224,
-            HashAlgorithm::Sha256,
-            HashAlgorithm::Sha384,
-            HashAlgorithm::Sha512,
-            HashAlgorithm::Sha3_224,
-            HashAlgorithm::Sha3_256,
-            HashAlgorithm::Sha3_384,
-            HashAlgorithm::Sha3_512,
-            HashAlgorithm::Shabal192,
-            HashAlgorithm::Shabal224,
-            HashAlgorithm::Shabal256,
-            HashAlgorithm::Shabal384,
-            HashAlgorithm::Shabal512,
-            HashAlgorithm::Streebog256,
-            HashAlgorithm::Streebog512,
-            HashAlgorithm::Tiger,
-            HashAlgorithm::Whirlpool
-        );
+        println!("{}", HashAlgorithm::Blake2b);
+        println!("{}", HashAlgorithm::Blake2s);
+        println!("{}", HashAlgorithm::Blake3);
+        println!("{}", HashAlgorithm::Gost);
+        println!("{}", HashAlgorithm::GostCryptoPro);
+        println!("{}", HashAlgorithm::Groestl224);
+        println!("{}", HashAlgorithm::Groestl256);
+        println!("{}", HashAlgorithm::Groestl384);
+        println!("{}", HashAlgorithm::Groestl512);
+        println!("{}", HashAlgorithm::Md2);
+        println!("{}", HashAlgorithm::Md4);
+        println!("{}", HashAlgorithm::Md5);
+        println!("{}", HashAlgorithm::Ripemd160);
+        println!("{}", HashAlgorithm::Ripemd320);
+        println!("{}", HashAlgorithm::Sha1);
+        println!("{}", HashAlgorithm::Sha224);
+        println!("{}", HashAlgorithm::Sha256);
+        println!("{}", HashAlgorithm::Sha384);
+        println!("{}", HashAlgorithm::Sha512);
+        println!("{}", HashAlgorithm::Sha3_224);
+        println!("{}", HashAlgorithm::Sha3_256);
+        println!("{}", HashAlgorithm::Sha3_384);
+        println!("{}", HashAlgorithm::Sha3_512);
+        println!("{}", HashAlgorithm::Shabal192);
+        println!("{}", HashAlgorithm::Shabal224);
+        println!("{}", HashAlgorithm::Shabal256);
+        println!("{}", HashAlgorithm::Shabal384);
+        println!("{}", HashAlgorithm::Shabal512);
+        println!("{}", HashAlgorithm::Streebog256);
+        println!("{}", HashAlgorithm::Streebog512);
+        println!("{}", HashAlgorithm::Tiger);
+        println!("{}", HashAlgorithm::Whirlpool);
 
         return Ok(());
     }
