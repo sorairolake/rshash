@@ -16,7 +16,7 @@ use ripemd160::Ripemd160;
 use ripemd320::Ripemd320;
 use sha1::Sha1;
 use sha2::{Sha224, Sha256, Sha384, Sha512};
-use sha3::{Sha3_224, Sha3_256, Sha3_384, Sha3_512};
+use sha3::{Keccak224, Keccak256, Keccak384, Keccak512, Sha3_224, Sha3_256, Sha3_384, Sha3_512};
 use shabal::{Shabal192, Shabal224, Shabal256, Shabal384, Shabal512};
 use streebog::{Streebog256, Streebog512};
 use tiger::Tiger;
@@ -84,6 +84,34 @@ impl Checksum {
         use groestl::Digest;
 
         hex::encode(Groestl512::digest(data))
+    }
+
+    /// Compute Keccak-224 message digest.
+    fn keccak224(data: &[u8]) -> String {
+        use sha3::Digest;
+
+        hex::encode(Keccak224::digest(data))
+    }
+
+    /// Compute Keccak-256 message digest.
+    fn keccak256(data: &[u8]) -> String {
+        use sha3::Digest;
+
+        hex::encode(Keccak256::digest(data))
+    }
+
+    /// Compute Keccak-384 message digest.
+    fn keccak384(data: &[u8]) -> String {
+        use sha3::Digest;
+
+        hex::encode(Keccak384::digest(data))
+    }
+
+    /// Compute Keccak-512 message digest.
+    fn keccak512(data: &[u8]) -> String {
+        use sha3::Digest;
+
+        hex::encode(Keccak512::digest(data))
     }
 
     /// Compute MD2 message digest.
@@ -259,6 +287,10 @@ impl Checksum {
             HashAlgorithm::Groestl256 => Self::groestl256(input.1),
             HashAlgorithm::Groestl384 => Self::groestl384(input.1),
             HashAlgorithm::Groestl512 => Self::groestl512(input.1),
+            HashAlgorithm::Keccak224 => Self::keccak224(input.1),
+            HashAlgorithm::Keccak256 => Self::keccak256(input.1),
+            HashAlgorithm::Keccak384 => Self::keccak384(input.1),
+            HashAlgorithm::Keccak512 => Self::keccak512(input.1),
             HashAlgorithm::Md2 => Self::md2(input.1),
             HashAlgorithm::Md4 => Self::md4(input.1),
             HashAlgorithm::Md5 => Self::md5(input.1),
@@ -400,6 +432,58 @@ mod tests {
         assert_eq!(
             checksum.digest,
             "b60658e723a8eb1743823a8002175486bc24223ba3dc6d8cb435a948f6d2b9744ac9e307e1d38021ea18c4d536d28fc23491d7771a5a5b0d02ffad9a073dcc28"
+        );
+    }
+
+    #[test]
+    fn verify_keccak224() {
+        let checksum = Checksum::compute(
+            &HashAlgorithm::Keccak224,
+            (Path::new("-"), b"Hello, world!"),
+        );
+
+        assert_eq!(
+            checksum.digest,
+            "f89e15347fc711f25fc629f4ba60e3326643dc1daf5ae9c04e86961d"
+        );
+    }
+
+    #[test]
+    fn verify_keccak256() {
+        let checksum = Checksum::compute(
+            &HashAlgorithm::Keccak256,
+            (Path::new("-"), b"Hello, world!"),
+        );
+
+        assert_eq!(
+            checksum.digest,
+            "b6e16d27ac5ab427a7f68900ac5559ce272dc6c37c82b3e052246c82244c50e4"
+        );
+    }
+
+    #[test]
+    fn verify_keccak384() {
+        let checksum = Checksum::compute(
+            &HashAlgorithm::Keccak384,
+            (Path::new("-"), b"Hello, world!"),
+        );
+
+        assert_eq!(
+            checksum.digest,
+            "939e56d1f678b0b21f5c176ac1a5fed347a35c688cf64bd997bc57113b6ba6245149157665b7dd23358228dcda5803de"
+        );
+    }
+
+    #[test]
+    fn verify_keccak512() {
+        let checksum = Checksum::compute(
+            &HashAlgorithm::Keccak512,
+            (Path::new("-"), b"Hello, world!"),
+        );
+
+        assert_eq!(
+            checksum.digest,
+            "101f353a4727cc94ef81613bb38a807ebc888e2061baa4f845c84cd3c317f3430fda3dbeb44010844b35bccc8e190061d05b4d002c709615275a44e18e494f0c"
         );
     }
 

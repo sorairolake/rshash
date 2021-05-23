@@ -42,6 +42,10 @@ fn main() -> Result<()> {
         println!("{}", HashAlgorithm::Groestl256);
         println!("{}", HashAlgorithm::Groestl384);
         println!("{}", HashAlgorithm::Groestl512);
+        println!("{}", HashAlgorithm::Keccak224);
+        println!("{}", HashAlgorithm::Keccak256);
+        println!("{}", HashAlgorithm::Keccak384);
+        println!("{}", HashAlgorithm::Keccak512);
         println!("{}", HashAlgorithm::Md2);
         println!("{}", HashAlgorithm::Md4);
         println!("{}", HashAlgorithm::Md5);
