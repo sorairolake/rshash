@@ -82,40 +82,53 @@ fn main() -> Result<()> {
 
     let input = if files.is_empty() {
         if atty::is(atty::Stream::Stdin) {
-            bail!("Input from tty is invalid.")
+            bail!("Input from tty is invalid")
         }
 
         let mut buf = Vec::new();
-        io::stdin().read_to_end(&mut buf)?;
+        io::stdin()
+            .read_to_end(&mut buf)
+            .context("Failed to read bytes from stdin")?;
 
         let mut input = IndexMap::new();
         input.insert(Path::new("-").to_path_buf(), buf);
 
         input
     } else {
-        let data: Result<Vec<_>, _> = files.iter().map(fs::read).collect();
+        let data: Result<Vec<_>, _> = files
+            .iter()
+            .map(|f| {
+                fs::read(f).with_context(|| format!("Failed to read bytes from {}", f.display()))
+            })
+            .collect();
         let data = data?;
 
         files.into_iter().zip(data.into_iter()).collect()
     };
 
     let output: Vec<_> = if opt.check {
-        let input = input.first().context("Failed to read a file.")?;
+        let input = input.first().context("Failed to read a file")?;
         let data = input.1;
-        let checksums = str::from_utf8(data)?;
+        let checksums = str::from_utf8(data).context("Failed to convert from bytes to a string")?;
 
         let algo = opt
             .guess_hash_algorithm(checksums)
-            .context("Unable to determine hash algorithm.")?;
+            .context("Unable to determine hash algorithm")?;
 
         if value::INSECURE_HASH_ALGORITHMS.contains(&algo) && !opt.allow_insecure_hash_algorithm {
-            bail!("{} is not allowed to use.", algo)
+            bail!("{} is not allowed to use", algo)
         }
 
-        let checksums: Result<Vec<_>> = checksums.lines().map(|c| c.parse()).collect();
+        let checksums: Result<Vec<_>> = checksums
+            .lines()
+            .map(|c| c.parse().context("Failed to parse a checksum"))
+            .collect();
         let checksums = checksums?;
 
-        let result: Result<Vec<_>> = checksums.iter().map(|c| Verify::verify(&algo, c)).collect();
+        let result: Result<Vec<_>> = checksums
+            .iter()
+            .map(|c| Verify::verify(&algo, c).context("Failed to verify a checksum"))
+            .collect();
         let result = result?;
 
         if opt.status {
@@ -137,10 +150,10 @@ fn main() -> Result<()> {
     } else {
         let algo = opt
             .hash_algorithm
-            .context("Unable to determine hash algorithm.")?;
+            .context("Unable to determine hash algorithm")?;
 
         if value::INSECURE_HASH_ALGORITHMS.contains(&algo) && !opt.allow_insecure_hash_algorithm {
-            bail!("{} is not allowed to use.", algo)
+            bail!("{} is not allowed to use", algo)
         }
 
         input
@@ -152,14 +165,15 @@ fn main() -> Result<()> {
     };
 
     match opt.output {
-        Some(f) => fs::write(f, output.join("\n"))?,
+        Some(ref f) => fs::write(f, output.join("\n"))
+            .with_context(|| format!("Failed to write to {}", f.display()))?,
         None => output.iter().for_each(|v| println!("{}", v)),
     }
 
     if !dirs.is_empty() {
         dirs.iter()
             .map(|d| d.as_path().display())
-            .for_each(|d| eprintln!("RSHash: {}: Is a directory.", d));
+            .for_each(|d| eprintln!("RSHash: {}: Is a directory", d));
     }
 
     Ok(())

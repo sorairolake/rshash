@@ -35,7 +35,7 @@ impl FromStr for Checksum {
             let digest = checksum
                 .split_whitespace()
                 .next()
-                .context("Invalid format of checksum lines.")?;
+                .context("Invalid format of checksum lines")?;
 
             Ok(Self::new((path.as_path(), digest)))
         } else {
@@ -43,16 +43,16 @@ impl FromStr for Checksum {
             let path = checksum
                 .splitn(2, " (")
                 .nth(1)
-                .context("Invalid format of checksum lines.")?;
+                .context("Invalid format of checksum lines")?;
             let path = path
                 .rsplitn(2, ") = ")
                 .nth(1)
-                .context("Invalid format of checksum lines.")?;
+                .context("Invalid format of checksum lines")?;
             let path: PathBuf = path.into();
             let digest = checksum
                 .rsplit(' ')
                 .next()
-                .context("Invalid format of checksum lines.")?;
+                .context("Invalid format of checksum lines")?;
 
             Ok(Self::new((path.as_path(), digest)))
         }
