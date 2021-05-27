@@ -5,6 +5,9 @@
 == Usage
 
 ....
+RSHash 0.1.0
+A utility for computing various message digests
+
 USAGE:
     rshash [FLAGS] [OPTIONS] [FILE]...
 
