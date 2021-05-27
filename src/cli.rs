@@ -87,7 +87,7 @@ pub struct Opt {
     pub list_hash_algorithms: bool,
 
     /// Read the checksums from the file and check them.
-    #[structopt(short, long, requires = "input")]
+    #[structopt(short, long, requires = "input", conflicts_with = "output")]
     pub check: bool,
 
     /// Don't print OK for each successfully verified file.
@@ -95,11 +95,11 @@ pub struct Opt {
     pub quiet: bool,
 
     /// Don't output anything, return the verification result as the exit status.
-    #[structopt(long, requires = "check", conflicts_with = "quiet")]
+    #[structopt(long, requires = "check")]
     pub status: bool,
 
     /// Output to <FILE> instead of stdout.
-    #[structopt(short, long, value_name = "FILE", parse(from_os_str))]
+    #[structopt(short, long, value_name = "FILE")]
     pub output: Option<PathBuf>,
 
     /// Specify style of the checksums.
@@ -113,7 +113,7 @@ pub struct Opt {
     pub style: Style,
 
     /// Input from <FILE>.
-    #[structopt(value_name = "FILE", parse(from_os_str))]
+    #[structopt(value_name = "FILE")]
     pub input: Vec<PathBuf>,
 
     /// Generate completion.

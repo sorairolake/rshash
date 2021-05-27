@@ -73,16 +73,11 @@ fn main() -> Result<()> {
         return Ok(());
     }
 
-    let mut files = opt.input.clone();
-    files.retain(|i| i.is_file());
-    let files = files;
-    let mut dirs = opt.input.clone();
-    dirs.retain(|i| i.is_dir());
-    let dirs = dirs;
+    let (files, dirs): (Vec<_>, Vec<_>) = opt.input.iter().cloned().partition(|i| i.is_file());
 
-    let input = if files.is_empty() {
+    let inputs = if files.is_empty() {
         if atty::is(atty::Stream::Stdin) {
-            bail!("Input from tty is invalid")
+            bail!("Input from tty is invalid");
         }
 
         let mut buf = Vec::new();
@@ -95,7 +90,7 @@ fn main() -> Result<()> {
 
         input
     } else {
-        let data: Result<Vec<_>, _> = files
+        let data: Result<Vec<_>> = files
             .iter()
             .map(|f| {
                 fs::read(f).with_context(|| format!("Failed to read bytes from {}", f.display()))
@@ -106,46 +101,53 @@ fn main() -> Result<()> {
         files.into_iter().zip(data.into_iter()).collect()
     };
 
-    let output: Vec<_> = if opt.check {
-        let input = input.first().context("Failed to read a file")?;
-        let data = input.1;
-        let checksums = str::from_utf8(data).context("Failed to convert from bytes to a string")?;
+    if opt.check {
+        for input in inputs {
+            let data = input.1;
+            let checksums =
+                str::from_utf8(&data).context("Failed to convert from bytes to a string")?;
 
-        let algo = opt
-            .guess_hash_algorithm(checksums)
-            .context("Unable to determine hash algorithm")?;
+            let algo = opt
+                .guess_hash_algorithm(checksums)
+                .context("Unable to determine hash algorithm")?;
 
-        if value::INSECURE_HASH_ALGORITHMS.contains(&algo) && !opt.allow_insecure_hash_algorithm {
-            bail!("{} is not allowed to use", algo)
-        }
-
-        let checksums: Result<Vec<_>> = checksums
-            .lines()
-            .map(|c| c.parse().context("Failed to parse a checksum"))
-            .collect();
-        let checksums = checksums?;
-
-        let result: Result<Vec<_>> = checksums
-            .iter()
-            .map(|c| Verify::verify(&algo, c).context("Failed to verify a checksum"))
-            .collect();
-        let result = result?;
-
-        if opt.status {
-            let is_all_paths_exist = result.iter().all(|r| r.is_path_exist);
-            let is_all_results_successful = result.iter().filter_map(|r| r.result).all(|r| r);
-            if is_all_paths_exist && is_all_results_successful {
-                return Ok(());
-            } else {
-                std::process::exit(1);
+            if value::INSECURE_HASH_ALGORITHMS.contains(&algo) && !opt.allow_insecure_hash_algorithm
+            {
+                bail!("{} is not allowed to use", algo);
             }
-        }
 
-        if opt.quiet {
-            let output: Vec<_> = result.iter().map(|r| r.output()).collect();
-            output.into_iter().filter(|o| !o.ends_with("OK")).collect()
-        } else {
-            result.iter().map(|r| r.output()).collect()
+            let checksums: Result<Vec<_>> = checksums
+                .lines()
+                .map(|c| c.parse().context("Failed to parse a checksum"))
+                .collect();
+            let checksums = checksums?;
+
+            let result: Result<Vec<_>> = checksums
+                .iter()
+                .map(|c| Verify::verify(&algo, c).context("Failed to verify a checksum"))
+                .collect();
+            let result = result?;
+
+            if opt.status {
+                if result.iter().all(|r| r.result.unwrap_or_default()) {
+                    continue;
+                } else {
+                    std::process::exit(1);
+                }
+            }
+
+            if opt.quiet {
+                result
+                    .iter()
+                    .map(|r| r.output())
+                    .filter(|o| !o.ends_with("OK"))
+                    .for_each(|o| println!("{}", o));
+            } else {
+                result
+                    .iter()
+                    .map(|r| r.output())
+                    .for_each(|o| println!("{}", o));
+            }
         }
     } else {
         let algo = opt
@@ -153,27 +155,25 @@ fn main() -> Result<()> {
             .context("Unable to determine hash algorithm")?;
 
         if value::INSECURE_HASH_ALGORITHMS.contains(&algo) && !opt.allow_insecure_hash_algorithm {
-            bail!("{} is not allowed to use", algo)
+            bail!("{} is not allowed to use", algo);
         }
 
-        input
+        let output: Vec<_> = inputs
             .iter()
             .map(|(p, d)| (p.as_path(), d.as_slice()))
             .map(|i| Checksum::compute(&algo, i))
             .map(|c| c.output(&algo, &opt.style))
-            .collect()
-    };
-
-    match opt.output {
-        Some(ref f) => fs::write(f, output.join("\n"))
-            .with_context(|| format!("Failed to write to {}", f.display()))?,
-        None => output.iter().for_each(|v| println!("{}", v)),
+            .collect();
+        match opt.output {
+            Some(ref f) => fs::write(f, output.join("\n"))
+                .with_context(|| format!("Failed to write to {}", f.display()))?,
+            None => output.iter().for_each(|o| println!("{}", o)),
+        }
     }
 
     if !dirs.is_empty() {
         dirs.iter()
-            .map(|d| d.as_path().display())
-            .for_each(|d| eprintln!("RSHash: {}: Is a directory", d));
+            .for_each(|d| eprintln!("RSHash: {}: Is a directory", d.as_path().display()));
     }
 
     Ok(())
