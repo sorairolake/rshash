@@ -58,7 +58,6 @@ const HASH_ALGORITHMS: [&str; 36] = [
     "tiger",
     "whirlpool",
 ];
-const CHECKSUM_STYLES: [&str; 2] = ["sfv", "bsd"];
 
 #[derive(Debug, StructOpt)]
 #[structopt(
@@ -106,7 +105,7 @@ pub struct Opt {
     #[structopt(
         long,
         value_name = "STYLE",
-        possible_values = &CHECKSUM_STYLES,
+        possible_values = &["sfv", "bsd"],
         case_insensitive = true,
         default_value
     )]
