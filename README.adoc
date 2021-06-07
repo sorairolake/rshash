@@ -12,13 +12,12 @@ USAGE:
     rshash [FLAGS] [OPTIONS] [FILE]...
 
 FLAGS:
-        --allow-insecure-hash-algorithm    Allow insecure hash algorithm
-    -c, --check                            Read the checksums from the file and check them
-    -h, --help                             Prints help information
-        --list-hash-algorithms             List supported hash algorithms
-        --quiet                            Don't print OK for each successfully verified file
-        --status                           Don't output anything, return the verification result as the exit status
-    -V, --version                          Prints version information
+    -c, --check                   Read the checksums from the file and check them
+    -h, --help                    Prints help information
+        --list-hash-algorithms    List supported hash algorithms
+        --quiet                   Don't print OK for each successfully verified file
+        --status                  Don't output anything, return the verification result as the exit status
+    -V, --version                 Prints version information
 
 OPTIONS:
     -H, --hash-algorithm <NAME>    Specify hash algorithm [possible values: blake2b, blake2s, blake3, gost, gost-

@@ -6,7 +6,7 @@
 
 = rshash(1)
 // Specify in UTC.
-:docdate: 2021-05-23
+:docdate: 2021-06-07
 :doctype: manpage
 :mansource: RSHash {manversion}
 :manmanual: General Commands Manual
@@ -50,10 +50,6 @@ If _FILE_ is not specified, the input is read from stdin.
     * *streebog-256* and *streebog-512* (Streebog)
     * *tiger* (Tiger)
     * *whirlpool* (Whirlpool)
-
-*--allow-insecure-hash-algorithm*::
-  Allow insecure hash algorithm.
-  This option is required when using MD2, MD4, MD5 or SHA-1 as the hash algorithm.
 
 *--list-hash-algorithms*::
   List supported hash algorithms.
