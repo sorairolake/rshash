@@ -6,7 +6,7 @@
 
 = rshash(1)
 // Specify in UTC.
-:docdate: 2021-06-07
+:docdate: 2021-06-09
 :doctype: manpage
 :mansource: RSHash {manversion}
 :manmanual: General Commands Manual
@@ -18,7 +18,7 @@ rshash - a utility for computing various message digests
 
 == SYNOPSIS
 
-*{manname}* [_OPTION_...] [_FILE_...]
+*{manname}* [_OPTION_]... [_FILE_]...
 
 == DESCRIPTION
 
