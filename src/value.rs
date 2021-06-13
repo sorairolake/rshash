@@ -8,7 +8,7 @@ use std::fmt;
 use std::path::{Path, PathBuf};
 use std::str::FromStr;
 
-use anyhow::{Context, Error, Result};
+use anyhow::{bail, Context, Error, Result};
 
 #[derive(Debug)]
 pub struct Checksum {
@@ -17,10 +17,10 @@ pub struct Checksum {
 }
 
 impl Checksum {
-    pub fn new(input: (&Path, &str)) -> Self {
+    pub fn new<P: AsRef<Path>, S: AsRef<str>>(input: (P, S)) -> Self {
         Checksum {
-            path: input.0.to_path_buf(),
-            digest: input.1.to_string(),
+            path: input.0.as_ref().to_path_buf(),
+            digest: input.1.as_ref().to_string(),
         }
     }
 }
@@ -37,7 +37,7 @@ impl FromStr for Checksum {
                 .next()
                 .context("Invalid format of checksum lines")?;
 
-            Ok(Self::new((path.as_path(), digest)))
+            Ok(Self::new((path, digest)))
         } else {
             // Parse as BSD-style checksum.
             let path = checksum
@@ -54,7 +54,7 @@ impl FromStr for Checksum {
                 .next()
                 .context("Invalid format of checksum lines")?;
 
-            Ok(Self::new((path.as_path(), digest)))
+            Ok(Self::new((path, digest)))
         }
     }
 }
@@ -212,11 +212,11 @@ impl fmt::Display for Style {
 impl FromStr for Style {
     type Err = Error;
 
-    fn from_str(format: &str) -> Result<Self> {
-        match format.to_ascii_lowercase().as_str() {
+    fn from_str(style: &str) -> Result<Self> {
+        match style.to_ascii_lowercase().as_str() {
             "sfv" => Ok(Style::Sfv),
             "bsd" => Ok(Style::Bsd),
-            _ => unreachable!(),
+            _ => bail!("Unknown style: {}", style),
         }
     }
 }

@@ -7,10 +7,12 @@
 use std::io;
 use std::path::PathBuf;
 
+use anyhow::{Context, Result};
 use const_format::formatcp;
 use structopt::clap::{crate_name, crate_version, AppSettings, Shell};
 use structopt::StructOpt;
 
+use crate::config::Config;
 use crate::value::{HashAlgorithm, Style};
 
 const LONG_VERSION: &str = formatcp!(
@@ -118,12 +120,13 @@ pub struct Opt {
 
 impl Opt {
     /// Guess the hash algorithm from BSD-style checksums.
-    pub fn guess_hash_algorithm(&self, checksums: &str) -> Option<HashAlgorithm> {
+    pub fn guess_hash_algorithm(&self, checksums: impl AsRef<str>) -> Option<HashAlgorithm> {
         if let Some(a) = self.hash_algorithm {
             return Some(a);
         }
 
         match checksums
+            .as_ref()
             .split_whitespace()
             .next()?
             .to_ascii_uppercase()
@@ -167,6 +170,24 @@ impl Opt {
             "WHIRLPOOL" => Some(HashAlgorithm::Whirlpool),
             _ => None,
         }
+    }
+
+    /// Apply the config from the config file.
+    pub fn apply_config(mut self) -> Result<Self> {
+        if let Some(p) = Config::path() {
+            let config = Config::read(&p)?;
+            let matches = Self::clap().get_matches();
+
+            if let Some(s) = config.style {
+                if matches.occurrences_of("style") == 0 {
+                    self.style = s.parse().with_context(|| {
+                        format!("Failed to parse the config from {}", p.display())
+                    })?;
+                }
+            }
+        }
+
+        Ok(self)
     }
 
     /// Generate completion.
