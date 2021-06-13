@@ -6,6 +6,7 @@
 
 mod cli;
 mod compute;
+mod config;
 mod output;
 mod value;
 mod verify;
@@ -24,7 +25,7 @@ use crate::value::{Checksum, HashAlgorithm};
 use crate::verify::Verify;
 
 fn main() -> Result<()> {
-    let opt = Opt::from_args();
+    let opt = Opt::from_args().apply_config()?;
 
     if let Some(s) = opt.generate_completion {
         Opt::generate_completion(s);

@@ -276,48 +276,48 @@ impl Checksum {
     }
 
     /// Compute message digest for the specified hash algorithm.
-    pub fn compute(algo: &HashAlgorithm, input: (&Path, &[u8])) -> Self {
+    pub fn compute<P: AsRef<Path>, S: AsRef<[u8]>>(algo: &HashAlgorithm, input: (P, S)) -> Self {
         let digest = match algo {
-            HashAlgorithm::Blake2b => Self::blake2b(input.1),
-            HashAlgorithm::Blake2s => Self::blake2s(input.1),
-            HashAlgorithm::Blake3 => Self::blake3(input.1),
-            HashAlgorithm::Gost => Self::gost(input.1),
-            HashAlgorithm::GostCryptoPro => Self::gost_cryptopro(input.1),
-            HashAlgorithm::Groestl224 => Self::groestl224(input.1),
-            HashAlgorithm::Groestl256 => Self::groestl256(input.1),
-            HashAlgorithm::Groestl384 => Self::groestl384(input.1),
-            HashAlgorithm::Groestl512 => Self::groestl512(input.1),
-            HashAlgorithm::Keccak224 => Self::keccak224(input.1),
-            HashAlgorithm::Keccak256 => Self::keccak256(input.1),
-            HashAlgorithm::Keccak384 => Self::keccak384(input.1),
-            HashAlgorithm::Keccak512 => Self::keccak512(input.1),
-            HashAlgorithm::Md2 => Self::md2(input.1),
-            HashAlgorithm::Md4 => Self::md4(input.1),
-            HashAlgorithm::Md5 => Self::md5(input.1),
-            HashAlgorithm::Ripemd160 => Self::ripemd160(input.1),
-            HashAlgorithm::Ripemd320 => Self::ripemd320(input.1),
-            HashAlgorithm::Sha1 => Self::sha1(input.1),
-            HashAlgorithm::Sha224 => Self::sha224(input.1),
-            HashAlgorithm::Sha256 => Self::sha256(input.1),
-            HashAlgorithm::Sha384 => Self::sha384(input.1),
-            HashAlgorithm::Sha512 => Self::sha512(input.1),
-            HashAlgorithm::Sha3_224 => Self::sha3_224(input.1),
-            HashAlgorithm::Sha3_256 => Self::sha3_256(input.1),
-            HashAlgorithm::Sha3_384 => Self::sha3_384(input.1),
-            HashAlgorithm::Sha3_512 => Self::sha3_512(input.1),
-            HashAlgorithm::Shabal192 => Self::shabal192(input.1),
-            HashAlgorithm::Shabal224 => Self::shabal224(input.1),
-            HashAlgorithm::Shabal256 => Self::shabal256(input.1),
-            HashAlgorithm::Shabal384 => Self::shabal384(input.1),
-            HashAlgorithm::Shabal512 => Self::shabal512(input.1),
-            HashAlgorithm::Streebog256 => Self::streebog256(input.1),
-            HashAlgorithm::Streebog512 => Self::streebog512(input.1),
-            HashAlgorithm::Tiger => Self::tiger(input.1),
-            HashAlgorithm::Whirlpool => Self::whirlpool(input.1),
+            HashAlgorithm::Blake2b => Self::blake2b(input.1.as_ref()),
+            HashAlgorithm::Blake2s => Self::blake2s(input.1.as_ref()),
+            HashAlgorithm::Blake3 => Self::blake3(input.1.as_ref()),
+            HashAlgorithm::Gost => Self::gost(input.1.as_ref()),
+            HashAlgorithm::GostCryptoPro => Self::gost_cryptopro(input.1.as_ref()),
+            HashAlgorithm::Groestl224 => Self::groestl224(input.1.as_ref()),
+            HashAlgorithm::Groestl256 => Self::groestl256(input.1.as_ref()),
+            HashAlgorithm::Groestl384 => Self::groestl384(input.1.as_ref()),
+            HashAlgorithm::Groestl512 => Self::groestl512(input.1.as_ref()),
+            HashAlgorithm::Keccak224 => Self::keccak224(input.1.as_ref()),
+            HashAlgorithm::Keccak256 => Self::keccak256(input.1.as_ref()),
+            HashAlgorithm::Keccak384 => Self::keccak384(input.1.as_ref()),
+            HashAlgorithm::Keccak512 => Self::keccak512(input.1.as_ref()),
+            HashAlgorithm::Md2 => Self::md2(input.1.as_ref()),
+            HashAlgorithm::Md4 => Self::md4(input.1.as_ref()),
+            HashAlgorithm::Md5 => Self::md5(input.1.as_ref()),
+            HashAlgorithm::Ripemd160 => Self::ripemd160(input.1.as_ref()),
+            HashAlgorithm::Ripemd320 => Self::ripemd320(input.1.as_ref()),
+            HashAlgorithm::Sha1 => Self::sha1(input.1.as_ref()),
+            HashAlgorithm::Sha224 => Self::sha224(input.1.as_ref()),
+            HashAlgorithm::Sha256 => Self::sha256(input.1.as_ref()),
+            HashAlgorithm::Sha384 => Self::sha384(input.1.as_ref()),
+            HashAlgorithm::Sha512 => Self::sha512(input.1.as_ref()),
+            HashAlgorithm::Sha3_224 => Self::sha3_224(input.1.as_ref()),
+            HashAlgorithm::Sha3_256 => Self::sha3_256(input.1.as_ref()),
+            HashAlgorithm::Sha3_384 => Self::sha3_384(input.1.as_ref()),
+            HashAlgorithm::Sha3_512 => Self::sha3_512(input.1.as_ref()),
+            HashAlgorithm::Shabal192 => Self::shabal192(input.1.as_ref()),
+            HashAlgorithm::Shabal224 => Self::shabal224(input.1.as_ref()),
+            HashAlgorithm::Shabal256 => Self::shabal256(input.1.as_ref()),
+            HashAlgorithm::Shabal384 => Self::shabal384(input.1.as_ref()),
+            HashAlgorithm::Shabal512 => Self::shabal512(input.1.as_ref()),
+            HashAlgorithm::Streebog256 => Self::streebog256(input.1.as_ref()),
+            HashAlgorithm::Streebog512 => Self::streebog512(input.1.as_ref()),
+            HashAlgorithm::Tiger => Self::tiger(input.1.as_ref()),
+            HashAlgorithm::Whirlpool => Self::whirlpool(input.1.as_ref()),
         };
 
         Checksum {
-            path: input.0.to_path_buf(),
+            path: input.0.as_ref().to_path_buf(),
             digest,
         }
     }
@@ -329,8 +329,7 @@ mod tests {
 
     #[test]
     fn verify_blake2b() {
-        let checksum =
-            Checksum::compute(&HashAlgorithm::Blake2b, (Path::new("-"), b"Hello, world!"));
+        let checksum = Checksum::compute(&HashAlgorithm::Blake2b, ("-", b"Hello, world!"));
 
         assert_eq!(
             checksum.digest,
@@ -340,8 +339,7 @@ mod tests {
 
     #[test]
     fn verify_blake2s() {
-        let checksum =
-            Checksum::compute(&HashAlgorithm::Blake2s, (Path::new("-"), b"Hello, world!"));
+        let checksum = Checksum::compute(&HashAlgorithm::Blake2s, ("-", b"Hello, world!"));
 
         assert_eq!(
             checksum.digest,
@@ -351,8 +349,7 @@ mod tests {
 
     #[test]
     fn verify_blake3() {
-        let checksum =
-            Checksum::compute(&HashAlgorithm::Blake3, (Path::new("-"), b"Hello, world!"));
+        let checksum = Checksum::compute(&HashAlgorithm::Blake3, ("-", b"Hello, world!"));
 
         assert_eq!(
             checksum.digest,
@@ -362,7 +359,7 @@ mod tests {
 
     #[test]
     fn verify_gost() {
-        let checksum = Checksum::compute(&HashAlgorithm::Gost, (Path::new("-"), b"Hello, world!"));
+        let checksum = Checksum::compute(&HashAlgorithm::Gost, ("-", b"Hello, world!"));
 
         assert_eq!(
             checksum.digest,
@@ -372,10 +369,7 @@ mod tests {
 
     #[test]
     fn verify_gost_cryptopro() {
-        let checksum = Checksum::compute(
-            &HashAlgorithm::GostCryptoPro,
-            (Path::new("-"), b"Hello, world!"),
-        );
+        let checksum = Checksum::compute(&HashAlgorithm::GostCryptoPro, ("-", b"Hello, world!"));
 
         assert_eq!(
             checksum.digest,
@@ -385,10 +379,7 @@ mod tests {
 
     #[test]
     fn verify_groestl224() {
-        let checksum = Checksum::compute(
-            &HashAlgorithm::Groestl224,
-            (Path::new("-"), b"Hello, world!"),
-        );
+        let checksum = Checksum::compute(&HashAlgorithm::Groestl224, ("-", b"Hello, world!"));
 
         assert_eq!(
             checksum.digest,
@@ -398,10 +389,7 @@ mod tests {
 
     #[test]
     fn verify_groestl256() {
-        let checksum = Checksum::compute(
-            &HashAlgorithm::Groestl256,
-            (Path::new("-"), b"Hello, world!"),
-        );
+        let checksum = Checksum::compute(&HashAlgorithm::Groestl256, ("-", b"Hello, world!"));
 
         assert_eq!(
             checksum.digest,
@@ -411,10 +399,7 @@ mod tests {
 
     #[test]
     fn verify_groestl384() {
-        let checksum = Checksum::compute(
-            &HashAlgorithm::Groestl384,
-            (Path::new("-"), b"Hello, world!"),
-        );
+        let checksum = Checksum::compute(&HashAlgorithm::Groestl384, ("-", b"Hello, world!"));
 
         assert_eq!(
             checksum.digest,
@@ -424,10 +409,7 @@ mod tests {
 
     #[test]
     fn verify_groestl512() {
-        let checksum = Checksum::compute(
-            &HashAlgorithm::Groestl512,
-            (Path::new("-"), b"Hello, world!"),
-        );
+        let checksum = Checksum::compute(&HashAlgorithm::Groestl512, ("-", b"Hello, world!"));
 
         assert_eq!(
             checksum.digest,
@@ -437,10 +419,7 @@ mod tests {
 
     #[test]
     fn verify_keccak224() {
-        let checksum = Checksum::compute(
-            &HashAlgorithm::Keccak224,
-            (Path::new("-"), b"Hello, world!"),
-        );
+        let checksum = Checksum::compute(&HashAlgorithm::Keccak224, ("-", b"Hello, world!"));
 
         assert_eq!(
             checksum.digest,
@@ -450,10 +429,7 @@ mod tests {
 
     #[test]
     fn verify_keccak256() {
-        let checksum = Checksum::compute(
-            &HashAlgorithm::Keccak256,
-            (Path::new("-"), b"Hello, world!"),
-        );
+        let checksum = Checksum::compute(&HashAlgorithm::Keccak256, ("-", b"Hello, world!"));
 
         assert_eq!(
             checksum.digest,
@@ -463,10 +439,7 @@ mod tests {
 
     #[test]
     fn verify_keccak384() {
-        let checksum = Checksum::compute(
-            &HashAlgorithm::Keccak384,
-            (Path::new("-"), b"Hello, world!"),
-        );
+        let checksum = Checksum::compute(&HashAlgorithm::Keccak384, ("-", b"Hello, world!"));
 
         assert_eq!(
             checksum.digest,
@@ -476,10 +449,7 @@ mod tests {
 
     #[test]
     fn verify_keccak512() {
-        let checksum = Checksum::compute(
-            &HashAlgorithm::Keccak512,
-            (Path::new("-"), b"Hello, world!"),
-        );
+        let checksum = Checksum::compute(&HashAlgorithm::Keccak512, ("-", b"Hello, world!"));
 
         assert_eq!(
             checksum.digest,
@@ -489,41 +459,35 @@ mod tests {
 
     #[test]
     fn verify_md2() {
-        let checksum = Checksum::compute(&HashAlgorithm::Md2, (Path::new("-"), b"Hello, world!"));
+        let checksum = Checksum::compute(&HashAlgorithm::Md2, ("-", b"Hello, world!"));
 
         assert_eq!(checksum.digest, "8cca0e965edd0e223b744f9cedf8e141");
     }
 
     #[test]
     fn verify_md4() {
-        let checksum = Checksum::compute(&HashAlgorithm::Md4, (Path::new("-"), b"Hello, world!"));
+        let checksum = Checksum::compute(&HashAlgorithm::Md4, ("-", b"Hello, world!"));
 
         assert_eq!(checksum.digest, "0abe9ee1f376caa1bcecad9042f16e73");
     }
 
     #[test]
     fn verify_md5() {
-        let checksum = Checksum::compute(&HashAlgorithm::Md5, (Path::new("-"), b"Hello, world!"));
+        let checksum = Checksum::compute(&HashAlgorithm::Md5, ("-", b"Hello, world!"));
 
         assert_eq!(checksum.digest, "6cd3556deb0da54bca060b4c39479839");
     }
 
     #[test]
     fn verify_ripemd160() {
-        let checksum = Checksum::compute(
-            &HashAlgorithm::Ripemd160,
-            (Path::new("-"), b"Hello, world!"),
-        );
+        let checksum = Checksum::compute(&HashAlgorithm::Ripemd160, ("-", b"Hello, world!"));
 
         assert_eq!(checksum.digest, "58262d1fbdbe4530d8865d3518c6d6e41002610f");
     }
 
     #[test]
     fn verify_ripemd320() {
-        let checksum = Checksum::compute(
-            &HashAlgorithm::Ripemd320,
-            (Path::new("-"), b"Hello, world!"),
-        );
+        let checksum = Checksum::compute(&HashAlgorithm::Ripemd320, ("-", b"Hello, world!"));
 
         assert_eq!(
             checksum.digest,
@@ -533,15 +497,14 @@ mod tests {
 
     #[test]
     fn verify_sha1() {
-        let checksum = Checksum::compute(&HashAlgorithm::Sha1, (Path::new("-"), b"Hello, world!"));
+        let checksum = Checksum::compute(&HashAlgorithm::Sha1, ("-", b"Hello, world!"));
 
         assert_eq!(checksum.digest, "943a702d06f34599aee1f8da8ef9f7296031d699");
     }
 
     #[test]
     fn verify_sha224() {
-        let checksum =
-            Checksum::compute(&HashAlgorithm::Sha224, (Path::new("-"), b"Hello, world!"));
+        let checksum = Checksum::compute(&HashAlgorithm::Sha224, ("-", b"Hello, world!"));
 
         assert_eq!(
             checksum.digest,
@@ -551,8 +514,7 @@ mod tests {
 
     #[test]
     fn verify_sha256() {
-        let checksum =
-            Checksum::compute(&HashAlgorithm::Sha256, (Path::new("-"), b"Hello, world!"));
+        let checksum = Checksum::compute(&HashAlgorithm::Sha256, ("-", b"Hello, world!"));
 
         assert_eq!(
             checksum.digest,
@@ -562,8 +524,7 @@ mod tests {
 
     #[test]
     fn verify_sha384() {
-        let checksum =
-            Checksum::compute(&HashAlgorithm::Sha384, (Path::new("-"), b"Hello, world!"));
+        let checksum = Checksum::compute(&HashAlgorithm::Sha384, ("-", b"Hello, world!"));
 
         assert_eq!(
             checksum.digest,
@@ -573,8 +534,7 @@ mod tests {
 
     #[test]
     fn verify_sha512() {
-        let checksum =
-            Checksum::compute(&HashAlgorithm::Sha512, (Path::new("-"), b"Hello, world!"));
+        let checksum = Checksum::compute(&HashAlgorithm::Sha512, ("-", b"Hello, world!"));
 
         assert_eq!(
             checksum.digest,
@@ -584,8 +544,7 @@ mod tests {
 
     #[test]
     fn verify_sha3_224() {
-        let checksum =
-            Checksum::compute(&HashAlgorithm::Sha3_224, (Path::new("-"), b"Hello, world!"));
+        let checksum = Checksum::compute(&HashAlgorithm::Sha3_224, ("-", b"Hello, world!"));
 
         assert_eq!(
             checksum.digest,
@@ -595,8 +554,7 @@ mod tests {
 
     #[test]
     fn verify_sha3_256() {
-        let checksum =
-            Checksum::compute(&HashAlgorithm::Sha3_256, (Path::new("-"), b"Hello, world!"));
+        let checksum = Checksum::compute(&HashAlgorithm::Sha3_256, ("-", b"Hello, world!"));
 
         assert_eq!(
             checksum.digest,
@@ -606,8 +564,7 @@ mod tests {
 
     #[test]
     fn verify_sha3_384() {
-        let checksum =
-            Checksum::compute(&HashAlgorithm::Sha3_384, (Path::new("-"), b"Hello, world!"));
+        let checksum = Checksum::compute(&HashAlgorithm::Sha3_384, ("-", b"Hello, world!"));
 
         assert_eq!(
             checksum.digest,
@@ -617,8 +574,7 @@ mod tests {
 
     #[test]
     fn verify_sha3_512() {
-        let checksum =
-            Checksum::compute(&HashAlgorithm::Sha3_512, (Path::new("-"), b"Hello, world!"));
+        let checksum = Checksum::compute(&HashAlgorithm::Sha3_512, ("-", b"Hello, world!"));
 
         assert_eq!(
             checksum.digest,
@@ -628,10 +584,7 @@ mod tests {
 
     #[test]
     fn verify_shabal192() {
-        let checksum = Checksum::compute(
-            &HashAlgorithm::Shabal192,
-            (Path::new("-"), b"Hello, world!"),
-        );
+        let checksum = Checksum::compute(&HashAlgorithm::Shabal192, ("-", b"Hello, world!"));
 
         assert_eq!(
             checksum.digest,
@@ -641,10 +594,7 @@ mod tests {
 
     #[test]
     fn verify_shabal224() {
-        let checksum = Checksum::compute(
-            &HashAlgorithm::Shabal224,
-            (Path::new("-"), b"Hello, world!"),
-        );
+        let checksum = Checksum::compute(&HashAlgorithm::Shabal224, ("-", b"Hello, world!"));
 
         assert_eq!(
             checksum.digest,
@@ -654,10 +604,7 @@ mod tests {
 
     #[test]
     fn verify_shabal256() {
-        let checksum = Checksum::compute(
-            &HashAlgorithm::Shabal256,
-            (Path::new("-"), b"Hello, world!"),
-        );
+        let checksum = Checksum::compute(&HashAlgorithm::Shabal256, ("-", b"Hello, world!"));
 
         assert_eq!(
             checksum.digest,
@@ -667,10 +614,7 @@ mod tests {
 
     #[test]
     fn verify_shabal384() {
-        let checksum = Checksum::compute(
-            &HashAlgorithm::Shabal384,
-            (Path::new("-"), b"Hello, world!"),
-        );
+        let checksum = Checksum::compute(&HashAlgorithm::Shabal384, ("-", b"Hello, world!"));
 
         assert_eq!(
             checksum.digest,
@@ -680,10 +624,7 @@ mod tests {
 
     #[test]
     fn verify_shabal512() {
-        let checksum = Checksum::compute(
-            &HashAlgorithm::Shabal512,
-            (Path::new("-"), b"Hello, world!"),
-        );
+        let checksum = Checksum::compute(&HashAlgorithm::Shabal512, ("-", b"Hello, world!"));
 
         assert_eq!(
             checksum.digest,
@@ -693,10 +634,7 @@ mod tests {
 
     #[test]
     fn verify_streebog256() {
-        let checksum = Checksum::compute(
-            &HashAlgorithm::Streebog256,
-            (Path::new("-"), b"Hello, world!"),
-        );
+        let checksum = Checksum::compute(&HashAlgorithm::Streebog256, ("-", b"Hello, world!"));
 
         assert_eq!(
             checksum.digest,
@@ -706,10 +644,7 @@ mod tests {
 
     #[test]
     fn verify_streebog512() {
-        let checksum = Checksum::compute(
-            &HashAlgorithm::Streebog512,
-            (Path::new("-"), b"Hello, world!"),
-        );
+        let checksum = Checksum::compute(&HashAlgorithm::Streebog512, ("-", b"Hello, world!"));
 
         assert_eq!(
             checksum.digest,
@@ -719,7 +654,7 @@ mod tests {
 
     #[test]
     fn verify_tiger() {
-        let checksum = Checksum::compute(&HashAlgorithm::Tiger, (Path::new("-"), b"Hello, world!"));
+        let checksum = Checksum::compute(&HashAlgorithm::Tiger, ("-", b"Hello, world!"));
 
         assert_eq!(
             checksum.digest,
@@ -729,10 +664,7 @@ mod tests {
 
     #[test]
     fn verify_whirlpool() {
-        let checksum = Checksum::compute(
-            &HashAlgorithm::Whirlpool,
-            (Path::new("-"), b"Hello, world!"),
-        );
+        let checksum = Checksum::compute(&HashAlgorithm::Whirlpool, ("-", b"Hello, world!"));
 
         assert_eq!(
             checksum.digest,
