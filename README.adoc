@@ -1,6 +1,8 @@
 = RSHash
 :toc: macro
 
+image::https://github.com/sorairolake/rshash/workflows/CI/badge.svg[CI, link=https://github.com/sorairolake/rshash/actions]
+
 *RSHash* is a command-line utility for computing and checking various message digests.
 
 toc::[]
