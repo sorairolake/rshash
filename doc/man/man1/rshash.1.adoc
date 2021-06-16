@@ -32,7 +32,7 @@ If _FILE_ is not specified, the input is read from stdin.
 *-H* _NAME_, *--hash-algorithm*=_NAME_::
   Specify hash algorithm.
 
-  _NAME_ can be:{blank}:::
+  _NAME_ can be:::
 
     * *blake2b* and *blake2s* (BLAKE2)
     * *blake3* (BLAKE3)
@@ -74,7 +74,7 @@ If _FILE_ is not specified, the input is read from stdin.
   Specify style of the checksums.
   If this option is not specified, it is the same as selecting the default value.
 
-  _FORMAT_ can be:{blank}:::
+  _FORMAT_ can be:::
 
     * *sfv* (SFV output format, default)
     * *bsd* (BSD output format)
@@ -95,12 +95,12 @@ Otherwise, return non-zero as the exit status.
 
 == NOTES
 
-Source code repository:{blank}::
+Source code repository::
   https://github.com/sorairolake/rshash
 
 == EXAMPLES
 
-Compute BLAKE2b message digest:{blank}::
+Compute BLAKE2b message digest::
   $ *{manname} -H blake2b file.txt*
 
 include::{includedir}/section-reporting-bugs.adoc[]
