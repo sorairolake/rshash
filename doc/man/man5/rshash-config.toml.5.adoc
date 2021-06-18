@@ -33,10 +33,10 @@ _$XDG_CONFIG_HOME/rshash/config.toml_::
 _$HOME/.config/rshash/config.toml_::
   The location of the configuration file on Unix.
 
-_$HOME/Library/Application Support/com.github.sorairolake.rshash/config.toml_::
+_$HOME/Library/Application Support/rshash/config.toml_::
   The location of the configuration file on macOS.
 
-_%APPDATA%\sorairolake\rshash\config.toml_::
+_%APPDATA%\rshash\config\config.toml_::
   The location of the configuration file on Windows.
 
 == NOTES
