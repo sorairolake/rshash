@@ -1,7 +1,9 @@
 = RSHash
-:toc:
+:toc: macro
 
 *RSHash* is a command-line utility for computing and checking various message digests.
+
+toc::[]
 
 == Installation
 
