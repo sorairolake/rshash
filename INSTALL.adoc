@@ -1,5 +1,4 @@
 = Build and Install
-:toc:
 
 This document describes how to build and install *RSHash* from source code.
 
