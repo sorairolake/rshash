@@ -180,9 +180,7 @@ impl Opt {
 
             if let Some(s) = config.style {
                 if matches.occurrences_of("style") == 0 {
-                    self.style = s.parse().with_context(|| {
-                        format!("Failed to parse the config from {}", p.display())
-                    })?;
+                    self.style = s;
                 }
             }
         }

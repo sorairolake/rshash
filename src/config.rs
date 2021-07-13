@@ -12,9 +12,11 @@ use directories::ProjectDirs;
 use serde::Deserialize;
 use structopt::clap::crate_name;
 
+use crate::value::Style;
+
 #[derive(Deserialize)]
 pub struct Config {
-    pub style: Option<String>,
+    pub style: Option<Style>,
 }
 
 impl Config {
