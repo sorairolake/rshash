@@ -33,28 +33,20 @@ impl Checksum {
 
 #[cfg(test)]
 mod tests {
-    use std::path::Path;
-
     use super::*;
 
     #[test]
     fn sfv_style_checksum() {
-        let checksum =
-            Checksum::compute(&HashAlgorithm::Blake2b, (Path::new("-"), b"Hello, world!"));
-
         assert_eq!(
-            checksum.output(&HashAlgorithm::Blake2b, &Style::Sfv),
+            Checksum::compute(&HashAlgorithm::Blake2b, ("-", b"Hello, world!")).output(&HashAlgorithm::Blake2b, &Style::Sfv),
             "a2764d133a16816b5847a737a786f2ece4c148095c5faa73e24b4cc5d666c3e45ec271504e14dc6127ddfce4e144fb23b91a6f7b04b53d695502290722953b0f  -"
         );
     }
 
     #[test]
     fn bsd_style_checksum() {
-        let checksum =
-            Checksum::compute(&HashAlgorithm::Blake2b, (Path::new("-"), b"Hello, world!"));
-
         assert_eq!(
-            checksum.output(&HashAlgorithm::Blake2b, &Style::Bsd),
+            Checksum::compute(&HashAlgorithm::Blake2b, ("-", b"Hello, world!")).output(&HashAlgorithm::Blake2b, &Style::Bsd),
             "BLAKE2b (-) = a2764d133a16816b5847a737a786f2ece4c148095c5faa73e24b4cc5d666c3e45ec271504e14dc6127ddfce4e144fb23b91a6f7b04b53d695502290722953b0f"
         );
     }
