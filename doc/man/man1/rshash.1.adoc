@@ -6,7 +6,7 @@
 
 = rshash(1)
 // Specify in UTC.
-:docdate: 2021-06-09
+:docdate: 2021-07-18
 :doctype: manpage
 :mansource: RSHash {manversion}
 :manmanual: General Commands Manual
@@ -58,6 +58,9 @@ If _FILE_ is not specified, the input is read from stdin.
 
 *-c*, *--check*::
   Read the checksums from the file and check them.
+
+*--ignore-missing*::
+  Don't fail or report status for missing files.
 
 *--quiet*::
   Don't print OK for each successfully verified file.

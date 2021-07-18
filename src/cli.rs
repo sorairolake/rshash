@@ -87,6 +87,10 @@ pub struct Opt {
     #[structopt(short, long, requires = "input", conflicts_with = "output")]
     pub check: bool,
 
+    /// Don't fail or report status for missing files.
+    #[structopt(long, requires = "check", conflicts_with_all = &["quiet", "status"])]
+    pub ignore_missing: bool,
+
     /// Don't print OK for each successfully verified file.
     #[structopt(long, requires = "check", conflicts_with = "status")]
     pub quiet: bool,
