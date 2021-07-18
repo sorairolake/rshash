@@ -9,17 +9,12 @@ use crate::value::{Checksum, HashAlgorithm, Style};
 impl Checksum {
     /// Create a SFV-style checksum.
     fn sfv(&self) -> String {
-        format!("{}  {}", self.digest, self.path.as_path().display())
+        format!("{}  {}", self.digest, self.path.display())
     }
 
     /// Create a BSD-style checksum.
     fn bsd(&self, algo: &HashAlgorithm) -> String {
-        format!(
-            "{} ({}) = {}",
-            algo,
-            self.path.as_path().display(),
-            self.digest
-        )
+        format!("{} ({}) = {}", algo, self.path.display(), self.digest)
     }
 
     /// Create a checksum for the specified style.

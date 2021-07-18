@@ -107,7 +107,9 @@ fn main() -> Result<()> {
     };
 
     if opt.check {
-        for input in inputs {
+        let mut results = IndexMap::with_capacity(inputs.len());
+
+        for input in &inputs {
             let data = input.1;
             let checksums =
                 str::from_utf8(&data).context("Failed to convert from bytes to a string")?;
@@ -127,9 +129,24 @@ fn main() -> Result<()> {
                 .map(|c| Verify::verify(&algo, c).context("Failed to verify a checksum"))
                 .collect();
             let result = result?;
+            let (total, missing, success, failure) = (
+                result.len(),
+                result.iter().filter(|r| !r.exist).count(),
+                result
+                    .iter()
+                    .filter_map(|r| r.success)
+                    .filter(|r| *r)
+                    .count(),
+                result
+                    .iter()
+                    .filter_map(|r| r.success)
+                    .filter(|r| !r)
+                    .count(),
+            );
+            results.insert(input.0, (result.clone(), total, missing, success, failure));
 
             if opt.status {
-                if result.iter().all(|r| r.result.unwrap_or_default()) {
+                if result.iter().all(|r| r.success.unwrap_or_default()) {
                     continue;
                 } else {
                     std::process::exit(1);
@@ -137,17 +154,79 @@ fn main() -> Result<()> {
             }
 
             if opt.quiet {
-                result
+                let result: Vec<_> = result
                     .iter()
-                    .map(|r| r.output())
-                    .filter(|o| !o.ends_with("OK"))
-                    .for_each(|o| println!("{}", o));
+                    .filter(|r| !r.success.unwrap_or_default())
+                    .collect();
+
+                if !result.is_empty() {
+                    let padding: Result<Vec<_>> = result
+                        .iter()
+                        .map(|r| {
+                            r.path
+                                .to_str()
+                                .context("Failed to convert from a path to a string")
+                        })
+                        .collect();
+                    let padding = padding?;
+                    let padding = padding.iter().map(|p| p.chars().count()).max().unwrap() * 2;
+                    println!("Verifying {} checksums from {}", total, input.0.display());
+                    println!("{}", "-".repeat(padding * 2));
+                    result
+                        .iter()
+                        .map(|r| r.output(padding))
+                        .for_each(|o| println!("{}", o));
+                    println!("{}", "-".repeat(padding * 2));
+                    println!(
+                        "{} validations failed (Missing:{}; Success:{}; Failure:{})",
+                        total - success,
+                        missing,
+                        success,
+                        failure
+                    );
+                    if input != inputs.iter().last().unwrap() {
+                        println!();
+                    }
+                }
             } else {
+                let padding: Result<Vec<_>> = result
+                    .iter()
+                    .map(|r| {
+                        r.path
+                            .to_str()
+                            .context("Failed to convert from a path to a string")
+                    })
+                    .collect();
+                let padding = padding?;
+                let padding = padding.iter().map(|p| p.chars().count()).max().unwrap() * 2;
+                println!("Verifying {} checksums from {}", total, input.0.display());
+                println!("{}", "-".repeat(padding * 2));
                 result
                     .iter()
-                    .map(|r| r.output())
+                    .map(|r| r.output(padding))
                     .for_each(|o| println!("{}", o));
+                println!("{}", "-".repeat(padding * 2));
+                if total == success {
+                    println!("Everything is successful");
+                } else {
+                    println!(
+                        "{} validations failed (Missing:{}; Success:{}; Failure:{})",
+                        total - success,
+                        missing,
+                        success,
+                        failure
+                    );
+                }
+                if input != inputs.iter().last().unwrap() {
+                    println!();
+                }
             }
+        }
+
+        let results = results;
+
+        if results.values().map(|r| (r.1, r.3)).any(|(t, s)| t != s) {
+            std::process::exit(1);
         }
     } else {
         let algo = opt
@@ -156,7 +235,6 @@ fn main() -> Result<()> {
 
         let output: Vec<_> = inputs
             .iter()
-            .map(|(p, d)| (p.as_path(), d.as_slice()))
             .map(|i| Checksum::compute(&algo, i))
             .map(|c| c.output(&algo, &opt.style))
             .collect();
@@ -170,6 +248,8 @@ fn main() -> Result<()> {
     if !dirs.is_empty() {
         dirs.iter()
             .for_each(|d| eprintln!("RSHash: {}: Is a directory", d.as_path().display()));
+
+        std::process::exit(1);
     }
 
     Ok(())
