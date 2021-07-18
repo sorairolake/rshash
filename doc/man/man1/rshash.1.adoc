@@ -68,6 +68,9 @@ If _FILE_ is not specified, the input is read from stdin.
 *--status*::
   Don't output anything, return the verification result as the exit status.
 
+*--json*::
+  Output the verification result as JSON to stdout.
+
 === I/O options
 
 *-o* _FILE_, *--output*=_FILE_::

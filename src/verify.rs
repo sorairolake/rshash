@@ -9,22 +9,23 @@ use std::io::{self, Read};
 use std::path::PathBuf;
 
 use anyhow::Result;
+use serde::Serialize;
 
 use crate::value::{Checksum, HashAlgorithm};
 
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Serialize)]
 pub struct Verify {
-    pub path: PathBuf,
+    pub file: PathBuf,
     pub exist: bool,
     pub success: Option<bool>,
 }
 
 impl Verify {
     /// Verify a checksum.
-    pub fn verify(algo: &HashAlgorithm, checksum: &Checksum) -> Result<Self> {
-        if !checksum.path.exists() && atty::is(atty::Stream::Stdin) {
+    pub fn verify(algo: HashAlgorithm, checksum: &Checksum) -> Result<Self> {
+        if !checksum.file.exists() && atty::is(atty::Stream::Stdin) {
             return Ok(Verify {
-                path: checksum.path.clone(),
+                file: checksum.file.clone(),
                 exist: false,
                 success: None,
             });
@@ -35,20 +36,20 @@ impl Verify {
             io::stdin().read_to_end(&mut buf)?;
             buf
         } else {
-            fs::read(checksum.path.clone())?
+            fs::read(checksum.file.clone())?
         };
 
-        let compute_result = Checksum::compute(algo, (checksum.path.clone(), data));
+        let compute_result = Checksum::compute(algo, (checksum.file.clone(), data));
 
         if compute_result.digest == checksum.digest.to_ascii_lowercase() {
             Ok(Verify {
-                path: checksum.path.clone(),
+                file: checksum.file.clone(),
                 exist: true,
                 success: Some(true),
             })
         } else {
             Ok(Verify {
-                path: checksum.path.clone(),
+                file: checksum.file.clone(),
                 exist: true,
                 success: Some(false),
             })
@@ -60,15 +61,15 @@ impl Verify {
         if !self.exist {
             return format!(
                 "{:01$} No such file or directory",
-                self.path.display(),
+                self.file.display(),
                 padding.into()
             );
         }
 
         if self.success.unwrap() {
-            format!("{:01$} OK", self.path.display(), padding.into())
+            format!("{:01$} OK", self.file.display(), padding.into())
         } else {
-            format!("{:01$} FAILED", self.path.display(), padding.into())
+            format!("{:01$} FAILED", self.file.display(), padding.into())
         }
     }
 }

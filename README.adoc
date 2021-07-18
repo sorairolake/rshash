@@ -23,6 +23,8 @@ USAGE:
 FLAGS:
     -c, --check                   Read the checksums from the file and check them
     -h, --help                    Prints help information
+        --ignore-missing          Don't fail or report status for missing files
+        --json                    Output the verification result as JSON to stdout
         --list-hash-algorithms    List supported hash algorithms
         --quiet                   Don't print OK for each successfully verified file
         --status                  Don't output anything, return the verification result as the exit status

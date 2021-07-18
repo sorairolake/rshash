@@ -14,7 +14,7 @@ use structopt::clap::crate_name;
 
 use crate::value::Style;
 
-#[derive(Deserialize)]
+#[derive(Clone, Debug, Deserialize)]
 pub struct Config {
     pub style: Option<Style>,
 }

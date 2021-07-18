@@ -125,7 +125,7 @@ fn main() -> Result<()> {
 
             let result: Result<Vec<_>> = checksums
                 .iter()
-                .map(|c| Verify::verify(&algo, c).context("Failed to verify a checksum"))
+                .map(|c| Verify::verify(algo, c).context("Failed to verify a checksum"))
                 .collect();
             let result = result?;
 
@@ -158,7 +158,7 @@ fn main() -> Result<()> {
                     let padding: Result<Vec<_>> = result
                         .iter()
                         .map(|r| {
-                            r.path
+                            r.file
                                 .to_str()
                                 .context("Failed to convert from a path to a string")
                         })
@@ -205,7 +205,7 @@ fn main() -> Result<()> {
                     let padding: Result<Vec<_>> = result
                         .iter()
                         .map(|r| {
-                            r.path
+                            r.file
                                 .to_str()
                                 .context("Failed to convert from a path to a string")
                         })
@@ -239,11 +239,13 @@ fn main() -> Result<()> {
                 if !result.into_iter().all(|r| r.success.unwrap_or_default()) {
                     std::process::exit(1);
                 }
+            } else if opt.json {
+                continue;
             } else {
                 let padding: Result<Vec<_>> = result
                     .iter()
                     .map(|r| {
-                        r.path
+                        r.file
                             .to_str()
                             .context("Failed to convert from a path to a string")
                     })
@@ -288,6 +290,16 @@ fn main() -> Result<()> {
             results
         };
 
+        if opt.json {
+            println!(
+                "{}",
+                serde_json::to_string_pretty(&results)
+                    .context("Failed to serialize to a JSON string")?
+            );
+
+            return Ok(());
+        }
+
         if results.values().any(|r| r.is_empty()) {
             std::process::exit(1);
         }
@@ -306,8 +318,8 @@ fn main() -> Result<()> {
 
         let output: Vec<_> = inputs
             .into_iter()
-            .map(|i| Checksum::compute(&algo, i))
-            .map(|c| c.output(&algo, &opt.style))
+            .map(|i| Checksum::compute(algo, i))
+            .map(|c| c.output(algo, opt.style))
             .collect();
         match opt.output {
             Some(ref f) => fs::write(f, output.join("\n"))
