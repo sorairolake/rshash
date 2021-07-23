@@ -13,7 +13,6 @@ mod verify;
 
 use std::fs;
 use std::io::{self, Read};
-use std::path::Path;
 use std::str;
 
 use anyhow::{bail, Context, Result};
@@ -91,7 +90,7 @@ fn main() -> Result<()> {
             .context("Failed to read bytes from stdin")?;
 
         let mut input = IndexMap::new();
-        input.insert(Path::new("-").to_path_buf(), buf);
+        input.insert("-".into(), buf);
 
         input
     } else {
@@ -318,7 +317,7 @@ fn main() -> Result<()> {
 
         let output: Vec<_> = inputs
             .into_iter()
-            .map(|i| Checksum::compute(algo, i))
+            .map(|i| Checksum::digest(algo, i))
             .map(|c| c.output(algo, opt.style))
             .collect();
         match opt.output {

@@ -39,9 +39,9 @@ impl Verify {
             fs::read(checksum.file.clone())?
         };
 
-        let compute_result = Checksum::compute(algo, (checksum.file.clone(), data));
+        let result = Checksum::digest(algo, (checksum.file.clone(), data));
 
-        if compute_result.digest == checksum.digest.to_ascii_lowercase() {
+        if result.digest == checksum.digest.to_ascii_lowercase() {
             Ok(Verify {
                 file: checksum.file.clone(),
                 exist: true,
