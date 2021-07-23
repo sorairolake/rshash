@@ -26,6 +26,7 @@ FLAGS:
         --ignore-missing          Don't fail or report status for missing files
         --json                    Output the verification result as JSON to stdout
         --list-hash-algorithms    List supported hash algorithms
+        --pretty                  Output as a pretty-printed JSON
         --quiet                   Don't print OK for each successfully verified file
         --status                  Don't output anything, return the verification result as the exit status
     -V, --version                 Prints version information

@@ -103,6 +103,10 @@ pub struct Opt {
     #[structopt(long, requires = "check")]
     pub json: bool,
 
+    /// Output as a pretty-printed JSON.
+    #[structopt(long, requires = "json")]
+    pub pretty: bool,
+
     /// Output to <FILE> instead of stdout.
     #[structopt(short, long, value_name = "FILE")]
     pub output: Option<PathBuf>,

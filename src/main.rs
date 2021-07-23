@@ -290,11 +290,13 @@ fn main() -> Result<()> {
         };
 
         if opt.json {
-            println!(
-                "{}",
+            let json = if opt.pretty {
                 serde_json::to_string_pretty(&results)
                     .context("Failed to serialize to a JSON string")?
-            );
+            } else {
+                serde_json::to_string(&results).context("Failed to serialize to a JSON string")?
+            };
+            println!("{}", json);
 
             return Ok(());
         }

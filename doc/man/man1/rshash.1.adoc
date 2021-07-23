@@ -6,7 +6,7 @@
 
 = rshash(1)
 // Specify in UTC.
-:docdate: 2021-07-18
+:docdate: 2021-07-23
 :doctype: manpage
 :mansource: RSHash {manversion}
 :manmanual: General Commands Manual
@@ -70,6 +70,10 @@ If _FILE_ is not specified, the input is read from stdin.
 
 *--json*::
   Output the verification result as JSON to stdout.
+  If you want to pretty-printing, specify *--pretty* as well.
+
+*--pretty*::
+  Output as a pretty-printed JSON.
 
 === I/O options
 
