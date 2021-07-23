@@ -236,7 +236,7 @@ fn main() -> Result<()> {
                 }
             } else if opt.status {
                 if !result.into_iter().all(|r| r.success.unwrap_or_default()) {
-                    std::process::exit(1);
+                    std::process::exit(exitcode::SOFTWARE);
                 }
             } else if opt.json {
                 continue;
@@ -302,7 +302,7 @@ fn main() -> Result<()> {
         }
 
         if results.values().any(|r| r.is_empty()) {
-            std::process::exit(1);
+            std::process::exit(exitcode::NOINPUT);
         }
 
         if !results
@@ -310,7 +310,7 @@ fn main() -> Result<()> {
             .flatten()
             .all(|r| r.success.unwrap_or_default())
         {
-            std::process::exit(1);
+            std::process::exit(exitcode::SOFTWARE);
         }
     } else {
         let algo = opt
@@ -333,7 +333,7 @@ fn main() -> Result<()> {
         dirs.into_iter()
             .for_each(|d| eprintln!("RSHash: {}: Is a directory", d.display()));
 
-        std::process::exit(1);
+        std::process::exit(exitcode::NOINPUT);
     }
 
     Ok(())
