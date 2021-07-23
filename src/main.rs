@@ -5,8 +5,8 @@
 //
 
 mod cli;
-mod compute;
 mod config;
+mod digest;
 mod output;
 mod value;
 mod verify;
