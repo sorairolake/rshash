@@ -62,13 +62,18 @@ const HASH_ALGORITHMS: [&str; 38] = [
     "tiger",
     "whirlpool",
 ];
+const APP_SETTINGS: [AppSettings; 3] = [
+    AppSettings::ArgRequiredElseHelp,
+    AppSettings::ColoredHelp,
+    AppSettings::DeriveDisplayOrder,
+];
 
 #[derive(StructOpt)]
 #[structopt(
     name = "RSHash",
     long_version = LONG_VERSION,
     about,
-    setting = AppSettings::ColoredHelp
+    settings = &APP_SETTINGS
 )]
 pub struct Opt {
     /// Specify hash algorithm.
@@ -110,11 +115,11 @@ pub struct Opt {
     pub warn: bool,
 
     /// Output the verification result as JSON to stdout.
-    #[structopt(long, requires = "check")]
+    #[structopt(short, long, requires = "check")]
     pub json: bool,
 
     /// Output as a pretty-printed JSON.
-    #[structopt(long, requires = "json")]
+    #[structopt(short, long, requires = "json")]
     pub pretty: bool,
 
     /// Output to <FILE> instead of stdout.
@@ -123,6 +128,7 @@ pub struct Opt {
 
     /// Specify style of the checksums.
     #[structopt(
+        short,
         long,
         value_name = "STYLE",
         possible_values = &["sfv", "bsd"],
