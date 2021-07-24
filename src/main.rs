@@ -70,6 +70,7 @@ fn main() -> Result<()> {
         println!("{}", HashAlgorithm::Shabal256);
         println!("{}", HashAlgorithm::Shabal384);
         println!("{}", HashAlgorithm::Shabal512);
+        println!("{}", HashAlgorithm::Sm3);
         println!("{}", HashAlgorithm::Streebog256);
         println!("{}", HashAlgorithm::Streebog512);
         println!("{}", HashAlgorithm::Tiger);

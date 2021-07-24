@@ -22,7 +22,7 @@ const LONG_VERSION: &str = formatcp!(
     "License: GNU General Public License v3.0 or later",
     "Reporting bugs: https://github.com/sorairolake/rshash/issues"
 );
-const HASH_ALGORITHMS: [&str; 37] = [
+const HASH_ALGORITHMS: [&str; 38] = [
     "blake2b",
     "blake2s",
     "blake3",
@@ -56,6 +56,7 @@ const HASH_ALGORITHMS: [&str; 37] = [
     "shabal-256",
     "shabal-384",
     "shabal-512",
+    "sm3",
     "streebog-256",
     "streebog-512",
     "tiger",
@@ -178,6 +179,7 @@ impl Opt {
             "SHABAL-256" => Some(HashAlgorithm::Shabal256),
             "SHABAL-384" => Some(HashAlgorithm::Shabal384),
             "SHABAL-512" => Some(HashAlgorithm::Shabal512),
+            "SM3" => Some(HashAlgorithm::Sm3),
             "STREEBOG-256" => Some(HashAlgorithm::Streebog256),
             "STREEBOG-512" => Some(HashAlgorithm::Streebog512),
             "TIGER" => Some(HashAlgorithm::Tiger),

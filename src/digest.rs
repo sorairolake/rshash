@@ -173,6 +173,11 @@ impl Checksum {
 
                 hex::encode(Shabal512::digest(input.1.as_ref()))
             }
+            HashAlgorithm::Sm3 => {
+                use sm3::{Digest, Sm3};
+
+                hex::encode(Sm3::digest(input.1.as_ref()))
+            }
             HashAlgorithm::Streebog256 => {
                 use streebog::{Digest, Streebog256};
 
@@ -387,6 +392,14 @@ mod tests {
         assert_eq!(
             Checksum::digest(HashAlgorithm::Shabal512, ("-", b"Hello, world!")).digest,
             "7048f0a589339d2d26890701ed3b2d1ed7c8dd1ac37fec517c7a8c39d5d51548e96ea8dfaceb5b99f9d1db3b18a7652e0412348ebfd61d32d755d6098bff8cb3"
+        );
+    }
+
+    #[test]
+    fn verify_sm3() {
+        assert_eq!(
+            Checksum::digest(HashAlgorithm::Sm3, ("-", b"Hello, world!")).digest,
+            "e3bca101b496880c3653dad85861d0e784b00a8c18f7574472d156060e9096bf"
         );
     }
 
