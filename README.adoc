@@ -34,10 +34,10 @@ FLAGS:
 OPTIONS:
     -H, --hash-algorithm <NAME>    Specify hash algorithm [possible values: blake2b, blake2s, blake3, gost, gost-
                                    cryptopro, groestl-224, groestl-256, groestl-384, groestl-512, keccak-224,
-                                   keccak-256, keccak-384, keccak-512, md2, md4, md5, ripemd-160, ripemd-320, sha1,
-                                   sha224, sha256, sha384, sha512, sha3-224, sha3-256, sha3-384, sha3-512, shabal-192,
-                                   shabal-224, shabal-256, shabal-384, shabal-512, streebog-256, streebog-512, tiger,
-                                   whirlpool]
+                                   keccak-256, keccak-384, keccak-512, md2, md4, md5, ripemd-160, ripemd-256, ripemd-
+                                   320, sha1, sha224, sha256, sha384, sha512, sha3-224, sha3-256, sha3-384, sha3-
+                                   512, shabal-192, shabal-224, shabal-256, shabal-384, shabal-512, sm3, streebog-
+                                   256, streebog-512, tiger, whirlpool]
     -o, --output <FILE>            Output to <FILE> instead of stdout
         --style <STYLE>            Specify style of the checksums [default: SFV]  [possible values: sfv, bsd]
 

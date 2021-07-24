@@ -538,6 +538,17 @@ dependencies = [
 ]
 
 [[package]]
+name = "ripemd256"
+version = "0.1.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "491bb76de0be1f7dc7caf8098176969be67ed306d6f7495800b5709c1b5b492e"
+dependencies = [
+ "block-buffer",
+ "digest",
+ "opaque-debug",
+]
+
+[[package]]
 name = "ripemd320"
 version = "0.9.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -567,6 +578,7 @@ dependencies = [
  "md2",
  "md4",
  "ripemd160",
+ "ripemd256",
  "ripemd320",
  "serde",
  "serde_json",
@@ -574,6 +586,7 @@ dependencies = [
  "sha2",
  "sha3",
  "shabal",
+ "sm3",
  "streebog",
  "structopt",
  "tiger",
@@ -687,6 +700,17 @@ name = "shabal"
 version = "0.3.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "aa63941ef67c979cfa571f32c93d30d21727c9c69310733ae9701fdd28243983"
+dependencies = [
+ "block-buffer",
+ "digest",
+ "opaque-debug",
+]
+
+[[package]]
+name = "sm3"
+version = "0.3.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "94d6216c40e09fd37018f5f96f9c4424287588278c186497b2e4350a11598791"
 dependencies = [
  "block-buffer",
  "digest",

@@ -93,6 +93,11 @@ impl Checksum {
 
                 hex::encode(Ripemd160::digest(input.1.as_ref()))
             }
+            HashAlgorithm::Ripemd256 => {
+                use ripemd256::{Digest, Ripemd256};
+
+                hex::encode(Ripemd256::digest(input.1.as_ref()))
+            }
             HashAlgorithm::Ripemd320 => {
                 use ripemd320::{Digest, Ripemd320};
 
@@ -167,6 +172,11 @@ impl Checksum {
                 use shabal::{Digest, Shabal512};
 
                 hex::encode(Shabal512::digest(input.1.as_ref()))
+            }
+            HashAlgorithm::Sm3 => {
+                use sm3::{Digest, Sm3};
+
+                hex::encode(Sm3::digest(input.1.as_ref()))
             }
             HashAlgorithm::Streebog256 => {
                 use streebog::{Digest, Streebog256};
@@ -304,6 +314,10 @@ mod tests {
             "58262d1fbdbe4530d8865d3518c6d6e41002610f"
         );
         assert_eq!(
+            Checksum::digest(HashAlgorithm::Ripemd256, ("-", b"Hello, world!")).digest,
+            "4121b1d1e68be2c62719efbdc4321957074a9fd3f597cda5c90235a6a85061e5"
+        );
+        assert_eq!(
             Checksum::digest(HashAlgorithm::Ripemd320, ("-", b"Hello, world!")).digest,
             "38e0636b7efa3c6c3cce53a334f4ff12cfee2a9704cdf9c2e7d0fe0399cf6ee66a71babb49f5870d"
         );
@@ -378,6 +392,14 @@ mod tests {
         assert_eq!(
             Checksum::digest(HashAlgorithm::Shabal512, ("-", b"Hello, world!")).digest,
             "7048f0a589339d2d26890701ed3b2d1ed7c8dd1ac37fec517c7a8c39d5d51548e96ea8dfaceb5b99f9d1db3b18a7652e0412348ebfd61d32d755d6098bff8cb3"
+        );
+    }
+
+    #[test]
+    fn verify_sm3() {
+        assert_eq!(
+            Checksum::digest(HashAlgorithm::Sm3, ("-", b"Hello, world!")).digest,
+            "e3bca101b496880c3653dad85861d0e784b00a8c18f7574472d156060e9096bf"
         );
     }
 
