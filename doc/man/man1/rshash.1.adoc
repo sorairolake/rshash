@@ -69,6 +69,12 @@ If _FILE_ is not specified, the input is read from stdin.
 *--status*::
   Don't output anything, return the verification result as the exit status.
 
+*--strict*::
+  Exit non-zero for improperly formatted checksum lines.
+
+*-w*, *--warn*::
+  Warn about improperly formatted checksum lines.
+
 *--json*::
   Output the verification result as JSON to stdout.
   If you want to pretty-printing, specify *--pretty* as well.

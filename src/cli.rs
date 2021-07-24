@@ -90,16 +90,24 @@ pub struct Opt {
     pub check: bool,
 
     /// Don't fail or report status for missing files.
-    #[structopt(long, requires = "check", conflicts_with_all = &["quiet", "status", "json"])]
+    #[structopt(long, requires = "check")]
     pub ignore_missing: bool,
 
     /// Don't print OK for each successfully verified file.
-    #[structopt(long, requires = "check", conflicts_with_all = &["status", "json"])]
+    #[structopt(long, requires = "check")]
     pub quiet: bool,
 
     /// Don't output anything, return the verification result as the exit status.
-    #[structopt(long, requires = "check", conflicts_with = "json")]
+    #[structopt(long, requires = "check")]
     pub status: bool,
+
+    /// Exit non-zero for improperly formatted checksum lines.
+    #[structopt(long, requires = "check")]
+    pub strict: bool,
+
+    /// Warn about improperly formatted checksum lines.
+    #[structopt(short, long, requires = "check")]
+    pub warn: bool,
 
     /// Output the verification result as JSON to stdout.
     #[structopt(long, requires = "check")]

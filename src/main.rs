@@ -109,6 +109,7 @@ fn main() -> Result<()> {
 
     if opt.check {
         let mut results = IndexMap::with_capacity(inputs.len());
+        let mut is_improper = bool::default();
 
         for (i, (path, data)) in inputs.iter().enumerate() {
             let checksums =
@@ -118,11 +119,14 @@ fn main() -> Result<()> {
                 .guess_hash_algorithm(checksums)
                 .context("Unable to determine hash algorithm")?;
 
-            let checksums: Result<Vec<_>> = checksums
-                .lines()
-                .map(|c| c.parse().context("Failed to parse a checksum"))
-                .collect();
-            let checksums = checksums?;
+            let mut impropers = Vec::new();
+            for (i, checksum) in checksums.lines().enumerate() {
+                if let Err(e) = checksum.parse::<Checksum>() {
+                    impropers.push((i, e));
+                }
+            }
+            let impropers = impropers;
+            let checksums: Vec<_> = checksums.lines().flat_map(|c| c.parse()).collect();
 
             let result: Result<Vec<_>> = checksums
                 .iter()
@@ -130,166 +134,127 @@ fn main() -> Result<()> {
                 .collect();
             let result = result?;
 
+            let result: Vec<_> = if opt.ignore_missing {
+                result.into_iter().filter(|r| r.exist).collect()
+            } else {
+                result
+            };
+            if result.is_empty() {
+                eprintln!("RSHash: {}: No file was verified", path.display());
+                if i < inputs.len() - 1 {
+                    eprintln!();
+                }
+
+                continue;
+            }
+
+            let result: Vec<_> = if opt.quiet {
+                result
+                    .into_iter()
+                    .filter(|r| !r.success.unwrap_or_default())
+                    .collect()
+            } else {
+                result
+            };
+            if result.is_empty() {
+                continue;
+            }
+
             let (total, missing, success, failure) = (
                 result.len(),
                 result.iter().filter(|r| !r.exist).count(),
                 result
                     .iter()
-                    .filter_map(|r| r.success)
-                    .filter(|r| *r)
+                    .filter(|r| r.exist)
+                    .filter(|r| r.success.unwrap())
                     .count(),
                 result
                     .iter()
-                    .filter_map(|r| r.success)
-                    .filter(|r| !r)
+                    .filter(|r| r.exist)
+                    .filter(|r| !r.success.unwrap())
                     .count(),
             );
 
             results.insert(path, result.clone());
 
-            if opt.ignore_missing {
-                let result: Vec<_> = result.into_iter().filter(|r| r.exist).collect();
+            if opt.strict && !impropers.is_empty() && !is_improper {
+                is_improper = true;
+            }
 
-                if result.is_empty() {
-                    eprintln!("RSHash: {}: No file was verified", path.display());
-                    if i < inputs.len() - 1 {
-                        eprintln!();
-                    }
+            if opt.json {
+                continue;
+            }
+
+            if opt.status {
+                if result.iter().all(|r| r.success.unwrap_or_default()) {
+                    continue;
                 } else {
-                    let padding: Result<Vec<_>> = result
-                        .iter()
-                        .map(|r| {
-                            r.file
-                                .to_str()
-                                .context("Failed to convert from a path to a string")
-                        })
-                        .collect();
-                    let padding = padding?;
-                    let padding = padding
-                        .into_iter()
-                        .map(|p| p.chars().count())
-                        .max()
-                        .unwrap()
-                        * 2;
-                    println!(
-                        "Verifying {} checksums from {}",
-                        result.len(),
-                        path.display()
-                    );
-                    println!("{}", "-".repeat(padding * 2));
-                    result
-                        .iter()
-                        .map(|r| r.output(padding))
-                        .for_each(|o| println!("{}", o));
-                    println!("{}", "-".repeat(padding * 2));
-                    if result.len() == success {
-                        println!("Everything is successful");
-                    } else {
-                        println!(
-                            "{} validations failed (Success:{}; Failure:{})",
-                            result.len() - success,
-                            success,
-                            failure
-                        );
-                    }
-                    if i < inputs.len() - 1 {
-                        println!();
-                    }
-                }
-            } else if opt.quiet {
-                let result: Vec<_> = result
-                    .into_iter()
-                    .filter(|r| !r.success.unwrap_or_default())
-                    .collect();
-
-                if !result.is_empty() {
-                    let padding: Result<Vec<_>> = result
-                        .iter()
-                        .map(|r| {
-                            r.file
-                                .to_str()
-                                .context("Failed to convert from a path to a string")
-                        })
-                        .collect();
-                    let padding = padding?;
-                    let padding = padding
-                        .into_iter()
-                        .map(|p| p.chars().count())
-                        .max()
-                        .unwrap()
-                        * 2;
-                    println!("Verifying {} checksums from {}", total, path.display());
-                    println!("{}", "-".repeat(padding * 2));
-                    result
-                        .into_iter()
-                        .map(|r| r.output(padding))
-                        .for_each(|o| println!("{}", o));
-                    println!("{}", "-".repeat(padding * 2));
-                    println!(
-                        "{} validations failed (Missing:{}; Success:{}; Failure:{})",
-                        total - success,
-                        missing,
-                        success,
-                        failure
-                    );
-                    if i < inputs.len() - 1 {
-                        println!();
-                    }
-                }
-            } else if opt.status {
-                if !result.into_iter().all(|r| r.success.unwrap_or_default()) {
                     std::process::exit(exitcode::SOFTWARE);
                 }
-            } else if opt.json {
-                continue;
+            }
+
+            let padding: Result<Vec<_>> = result
+                .iter()
+                .map(|r| {
+                    r.file
+                        .to_str()
+                        .context("Failed to convert from a path to a string")
+                })
+                .collect();
+            let padding = padding?;
+            let padding = padding
+                .into_iter()
+                .map(|p| p.chars().count())
+                .max()
+                .unwrap()
+                * 2;
+            println!("Verifying {} checksums from {}", total, path.display());
+            println!("{}", "-".repeat(padding * 2));
+            result
+                .into_iter()
+                .map(|r| r.output(padding))
+                .for_each(|o| println!("{}", o));
+            println!("{}", "-".repeat(padding * 2));
+            if total == success && !opt.quiet {
+                println!("Everything is successful");
+            } else if opt.ignore_missing {
+                println!(
+                    "{} validations failed (Success:{}; Failure:{})",
+                    total - success,
+                    success,
+                    failure
+                );
             } else {
-                let padding: Result<Vec<_>> = result
-                    .iter()
-                    .map(|r| {
-                        r.file
-                            .to_str()
-                            .context("Failed to convert from a path to a string")
-                    })
-                    .collect();
-                let padding = padding?;
-                let padding = padding
-                    .into_iter()
-                    .map(|p| p.chars().count())
-                    .max()
-                    .unwrap()
-                    * 2;
-                println!("Verifying {} checksums from {}", total, path.display());
-                println!("{}", "-".repeat(padding * 2));
-                result
-                    .into_iter()
-                    .map(|r| r.output(padding))
-                    .for_each(|o| println!("{}", o));
-                println!("{}", "-".repeat(padding * 2));
-                if total == success {
-                    println!("Everything is successful");
+                println!(
+                    "{} validations failed (Missing:{}; Success:{}; Failure:{})",
+                    total - success,
+                    missing,
+                    success,
+                    failure
+                );
+            }
+            if !impropers.is_empty() {
+                if opt.warn {
+                    impropers.iter().for_each(|i| {
+                        eprintln!("RSHash: {}: {}: {}", path.display(), i.0 + 1, i.1)
+                    });
+                }
+
+                if impropers.len() == 1 {
+                    eprintln!("RSHash: WARNING: 1 line is improperly formatted");
                 } else {
-                    println!(
-                        "{} validations failed (Missing:{}; Success:{}; Failure:{})",
-                        total - success,
-                        missing,
-                        success,
-                        failure
+                    eprintln!(
+                        "RSHash: WARNING: {} lines are improperly formatted",
+                        impropers.len()
                     );
                 }
-                if i < inputs.len() - 1 {
-                    println!();
-                }
+            }
+            if i < inputs.len() - 1 {
+                println!();
             }
         }
-
-        let results = if opt.ignore_missing {
-            results
-                .into_iter()
-                .map(|(k, v)| (k, v.into_iter().filter(|r| r.exist).collect()))
-                .collect()
-        } else {
-            results
-        };
+        let results = results;
+        let is_improper = is_improper;
 
         if opt.json {
             let json = if opt.pretty {
@@ -312,6 +277,10 @@ fn main() -> Result<()> {
             .flatten()
             .all(|r| r.success.unwrap_or_default())
         {
+            std::process::exit(exitcode::SOFTWARE);
+        }
+
+        if opt.strict && is_improper {
             std::process::exit(exitcode::SOFTWARE);
         }
     } else {
