@@ -54,6 +54,7 @@ fn main() -> Result<()> {
         println!("{}", HashAlgorithm::Md4);
         println!("{}", HashAlgorithm::Md5);
         println!("{}", HashAlgorithm::Ripemd160);
+        println!("{}", HashAlgorithm::Ripemd256);
         println!("{}", HashAlgorithm::Ripemd320);
         println!("{}", HashAlgorithm::Sha1);
         println!("{}", HashAlgorithm::Sha224);

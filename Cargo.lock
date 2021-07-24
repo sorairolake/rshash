@@ -538,6 +538,17 @@ dependencies = [
 ]
 
 [[package]]
+name = "ripemd256"
+version = "0.1.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "491bb76de0be1f7dc7caf8098176969be67ed306d6f7495800b5709c1b5b492e"
+dependencies = [
+ "block-buffer",
+ "digest",
+ "opaque-debug",
+]
+
+[[package]]
 name = "ripemd320"
 version = "0.9.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -567,6 +578,7 @@ dependencies = [
  "md2",
  "md4",
  "ripemd160",
+ "ripemd256",
  "ripemd320",
  "serde",
  "serde_json",

@@ -93,6 +93,11 @@ impl Checksum {
 
                 hex::encode(Ripemd160::digest(input.1.as_ref()))
             }
+            HashAlgorithm::Ripemd256 => {
+                use ripemd256::{Digest, Ripemd256};
+
+                hex::encode(Ripemd256::digest(input.1.as_ref()))
+            }
             HashAlgorithm::Ripemd320 => {
                 use ripemd320::{Digest, Ripemd320};
 
@@ -302,6 +307,10 @@ mod tests {
         assert_eq!(
             Checksum::digest(HashAlgorithm::Ripemd160, ("-", b"Hello, world!")).digest,
             "58262d1fbdbe4530d8865d3518c6d6e41002610f"
+        );
+        assert_eq!(
+            Checksum::digest(HashAlgorithm::Ripemd256, ("-", b"Hello, world!")).digest,
+            "4121b1d1e68be2c62719efbdc4321957074a9fd3f597cda5c90235a6a85061e5"
         );
         assert_eq!(
             Checksum::digest(HashAlgorithm::Ripemd320, ("-", b"Hello, world!")).digest,

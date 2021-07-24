@@ -22,7 +22,7 @@ const LONG_VERSION: &str = formatcp!(
     "License: GNU General Public License v3.0 or later",
     "Reporting bugs: https://github.com/sorairolake/rshash/issues"
 );
-const HASH_ALGORITHMS: [&str; 36] = [
+const HASH_ALGORITHMS: [&str; 37] = [
     "blake2b",
     "blake2s",
     "blake3",
@@ -40,6 +40,7 @@ const HASH_ALGORITHMS: [&str; 36] = [
     "md4",
     "md5",
     "ripemd-160",
+    "ripemd-256",
     "ripemd-320",
     "sha1",
     "sha224",
@@ -161,6 +162,7 @@ impl Opt {
             "MD4" => Some(HashAlgorithm::Md4),
             "MD5" => Some(HashAlgorithm::Md5),
             "RIPEMD-160" => Some(HashAlgorithm::Ripemd160),
+            "RIPEMD-256" => Some(HashAlgorithm::Ripemd256),
             "RIPEMD-320" => Some(HashAlgorithm::Ripemd320),
             "SHA1" => Some(HashAlgorithm::Sha1),
             "SHA224" => Some(HashAlgorithm::Sha224),
