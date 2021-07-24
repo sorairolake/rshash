@@ -63,7 +63,7 @@ const HASH_ALGORITHMS: [&str; 38] = [
     "whirlpool",
 ];
 
-#[derive(Debug, StructOpt)]
+#[derive(StructOpt)]
 #[structopt(
     name = "RSHash",
     long_version = LONG_VERSION,

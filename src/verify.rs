@@ -13,7 +13,7 @@ use serde::Serialize;
 
 use crate::value::{Checksum, HashAlgorithm};
 
-#[derive(Clone, Debug, Serialize)]
+#[derive(Clone, Serialize)]
 pub struct Verify {
     pub file: PathBuf,
     pub exist: bool,

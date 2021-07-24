@@ -11,7 +11,6 @@ use std::str::FromStr;
 use anyhow::{Context, Error, Result};
 use serde::Deserialize;
 
-#[derive(Clone, Debug)]
 pub struct Checksum {
     pub file: PathBuf,
     pub digest: String,
@@ -54,7 +53,7 @@ impl FromStr for Checksum {
     }
 }
 
-#[derive(Clone, Copy, Debug)]
+#[derive(Clone, Copy)]
 pub enum HashAlgorithm {
     Blake2b,
     Blake2s,
@@ -189,7 +188,7 @@ impl FromStr for HashAlgorithm {
     }
 }
 
-#[derive(Clone, Copy, Debug, Deserialize)]
+#[derive(Clone, Copy, Deserialize)]
 #[serde(rename_all = "lowercase")]
 pub enum Style {
     Sfv,
