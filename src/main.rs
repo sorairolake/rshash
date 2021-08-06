@@ -11,13 +11,14 @@ mod output;
 mod value;
 mod verify;
 
+use std::collections::BTreeMap;
 use std::fs;
 use std::io::{self, Read};
 use std::str;
 
 use anyhow::{Context, Result};
 use dialoguer::theme::ColorfulTheme;
-use indexmap::{indexmap, IndexMap};
+use maplit::btreemap;
 use structopt::StructOpt;
 
 use crate::cli::Opt;
@@ -97,7 +98,7 @@ fn main() -> Result<()> {
             buf
         };
 
-        indexmap!("-".into() => input)
+        btreemap!("-".into() => input)
     } else {
         let data: Result<Vec<_>> = files
             .iter()
@@ -111,7 +112,7 @@ fn main() -> Result<()> {
     };
 
     if opt.check {
-        let mut results = IndexMap::with_capacity(inputs.len());
+        let mut results = BTreeMap::new();
         let mut is_improper = bool::default();
 
         for (i, (path, data)) in inputs.iter().enumerate() {
