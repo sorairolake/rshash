@@ -16,6 +16,7 @@ atty = "0.2.14"
 blake2 = "0.9.1"
 blake3 = "0.3.8"
 const_format = "0.2.14"
+dialoguer = { version = "0.8.0", default-features = false }
 directories = "3.0.2"
 exitcode = "1.1.2"
 gost94 = "0.9.1"

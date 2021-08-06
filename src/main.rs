@@ -15,8 +15,9 @@ use std::fs;
 use std::io::{self, Read};
 use std::str;
 
-use anyhow::{bail, Context, Result};
-use indexmap::IndexMap;
+use anyhow::{Context, Result};
+use dialoguer::theme::ColorfulTheme;
+use indexmap::{indexmap, IndexMap};
 use structopt::StructOpt;
 
 use crate::cli::Opt;
@@ -82,19 +83,21 @@ fn main() -> Result<()> {
     let (files, dirs): (Vec<_>, Vec<_>) = opt.input.iter().cloned().partition(|i| i.is_file());
 
     let inputs = if files.is_empty() {
-        if atty::is(atty::Stream::Stdin) {
-            bail!("Input from tty is invalid");
-        }
+        let input = if atty::is(atty::Stream::Stdin) {
+            dialoguer::Input::<String>::with_theme(&ColorfulTheme::default())
+                .with_prompt("Input")
+                .interact()
+                .context("Failed to read a string from stdin")?
+                .into_bytes()
+        } else {
+            let mut buf = Vec::new();
+            io::stdin()
+                .read_to_end(&mut buf)
+                .context("Failed to read bytes from stdin")?;
+            buf
+        };
 
-        let mut buf = Vec::new();
-        io::stdin()
-            .read_to_end(&mut buf)
-            .context("Failed to read bytes from stdin")?;
-
-        let mut input = IndexMap::new();
-        input.insert("-".into(), buf);
-
-        input
+        indexmap!("-".into() => input)
     } else {
         let data: Result<Vec<_>> = files
             .iter()
