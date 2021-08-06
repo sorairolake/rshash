@@ -22,6 +22,11 @@ const LONG_VERSION: &str = formatcp!(
     "License: GNU General Public License v3.0 or later",
     "Reporting bugs: https://github.com/sorairolake/rshash/issues"
 );
+const APP_SETTINGS: [AppSettings; 3] = [
+    AppSettings::ArgRequiredElseHelp,
+    AppSettings::ColoredHelp,
+    AppSettings::DeriveDisplayOrder,
+];
 const HASH_ALGORITHMS: [&str; 38] = [
     "blake2b",
     "blake2s",
@@ -62,19 +67,9 @@ const HASH_ALGORITHMS: [&str; 38] = [
     "tiger",
     "whirlpool",
 ];
-const APP_SETTINGS: [AppSettings; 3] = [
-    AppSettings::ArgRequiredElseHelp,
-    AppSettings::ColoredHelp,
-    AppSettings::DeriveDisplayOrder,
-];
 
 #[derive(StructOpt)]
-#[structopt(
-    name = "RSHash",
-    long_version = LONG_VERSION,
-    about,
-    settings = &APP_SETTINGS
-)]
+#[structopt(name = "RSHash", long_version = LONG_VERSION, about, settings = &APP_SETTINGS)]
 pub struct Opt {
     /// Specify hash algorithm.
     #[structopt(
