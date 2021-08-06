@@ -16,7 +16,7 @@ use std::fs;
 use std::io::{self, Read};
 use std::str;
 
-use anyhow::{Context, Result};
+use anyhow::{ensure, Context, Result};
 use dialoguer::theme::ColorfulTheme;
 use maplit::btreemap;
 use structopt::StructOpt;
@@ -84,6 +84,11 @@ fn main() -> Result<()> {
     let (files, dirs): (Vec<_>, Vec<_>) = opt.input.iter().cloned().partition(|i| i.is_file());
 
     let inputs = if files.is_empty() {
+        ensure!(
+            opt.hash_algorithm.is_some(),
+            "Unable to determine hash algorithm"
+        );
+
         let input = if atty::is(atty::Stream::Stdin) {
             dialoguer::Input::<String>::with_theme(&ColorfulTheme::default())
                 .with_prompt("Input")
