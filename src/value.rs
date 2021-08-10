@@ -9,7 +9,8 @@ use std::path::PathBuf;
 use std::str::FromStr;
 
 use anyhow::{Context, Error, Result};
-use serde::{Deserialize, Serialize};
+use serde::Deserialize;
+use serde_with::SerializeDisplay;
 
 pub struct Checksum {
     pub algorithm: Option<HashAlgorithm>,
@@ -56,7 +57,7 @@ impl FromStr for Checksum {
     }
 }
 
-#[derive(Clone, Copy, Serialize)]
+#[derive(Clone, Copy, SerializeDisplay)]
 pub enum HashAlgorithm {
     Blake2b,
     Blake2s,
