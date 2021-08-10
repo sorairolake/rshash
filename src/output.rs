@@ -4,14 +4,19 @@
 // Copyright (C) 2021 Shun Sakai
 //
 
-use crate::value::{Checksum, HashAlgorithm, Style};
+use crate::value::{Checksum, Style};
 
 impl Checksum {
     /// Output a checksum for the specified style.
-    pub fn output(&self, algo: HashAlgorithm, style: Style) -> String {
+    pub fn output(&self, style: Style) -> String {
         match style {
             Style::Sfv => format!("{}  {}", self.digest, self.file.display()),
-            Style::Bsd => format!("{} ({}) = {}", algo, self.file.display(), self.digest),
+            Style::Bsd => format!(
+                "{} ({}) = {}",
+                self.algorithm.expect("Hash algorithm is unknown"),
+                self.file.display(),
+                self.digest
+            ),
         }
     }
 }
@@ -23,7 +28,7 @@ mod tests {
     #[test]
     fn sfv_style_checksum() {
         assert_eq!(
-            Checksum::digest(HashAlgorithm::Blake2b, ("-", b"Hello, world!")).output(HashAlgorithm::Blake2b, Style::Sfv),
+            Checksum::digest(crate::value::HashAlgorithm::Blake2b, ("-", b"Hello, world!")).output(Style::Sfv),
             "a2764d133a16816b5847a737a786f2ece4c148095c5faa73e24b4cc5d666c3e45ec271504e14dc6127ddfce4e144fb23b91a6f7b04b53d695502290722953b0f  -"
         );
     }
@@ -31,7 +36,7 @@ mod tests {
     #[test]
     fn bsd_style_checksum() {
         assert_eq!(
-            Checksum::digest(HashAlgorithm::Blake2b, ("-", b"Hello, world!")).output(HashAlgorithm::Blake2b, Style::Bsd),
+            Checksum::digest(crate::value::HashAlgorithm::Blake2b, ("-", b"Hello, world!")).output(Style::Bsd),
             "BLAKE2b (-) = a2764d133a16816b5847a737a786f2ece4c148095c5faa73e24b4cc5d666c3e45ec271504e14dc6127ddfce4e144fb23b91a6f7b04b53d695502290722953b0f"
         );
     }

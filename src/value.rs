@@ -9,9 +9,10 @@ use std::path::PathBuf;
 use std::str::FromStr;
 
 use anyhow::{Context, Error, Result};
-use serde::Deserialize;
+use serde::{Deserialize, Serialize};
 
 pub struct Checksum {
+    pub algorithm: Option<HashAlgorithm>,
     pub file: PathBuf,
     pub digest: String,
 }
@@ -28,6 +29,7 @@ impl FromStr for Checksum {
                 .context("Improperly formatted checksum line")?;
 
             Ok(Self {
+                algorithm: None,
                 file: p.into(),
                 digest: digest.to_string(),
             })
@@ -46,6 +48,7 @@ impl FromStr for Checksum {
                 .context("Improperly formatted checksum line")?;
 
             Ok(Self {
+                algorithm: None,
                 file: path.into(),
                 digest: digest.to_string(),
             })
@@ -53,7 +56,7 @@ impl FromStr for Checksum {
     }
 }
 
-#[derive(Clone, Copy)]
+#[derive(Clone, Copy, Serialize)]
 pub enum HashAlgorithm {
     Blake2b,
     Blake2s,

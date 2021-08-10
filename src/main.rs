@@ -135,16 +135,24 @@ fn main() -> Result<()> {
                 }
             }
             let impropers = impropers;
-            let checksums: Vec<_> = checksums.lines().flat_map(|c| c.parse()).collect();
+            let checksums: Vec<_> = checksums
+                .lines()
+                .flat_map(|c| c.parse::<Checksum>())
+                .map(|c| Checksum {
+                    algorithm: Some(algo),
+                    file: c.file,
+                    digest: c.digest,
+                })
+                .collect();
 
             let result: Result<Vec<_>> = checksums
                 .iter()
-                .map(|c| Verify::verify(algo, c).context("Failed to verify a checksum"))
+                .map(|c| Verify::verify(c).context("Failed to verify a checksum"))
                 .collect();
             let result = result?;
 
             let result: Vec<_> = if opt.ignore_missing {
-                result.into_iter().filter(|r| r.exist).collect()
+                result.into_iter().filter(|r| r.success.is_some()).collect()
             } else {
                 result
             };
@@ -171,16 +179,16 @@ fn main() -> Result<()> {
 
             let (total, missing, success, failure) = (
                 result.len(),
-                result.iter().filter(|r| !r.exist).count(),
+                result.iter().filter(|r| r.success.is_none()).count(),
                 result
                     .iter()
-                    .filter(|r| r.exist)
-                    .filter(|r| r.success.unwrap())
+                    .filter_map(|r| r.success)
+                    .filter(|s| *s)
                     .count(),
                 result
                     .iter()
-                    .filter(|r| r.exist)
-                    .filter(|r| !r.success.unwrap())
+                    .filter_map(|r| r.success)
+                    .filter(|s| !s)
                     .count(),
             );
 
@@ -215,7 +223,7 @@ fn main() -> Result<()> {
                 .into_iter()
                 .map(|p| p.chars().count())
                 .max()
-                .unwrap()
+                .expect("Unable to determine the padding")
                 * 2;
             println!("Verifying {} checksums from {}", total, path.display());
             println!("{}", "-".repeat(padding * 2));
@@ -300,7 +308,7 @@ fn main() -> Result<()> {
         let output: Vec<_> = inputs
             .into_iter()
             .map(|i| Checksum::digest(algo, i))
-            .map(|c| c.output(algo, opt.style))
+            .map(|c| c.output(opt.style))
             .collect();
         match opt.output {
             Some(ref f) => fs::write(f, output.join("\n"))

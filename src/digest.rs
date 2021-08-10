@@ -201,6 +201,7 @@ impl Checksum {
         };
 
         Checksum {
+            algorithm: Some(algo),
             file: input.0.as_ref().to_path_buf(),
             digest,
         }
