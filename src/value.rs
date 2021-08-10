@@ -8,9 +8,8 @@ use std::fmt;
 use std::path::PathBuf;
 use std::str::FromStr;
 
-use anyhow::{Context, Error, Result};
-use serde::Deserialize;
-use serde_with::SerializeDisplay;
+use anyhow::{bail, Context, Error, Result};
+use serde_with::{DeserializeFromStr, SerializeDisplay};
 
 pub struct Checksum {
     pub algorithm: Option<HashAlgorithm>,
@@ -192,8 +191,7 @@ impl FromStr for HashAlgorithm {
     }
 }
 
-#[derive(Clone, Copy, Deserialize)]
-#[serde(rename_all = "lowercase")]
+#[derive(Clone, Copy, DeserializeFromStr)]
 pub enum Style {
     Sfv,
     Bsd,
@@ -221,7 +219,7 @@ impl FromStr for Style {
         match style.to_ascii_lowercase().as_str() {
             "sfv" => Ok(Style::Sfv),
             "bsd" => Ok(Style::Bsd),
-            _ => unreachable!(),
+            _ => bail!("Unknown style: {}", style),
         }
     }
 }
