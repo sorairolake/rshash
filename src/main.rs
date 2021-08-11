@@ -7,6 +7,7 @@
 mod cli;
 mod config;
 mod digest;
+mod macros;
 mod output;
 mod value;
 mod verify;

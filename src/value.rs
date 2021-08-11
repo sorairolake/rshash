@@ -8,8 +8,10 @@ use std::fmt;
 use std::path::PathBuf;
 use std::str::FromStr;
 
-use anyhow::{bail, Context, Error, Result};
+use anyhow::{bail, Error, Result};
 use serde_with::{DeserializeFromStr, SerializeDisplay};
+
+use crate::regex;
 
 pub struct Checksum {
     pub algorithm: Option<HashAlgorithm>,
@@ -21,38 +23,29 @@ impl FromStr for Checksum {
     type Err = Error;
 
     fn from_str(checksum: &str) -> Result<Self> {
-        if let Some(p) = checksum.splitn(2, "  ").nth(1) {
+        if let Some(caps) =
+            regex!(r"^(?P<digest>[[:xdigit:]]{32,128})  (?P<file>\S.*\S)$").captures(checksum)
+        {
             // Parse as SFV-style checksum.
-            let digest = checksum
-                .split_whitespace()
-                .next()
-                .context("Improperly formatted checksum line")?;
-
-            Ok(Self {
+            return Ok(Self {
                 algorithm: None,
-                file: p.into(),
-                digest: digest.to_string(),
-            })
-        } else {
-            // Parse as BSD-style checksum.
-            let path = checksum
-                .splitn(2, " (")
-                .nth(1)
-                .context("Improperly formatted checksum line")?
-                .rsplitn(2, ") = ")
-                .nth(1)
-                .context("Improperly formatted checksum line")?;
-            let digest = checksum
-                .rsplit(' ')
-                .next()
-                .context("Improperly formatted checksum line")?;
-
-            Ok(Self {
-                algorithm: None,
-                file: path.into(),
-                digest: digest.to_string(),
-            })
+                file: caps["file"].into(),
+                digest: caps["digest"].to_string(),
+            });
         }
+        if let Some(caps) =
+            regex!(r"^[[:alnum:]-]+ \((?P<file>\S.*\S)\) = (?P<digest>[[:xdigit:]]{32,128})$")
+                .captures(checksum)
+        {
+            // Parse as BSD-style checksum.
+            return Ok(Self {
+                algorithm: None,
+                file: caps["file"].into(),
+                digest: caps["digest"].to_string(),
+            });
+        }
+
+        bail!("Improperly formatted checksum line");
     }
 }
 
