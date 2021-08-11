@@ -34,12 +34,12 @@ impl FromStr for Checksum {
             });
         }
         if let Some(caps) =
-            regex!(r"^[[:alnum:]-]+ \((?P<file>\S.*\S)\) = (?P<digest>[[:xdigit:]]{32,128})$")
+            regex!(r"^(?P<algorithm>[[:alnum:]-]+) \((?P<file>\S.*\S)\) = (?P<digest>[[:xdigit:]]{32,128})$")
                 .captures(checksum)
         {
             // Parse as BSD-style checksum.
             return Ok(Self {
-                algorithm: None,
+                algorithm: caps["algorithm"].parse().ok(),
                 file: caps["file"].into(),
                 digest: caps["digest"].to_string(),
             });

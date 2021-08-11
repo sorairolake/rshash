@@ -125,10 +125,6 @@ fn main() -> Result<()> {
             let checksums =
                 str::from_utf8(data).context("Failed to convert from bytes to a string")?;
 
-            let algo = opt
-                .guess_hash_algorithm(checksums)
-                .context("Unable to determine hash algorithm")?;
-
             let mut impropers = Vec::new();
             for (i, checksum) in checksums.lines().enumerate() {
                 if let Err(e) = checksum.parse::<Checksum>() {
@@ -140,11 +136,16 @@ fn main() -> Result<()> {
                 .lines()
                 .flat_map(|c| c.parse::<Checksum>())
                 .map(|c| Checksum {
-                    algorithm: Some(algo),
+                    algorithm: opt.hash_algorithm.or(c.algorithm),
                     file: c.file,
                     digest: c.digest,
                 })
                 .collect();
+
+            ensure!(
+                checksums.iter().all(|c| c.algorithm.is_some()),
+                "Unable to determine hash algorithm"
+            );
 
             let result: Result<Vec<_>> = checksums
                 .iter()

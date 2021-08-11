@@ -138,61 +138,6 @@ pub struct Opt {
 }
 
 impl Opt {
-    /// Guess the hash algorithm from BSD-style checksums.
-    pub fn guess_hash_algorithm(&self, checksums: impl AsRef<str>) -> Option<HashAlgorithm> {
-        if let Some(a) = self.hash_algorithm {
-            return Some(a);
-        }
-
-        match checksums
-            .as_ref()
-            .split_whitespace()
-            .next()?
-            .to_ascii_uppercase()
-            .as_str()
-        {
-            "BLAKE2B" => Some(HashAlgorithm::Blake2b),
-            "BLAKE2S" => Some(HashAlgorithm::Blake2s),
-            "BLAKE3" => Some(HashAlgorithm::Blake3),
-            "GOST" => Some(HashAlgorithm::Gost),
-            "GOST-CRYPTOPRO" => Some(HashAlgorithm::GostCryptoPro),
-            "GROESTL-224" => Some(HashAlgorithm::Groestl224),
-            "GROESTL-256" => Some(HashAlgorithm::Groestl256),
-            "GROESTL-384" => Some(HashAlgorithm::Groestl384),
-            "GROESTL-512" => Some(HashAlgorithm::Groestl512),
-            "KECCAK-224" => Some(HashAlgorithm::Keccak224),
-            "KECCAK-256" => Some(HashAlgorithm::Keccak256),
-            "KECCAK-384" => Some(HashAlgorithm::Keccak384),
-            "KECCAK-512" => Some(HashAlgorithm::Keccak512),
-            "MD2" => Some(HashAlgorithm::Md2),
-            "MD4" => Some(HashAlgorithm::Md4),
-            "MD5" => Some(HashAlgorithm::Md5),
-            "RIPEMD-160" => Some(HashAlgorithm::Ripemd160),
-            "RIPEMD-256" => Some(HashAlgorithm::Ripemd256),
-            "RIPEMD-320" => Some(HashAlgorithm::Ripemd320),
-            "SHA1" => Some(HashAlgorithm::Sha1),
-            "SHA224" => Some(HashAlgorithm::Sha224),
-            "SHA256" => Some(HashAlgorithm::Sha256),
-            "SHA384" => Some(HashAlgorithm::Sha384),
-            "SHA512" => Some(HashAlgorithm::Sha512),
-            "SHA3-224" => Some(HashAlgorithm::Sha3_224),
-            "SHA3-256" => Some(HashAlgorithm::Sha3_256),
-            "SHA3-384" => Some(HashAlgorithm::Sha3_384),
-            "SHA3-512" => Some(HashAlgorithm::Sha3_512),
-            "SHABAL-192" => Some(HashAlgorithm::Shabal192),
-            "SHABAL-224" => Some(HashAlgorithm::Shabal224),
-            "SHABAL-256" => Some(HashAlgorithm::Shabal256),
-            "SHABAL-384" => Some(HashAlgorithm::Shabal384),
-            "SHABAL-512" => Some(HashAlgorithm::Shabal512),
-            "SM3" => Some(HashAlgorithm::Sm3),
-            "STREEBOG-256" => Some(HashAlgorithm::Streebog256),
-            "STREEBOG-512" => Some(HashAlgorithm::Streebog512),
-            "TIGER" => Some(HashAlgorithm::Tiger),
-            "WHIRLPOOL" => Some(HashAlgorithm::Whirlpool),
-            _ => None,
-        }
-    }
-
     /// Apply the config from the config file.
     pub fn apply_config(mut self) -> Result<Self> {
         if let Some(p) = Config::path() {
