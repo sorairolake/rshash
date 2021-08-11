@@ -10,12 +10,16 @@ impl Checksum {
     /// Output a checksum for the specified style.
     pub fn output(&self, style: Style) -> String {
         match style {
-            Style::Sfv => format!("{}  {}", self.digest, self.file.display()),
+            Style::Sfv => format!(
+                "{}  {}",
+                hex::encode(self.digest.clone()),
+                self.file.display()
+            ),
             Style::Bsd => format!(
                 "{} ({}) = {}",
                 self.algorithm.expect("Hash algorithm is unknown"),
                 self.file.display(),
-                self.digest
+                hex::encode(self.digest.clone())
             ),
         }
     }

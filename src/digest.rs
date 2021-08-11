@@ -15,188 +15,190 @@ impl Checksum {
             HashAlgorithm::Blake2b => {
                 use blake2::{Blake2b, Digest};
 
-                hex::encode(Blake2b::digest(input.1.as_ref()))
+                Blake2b::digest(input.1.as_ref()).as_slice().to_vec()
             }
             HashAlgorithm::Blake2s => {
                 use blake2::{Blake2s, Digest};
 
-                hex::encode(Blake2s::digest(input.1.as_ref()))
+                Blake2s::digest(input.1.as_ref()).as_slice().to_vec()
             }
-            HashAlgorithm::Blake3 => hex::encode(blake3::hash(input.1.as_ref()).as_bytes()),
+            HashAlgorithm::Blake3 => blake3::hash(input.1.as_ref()).as_bytes().to_vec(),
             HashAlgorithm::Gost => {
                 use gost94::{Digest, Gost94Test};
 
-                hex::encode(Gost94Test::digest(input.1.as_ref()))
+                Gost94Test::digest(input.1.as_ref()).as_slice().to_vec()
             }
             HashAlgorithm::GostCryptoPro => {
                 use gost94::{Digest, Gost94CryptoPro};
 
-                hex::encode(Gost94CryptoPro::digest(input.1.as_ref()))
+                Gost94CryptoPro::digest(input.1.as_ref())
+                    .as_slice()
+                    .to_vec()
             }
             HashAlgorithm::Groestl224 => {
                 use groestl::{Digest, Groestl224};
 
-                hex::encode(Groestl224::digest(input.1.as_ref()))
+                Groestl224::digest(input.1.as_ref()).as_slice().to_vec()
             }
             HashAlgorithm::Groestl256 => {
                 use groestl::{Digest, Groestl256};
 
-                hex::encode(Groestl256::digest(input.1.as_ref()))
+                Groestl256::digest(input.1.as_ref()).as_slice().to_vec()
             }
             HashAlgorithm::Groestl384 => {
                 use groestl::{Digest, Groestl384};
 
-                hex::encode(Groestl384::digest(input.1.as_ref()))
+                Groestl384::digest(input.1.as_ref()).as_slice().to_vec()
             }
             HashAlgorithm::Groestl512 => {
                 use groestl::{Digest, Groestl512};
 
-                hex::encode(Groestl512::digest(input.1.as_ref()))
+                Groestl512::digest(input.1.as_ref()).as_slice().to_vec()
             }
             HashAlgorithm::Keccak224 => {
                 use sha3::{Digest, Keccak224};
 
-                hex::encode(Keccak224::digest(input.1.as_ref()))
+                Keccak224::digest(input.1.as_ref()).as_slice().to_vec()
             }
             HashAlgorithm::Keccak256 => {
                 use sha3::{Digest, Keccak256};
 
-                hex::encode(Keccak256::digest(input.1.as_ref()))
+                Keccak256::digest(input.1.as_ref()).as_slice().to_vec()
             }
             HashAlgorithm::Keccak384 => {
                 use sha3::{Digest, Keccak384};
 
-                hex::encode(Keccak384::digest(input.1.as_ref()))
+                Keccak384::digest(input.1.as_ref()).as_slice().to_vec()
             }
             HashAlgorithm::Keccak512 => {
                 use sha3::{Digest, Keccak512};
 
-                hex::encode(Keccak512::digest(input.1.as_ref()))
+                Keccak512::digest(input.1.as_ref()).as_slice().to_vec()
             }
             HashAlgorithm::Md2 => {
                 use md2::{Digest, Md2};
 
-                hex::encode(Md2::digest(input.1.as_ref()))
+                Md2::digest(input.1.as_ref()).as_slice().to_vec()
             }
             HashAlgorithm::Md4 => {
                 use md4::{Digest, Md4};
 
-                hex::encode(Md4::digest(input.1.as_ref()))
+                Md4::digest(input.1.as_ref()).as_slice().to_vec()
             }
             HashAlgorithm::Md5 => {
                 use md5::{Digest, Md5};
 
-                hex::encode(Md5::digest(input.1.as_ref()))
+                Md5::digest(input.1.as_ref()).as_slice().to_vec()
             }
             HashAlgorithm::Ripemd160 => {
                 use ripemd160::{Digest, Ripemd160};
 
-                hex::encode(Ripemd160::digest(input.1.as_ref()))
+                Ripemd160::digest(input.1.as_ref()).as_slice().to_vec()
             }
             HashAlgorithm::Ripemd256 => {
                 use ripemd256::{Digest, Ripemd256};
 
-                hex::encode(Ripemd256::digest(input.1.as_ref()))
+                Ripemd256::digest(input.1.as_ref()).as_slice().to_vec()
             }
             HashAlgorithm::Ripemd320 => {
                 use ripemd320::{Digest, Ripemd320};
 
-                hex::encode(Ripemd320::digest(input.1.as_ref()))
+                Ripemd320::digest(input.1.as_ref()).as_slice().to_vec()
             }
             HashAlgorithm::Sha1 => {
                 use sha1::{Digest, Sha1};
 
-                hex::encode(Sha1::digest(input.1.as_ref()))
+                Sha1::digest(input.1.as_ref()).as_slice().to_vec()
             }
             HashAlgorithm::Sha224 => {
                 use sha2::{Digest, Sha224};
 
-                hex::encode(Sha224::digest(input.1.as_ref()))
+                Sha224::digest(input.1.as_ref()).as_slice().to_vec()
             }
             HashAlgorithm::Sha256 => {
                 use sha2::{Digest, Sha256};
 
-                hex::encode(Sha256::digest(input.1.as_ref()))
+                Sha256::digest(input.1.as_ref()).as_slice().to_vec()
             }
             HashAlgorithm::Sha384 => {
                 use sha2::{Digest, Sha384};
 
-                hex::encode(Sha384::digest(input.1.as_ref()))
+                Sha384::digest(input.1.as_ref()).as_slice().to_vec()
             }
             HashAlgorithm::Sha512 => {
                 use sha2::{Digest, Sha512};
 
-                hex::encode(Sha512::digest(input.1.as_ref()))
+                Sha512::digest(input.1.as_ref()).as_slice().to_vec()
             }
             HashAlgorithm::Sha3_224 => {
                 use sha3::{Digest, Sha3_224};
 
-                hex::encode(Sha3_224::digest(input.1.as_ref()))
+                Sha3_224::digest(input.1.as_ref()).as_slice().to_vec()
             }
             HashAlgorithm::Sha3_256 => {
                 use sha3::{Digest, Sha3_256};
 
-                hex::encode(Sha3_256::digest(input.1.as_ref()))
+                Sha3_256::digest(input.1.as_ref()).as_slice().to_vec()
             }
             HashAlgorithm::Sha3_384 => {
                 use sha3::{Digest, Sha3_384};
 
-                hex::encode(Sha3_384::digest(input.1.as_ref()))
+                Sha3_384::digest(input.1.as_ref()).as_slice().to_vec()
             }
             HashAlgorithm::Sha3_512 => {
                 use sha3::{Digest, Sha3_512};
 
-                hex::encode(Sha3_512::digest(input.1.as_ref()))
+                Sha3_512::digest(input.1.as_ref()).as_slice().to_vec()
             }
             HashAlgorithm::Shabal192 => {
                 use shabal::{Digest, Shabal192};
 
-                hex::encode(Shabal192::digest(input.1.as_ref()))
+                Shabal192::digest(input.1.as_ref()).as_slice().to_vec()
             }
             HashAlgorithm::Shabal224 => {
                 use shabal::{Digest, Shabal224};
 
-                hex::encode(Shabal224::digest(input.1.as_ref()))
+                Shabal224::digest(input.1.as_ref()).as_slice().to_vec()
             }
             HashAlgorithm::Shabal256 => {
                 use shabal::{Digest, Shabal256};
 
-                hex::encode(Shabal256::digest(input.1.as_ref()))
+                Shabal256::digest(input.1.as_ref()).as_slice().to_vec()
             }
             HashAlgorithm::Shabal384 => {
                 use shabal::{Digest, Shabal384};
 
-                hex::encode(Shabal384::digest(input.1.as_ref()))
+                Shabal384::digest(input.1.as_ref()).as_slice().to_vec()
             }
             HashAlgorithm::Shabal512 => {
                 use shabal::{Digest, Shabal512};
 
-                hex::encode(Shabal512::digest(input.1.as_ref()))
+                Shabal512::digest(input.1.as_ref()).as_slice().to_vec()
             }
             HashAlgorithm::Sm3 => {
                 use sm3::{Digest, Sm3};
 
-                hex::encode(Sm3::digest(input.1.as_ref()))
+                Sm3::digest(input.1.as_ref()).as_slice().to_vec()
             }
             HashAlgorithm::Streebog256 => {
                 use streebog::{Digest, Streebog256};
 
-                hex::encode(Streebog256::digest(input.1.as_ref()))
+                Streebog256::digest(input.1.as_ref()).as_slice().to_vec()
             }
             HashAlgorithm::Streebog512 => {
                 use streebog::{Digest, Streebog512};
 
-                hex::encode(Streebog512::digest(input.1.as_ref()))
+                Streebog512::digest(input.1.as_ref()).as_slice().to_vec()
             }
             HashAlgorithm::Tiger => {
                 use tiger::{digest::Digest, Tiger};
 
-                hex::encode(Tiger::digest(input.1.as_ref()))
+                Tiger::digest(input.1.as_ref()).as_slice().to_vec()
             }
             HashAlgorithm::Whirlpool => {
                 use whirlpool::{Digest, Whirlpool};
 
-                hex::encode(Whirlpool::digest(input.1.as_ref()))
+                Whirlpool::digest(input.1.as_ref()).as_slice().to_vec()
             }
         };
 
@@ -216,11 +218,19 @@ mod tests {
     fn verify_blake2() {
         assert_eq!(
             Checksum::digest(HashAlgorithm::Blake2b, ("-", b"Hello, world!")).digest,
-            "a2764d133a16816b5847a737a786f2ece4c148095c5faa73e24b4cc5d666c3e45ec271504e14dc6127ddfce4e144fb23b91a6f7b04b53d695502290722953b0f"
+            [
+                162, 118, 77, 19, 58, 22, 129, 107, 88, 71, 167, 55, 167, 134, 242, 236, 228, 193,
+                72, 9, 92, 95, 170, 115, 226, 75, 76, 197, 214, 102, 195, 228, 94, 194, 113, 80,
+                78, 20, 220, 97, 39, 221, 252, 228, 225, 68, 251, 35, 185, 26, 111, 123, 4, 181,
+                61, 105, 85, 2, 41, 7, 34, 149, 59, 15
+            ]
         );
         assert_eq!(
             Checksum::digest(HashAlgorithm::Blake2s, ("-", b"Hello, world!")).digest,
-            "30d8777f0e178582ec8cd2fcdc18af57c828ee2f89e978df52c8e7af078bd5cf"
+            [
+                48, 216, 119, 127, 14, 23, 133, 130, 236, 140, 210, 252, 220, 24, 175, 87, 200, 40,
+                238, 47, 137, 233, 120, 223, 82, 200, 231, 175, 7, 139, 213, 207
+            ]
         );
     }
 
@@ -228,7 +238,10 @@ mod tests {
     fn verify_blake3() {
         assert_eq!(
             Checksum::digest(HashAlgorithm::Blake3, ("-", b"Hello, world!")).digest,
-            "ede5c0b10f2ec4979c69b52f61e42ff5b413519ce09be0f14d098dcfe5f6f98d"
+            [
+                237, 229, 192, 177, 15, 46, 196, 151, 156, 105, 181, 47, 97, 228, 47, 245, 180, 19,
+                81, 156, 224, 155, 224, 241, 77, 9, 141, 207, 229, 246, 249, 141
+            ]
         );
     }
 
@@ -236,11 +249,17 @@ mod tests {
     fn verify_gost() {
         assert_eq!(
             Checksum::digest(HashAlgorithm::Gost, ("-", b"Hello, world!")).digest,
-            "711e00e034a9254765f6270bd02b6badf9dfe380a16593eff6e1ef1eec7ca023"
+            [
+                113, 30, 0, 224, 52, 169, 37, 71, 101, 246, 39, 11, 208, 43, 107, 173, 249, 223,
+                227, 128, 161, 101, 147, 239, 246, 225, 239, 30, 236, 124, 160, 35
+            ]
         );
         assert_eq!(
             Checksum::digest(HashAlgorithm::GostCryptoPro, ("-", b"Hello, world!")).digest,
-            "c003abf7ee48c42fe23cad86d56d2c982461f94d46b109a9f6b2e960f583cf52"
+            [
+                192, 3, 171, 247, 238, 72, 196, 47, 226, 60, 173, 134, 213, 109, 44, 152, 36, 97,
+                249, 77, 70, 177, 9, 169, 246, 178, 233, 96, 245, 131, 207, 82
+            ]
         );
     }
 
@@ -248,19 +267,34 @@ mod tests {
     fn verify_groestl() {
         assert_eq!(
             Checksum::digest(HashAlgorithm::Groestl224, ("-", b"Hello, world!")).digest,
-            "c6f16583ebfb2544969f673d1fb43d73a3a51cd6927cdc1b7ff5e20a"
+            [
+                198, 241, 101, 131, 235, 251, 37, 68, 150, 159, 103, 61, 31, 180, 61, 115, 163,
+                165, 28, 214, 146, 124, 220, 27, 127, 245, 226, 10
+            ]
         );
         assert_eq!(
             Checksum::digest(HashAlgorithm::Groestl256, ("-", b"Hello, world!")).digest,
-            "63e4ab2044e38c1fb1725313f2229e038926af839c86eaf96553027d2c851e18"
+            [
+                99, 228, 171, 32, 68, 227, 140, 31, 177, 114, 83, 19, 242, 34, 158, 3, 137, 38,
+                175, 131, 156, 134, 234, 249, 101, 83, 2, 125, 44, 133, 30, 24
+            ]
         );
         assert_eq!(
             Checksum::digest(HashAlgorithm::Groestl384, ("-", b"Hello, world!")).digest,
-            "fc49edd6b61c5630c6111e51b7b721ff18454e451f829498cc0d76018c11f9f13836545f5d61ac3209a2a9fb2b5cdcfd"
+            [
+                252, 73, 237, 214, 182, 28, 86, 48, 198, 17, 30, 81, 183, 183, 33, 255, 24, 69, 78,
+                69, 31, 130, 148, 152, 204, 13, 118, 1, 140, 17, 249, 241, 56, 54, 84, 95, 93, 97,
+                172, 50, 9, 162, 169, 251, 43, 92, 220, 253
+            ]
         );
         assert_eq!(
             Checksum::digest(HashAlgorithm::Groestl512, ("-", b"Hello, world!")).digest,
-            "b60658e723a8eb1743823a8002175486bc24223ba3dc6d8cb435a948f6d2b9744ac9e307e1d38021ea18c4d536d28fc23491d7771a5a5b0d02ffad9a073dcc28"
+            [
+                182, 6, 88, 231, 35, 168, 235, 23, 67, 130, 58, 128, 2, 23, 84, 134, 188, 36, 34,
+                59, 163, 220, 109, 140, 180, 53, 169, 72, 246, 210, 185, 116, 74, 201, 227, 7, 225,
+                211, 128, 33, 234, 24, 196, 213, 54, 210, 143, 194, 52, 145, 215, 119, 26, 90, 91,
+                13, 2, 255, 173, 154, 7, 61, 204, 40
+            ]
         );
     }
 
@@ -268,19 +302,34 @@ mod tests {
     fn verify_keccak() {
         assert_eq!(
             Checksum::digest(HashAlgorithm::Keccak224, ("-", b"Hello, world!")).digest,
-            "f89e15347fc711f25fc629f4ba60e3326643dc1daf5ae9c04e86961d"
+            [
+                248, 158, 21, 52, 127, 199, 17, 242, 95, 198, 41, 244, 186, 96, 227, 50, 102, 67,
+                220, 29, 175, 90, 233, 192, 78, 134, 150, 29
+            ]
         );
         assert_eq!(
             Checksum::digest(HashAlgorithm::Keccak256, ("-", b"Hello, world!")).digest,
-            "b6e16d27ac5ab427a7f68900ac5559ce272dc6c37c82b3e052246c82244c50e4"
+            [
+                182, 225, 109, 39, 172, 90, 180, 39, 167, 246, 137, 0, 172, 85, 89, 206, 39, 45,
+                198, 195, 124, 130, 179, 224, 82, 36, 108, 130, 36, 76, 80, 228
+            ]
         );
         assert_eq!(
             Checksum::digest(HashAlgorithm::Keccak384, ("-", b"Hello, world!")).digest,
-            "939e56d1f678b0b21f5c176ac1a5fed347a35c688cf64bd997bc57113b6ba6245149157665b7dd23358228dcda5803de"
+            [
+                147, 158, 86, 209, 246, 120, 176, 178, 31, 92, 23, 106, 193, 165, 254, 211, 71,
+                163, 92, 104, 140, 246, 75, 217, 151, 188, 87, 17, 59, 107, 166, 36, 81, 73, 21,
+                118, 101, 183, 221, 35, 53, 130, 40, 220, 218, 88, 3, 222
+            ]
         );
         assert_eq!(
             Checksum::digest(HashAlgorithm::Keccak512, ("-", b"Hello, world!")).digest,
-            "101f353a4727cc94ef81613bb38a807ebc888e2061baa4f845c84cd3c317f3430fda3dbeb44010844b35bccc8e190061d05b4d002c709615275a44e18e494f0c"
+            [
+                16, 31, 53, 58, 71, 39, 204, 148, 239, 129, 97, 59, 179, 138, 128, 126, 188, 136,
+                142, 32, 97, 186, 164, 248, 69, 200, 76, 211, 195, 23, 243, 67, 15, 218, 61, 190,
+                180, 64, 16, 132, 75, 53, 188, 204, 142, 25, 0, 97, 208, 91, 77, 0, 44, 112, 150,
+                21, 39, 90, 68, 225, 142, 73, 79, 12
+            ]
         );
     }
 
@@ -288,7 +337,7 @@ mod tests {
     fn verify_md2() {
         assert_eq!(
             Checksum::digest(HashAlgorithm::Md2, ("-", b"Hello, world!")).digest,
-            "8cca0e965edd0e223b744f9cedf8e141"
+            [140, 202, 14, 150, 94, 221, 14, 34, 59, 116, 79, 156, 237, 248, 225, 65]
         );
     }
 
@@ -296,7 +345,7 @@ mod tests {
     fn verify_md4() {
         assert_eq!(
             Checksum::digest(HashAlgorithm::Md4, ("-", b"Hello, world!")).digest,
-            "0abe9ee1f376caa1bcecad9042f16e73"
+            [10, 190, 158, 225, 243, 118, 202, 161, 188, 236, 173, 144, 66, 241, 110, 115]
         );
     }
 
@@ -304,7 +353,7 @@ mod tests {
     fn verify_md5() {
         assert_eq!(
             Checksum::digest(HashAlgorithm::Md5, ("-", b"Hello, world!")).digest,
-            "6cd3556deb0da54bca060b4c39479839"
+            [108, 211, 85, 109, 235, 13, 165, 75, 202, 6, 11, 76, 57, 71, 152, 57]
         );
     }
 
@@ -312,15 +361,25 @@ mod tests {
     fn verify_ripemd() {
         assert_eq!(
             Checksum::digest(HashAlgorithm::Ripemd160, ("-", b"Hello, world!")).digest,
-            "58262d1fbdbe4530d8865d3518c6d6e41002610f"
+            [
+                88, 38, 45, 31, 189, 190, 69, 48, 216, 134, 93, 53, 24, 198, 214, 228, 16, 2, 97,
+                15
+            ]
         );
         assert_eq!(
             Checksum::digest(HashAlgorithm::Ripemd256, ("-", b"Hello, world!")).digest,
-            "4121b1d1e68be2c62719efbdc4321957074a9fd3f597cda5c90235a6a85061e5"
+            [
+                65, 33, 177, 209, 230, 139, 226, 198, 39, 25, 239, 189, 196, 50, 25, 87, 7, 74,
+                159, 211, 245, 151, 205, 165, 201, 2, 53, 166, 168, 80, 97, 229
+            ]
         );
         assert_eq!(
             Checksum::digest(HashAlgorithm::Ripemd320, ("-", b"Hello, world!")).digest,
-            "38e0636b7efa3c6c3cce53a334f4ff12cfee2a9704cdf9c2e7d0fe0399cf6ee66a71babb49f5870d"
+            [
+                56, 224, 99, 107, 126, 250, 60, 108, 60, 206, 83, 163, 52, 244, 255, 18, 207, 238,
+                42, 151, 4, 205, 249, 194, 231, 208, 254, 3, 153, 207, 110, 230, 106, 113, 186,
+                187, 73, 245, 135, 13
+            ]
         );
     }
 
@@ -328,7 +387,10 @@ mod tests {
     fn verify_sha1() {
         assert_eq!(
             Checksum::digest(HashAlgorithm::Sha1, ("-", b"Hello, world!")).digest,
-            "943a702d06f34599aee1f8da8ef9f7296031d699"
+            [
+                148, 58, 112, 45, 6, 243, 69, 153, 174, 225, 248, 218, 142, 249, 247, 41, 96, 49,
+                214, 153
+            ]
         );
     }
 
@@ -336,19 +398,34 @@ mod tests {
     fn verify_sha2() {
         assert_eq!(
             Checksum::digest(HashAlgorithm::Sha224, ("-", b"Hello, world!")).digest,
-            "8552d8b7a7dc5476cb9e25dee69a8091290764b7f2a64fe6e78e9568"
+            [
+                133, 82, 216, 183, 167, 220, 84, 118, 203, 158, 37, 222, 230, 154, 128, 145, 41, 7,
+                100, 183, 242, 166, 79, 230, 231, 142, 149, 104
+            ]
         );
         assert_eq!(
             Checksum::digest(HashAlgorithm::Sha256, ("-", b"Hello, world!")).digest,
-            "315f5bdb76d078c43b8ac0064e4a0164612b1fce77c869345bfc94c75894edd3"
+            [
+                49, 95, 91, 219, 118, 208, 120, 196, 59, 138, 192, 6, 78, 74, 1, 100, 97, 43, 31,
+                206, 119, 200, 105, 52, 91, 252, 148, 199, 88, 148, 237, 211
+            ]
         );
         assert_eq!(
             Checksum::digest(HashAlgorithm::Sha384, ("-", b"Hello, world!")).digest,
-            "55bc556b0d2fe0fce582ba5fe07baafff035653638c7ac0d5494c2a64c0bea1cc57331c7c12a45cdbca7f4c34a089eeb"
+            [
+                85, 188, 85, 107, 13, 47, 224, 252, 229, 130, 186, 95, 224, 123, 170, 255, 240, 53,
+                101, 54, 56, 199, 172, 13, 84, 148, 194, 166, 76, 11, 234, 28, 197, 115, 49, 199,
+                193, 42, 69, 205, 188, 167, 244, 195, 74, 8, 158, 235
+            ]
         );
         assert_eq!(
             Checksum::digest(HashAlgorithm::Sha512, ("-", b"Hello, world!")).digest,
-            "c1527cd893c124773d811911970c8fe6e857d6df5dc9226bd8a160614c0cd963a4ddea2b94bb7d36021ef9d865d5cea294a82dd49a0bb269f51f6e7a57f79421"
+            [
+                193, 82, 124, 216, 147, 193, 36, 119, 61, 129, 25, 17, 151, 12, 143, 230, 232, 87,
+                214, 223, 93, 201, 34, 107, 216, 161, 96, 97, 76, 12, 217, 99, 164, 221, 234, 43,
+                148, 187, 125, 54, 2, 30, 249, 216, 101, 213, 206, 162, 148, 168, 45, 212, 154, 11,
+                178, 105, 245, 31, 110, 122, 87, 247, 148, 33
+            ]
         );
     }
 
@@ -356,19 +433,34 @@ mod tests {
     fn verify_sha3() {
         assert_eq!(
             Checksum::digest(HashAlgorithm::Sha3_224, ("-", b"Hello, world!")).digest,
-            "6a33e22f20f16642697e8bd549ff7b759252ad56c05a1b0acc31dc69"
+            [
+                106, 51, 226, 47, 32, 241, 102, 66, 105, 126, 139, 213, 73, 255, 123, 117, 146, 82,
+                173, 86, 192, 90, 27, 10, 204, 49, 220, 105
+            ]
         );
         assert_eq!(
             Checksum::digest(HashAlgorithm::Sha3_256, ("-", b"Hello, world!")).digest,
-            "f345a219da005ebe9c1a1eaad97bbf38a10c8473e41d0af7fb617caa0c6aa722"
+            [
+                243, 69, 162, 25, 218, 0, 94, 190, 156, 26, 30, 170, 217, 123, 191, 56, 161, 12,
+                132, 115, 228, 29, 10, 247, 251, 97, 124, 170, 12, 106, 167, 34
+            ]
         );
         assert_eq!(
             Checksum::digest(HashAlgorithm::Sha3_384, ("-", b"Hello, world!")).digest,
-            "6ba9ea268965916f5937228dde678c202f9fe756a87d8b1b7362869583a45901fd1a27289d72fc0e3ff48b1b78827d3a"
+            [
+                107, 169, 234, 38, 137, 101, 145, 111, 89, 55, 34, 141, 222, 103, 140, 32, 47, 159,
+                231, 86, 168, 125, 139, 27, 115, 98, 134, 149, 131, 164, 89, 1, 253, 26, 39, 40,
+                157, 114, 252, 14, 63, 244, 139, 27, 120, 130, 125, 58
+            ]
         );
         assert_eq!(
             Checksum::digest(HashAlgorithm::Sha3_512, ("-", b"Hello, world!")).digest,
-            "8e47f1185ffd014d238fabd02a1a32defe698cbf38c037a90e3c0a0a32370fb52cbd641250508502295fcabcbf676c09470b27443868c8e5f70e26dc337288af"
+            [
+                142, 71, 241, 24, 95, 253, 1, 77, 35, 143, 171, 208, 42, 26, 50, 222, 254, 105,
+                140, 191, 56, 192, 55, 169, 14, 60, 10, 10, 50, 55, 15, 181, 44, 189, 100, 18, 80,
+                80, 133, 2, 41, 95, 202, 188, 191, 103, 108, 9, 71, 11, 39, 68, 56, 104, 200, 229,
+                247, 14, 38, 220, 51, 114, 136, 175
+            ]
         );
     }
 
@@ -376,23 +468,41 @@ mod tests {
     fn verify_shabal() {
         assert_eq!(
             Checksum::digest(HashAlgorithm::Shabal192, ("-", b"Hello, world!")).digest,
-            "5530ace9c4f72542da200b109f2f31acdfd0f5cb599917a6"
+            [
+                85, 48, 172, 233, 196, 247, 37, 66, 218, 32, 11, 16, 159, 47, 49, 172, 223, 208,
+                245, 203, 89, 153, 23, 166
+            ]
         );
         assert_eq!(
             Checksum::digest(HashAlgorithm::Shabal224, ("-", b"Hello, world!")).digest,
-            "64e06cbe06f9822731bdd2a2cc8e01637202e2ecd3ef6b3360b873b5"
+            [
+                100, 224, 108, 190, 6, 249, 130, 39, 49, 189, 210, 162, 204, 142, 1, 99, 114, 2,
+                226, 236, 211, 239, 107, 51, 96, 184, 115, 181
+            ]
         );
         assert_eq!(
             Checksum::digest(HashAlgorithm::Shabal256, ("-", b"Hello, world!")).digest,
-            "e58d8d764ad4db5e716df1840283681a4010a77dfe59b494fc7ac9fc8c64af76"
+            [
+                229, 141, 141, 118, 74, 212, 219, 94, 113, 109, 241, 132, 2, 131, 104, 26, 64, 16,
+                167, 125, 254, 89, 180, 148, 252, 122, 201, 252, 140, 100, 175, 118
+            ]
         );
         assert_eq!(
             Checksum::digest(HashAlgorithm::Shabal384, ("-", b"Hello, world!")).digest,
-            "bfae21d6dcb252249f8df385dfa4382bb34748c81854a42c8ed947f57ee9102169f443560a72e553fb65d3f14fd54d35"
+            [
+                191, 174, 33, 214, 220, 178, 82, 36, 159, 141, 243, 133, 223, 164, 56, 43, 179, 71,
+                72, 200, 24, 84, 164, 44, 142, 217, 71, 245, 126, 233, 16, 33, 105, 244, 67, 86,
+                10, 114, 229, 83, 251, 101, 211, 241, 79, 213, 77, 53
+            ]
         );
         assert_eq!(
             Checksum::digest(HashAlgorithm::Shabal512, ("-", b"Hello, world!")).digest,
-            "7048f0a589339d2d26890701ed3b2d1ed7c8dd1ac37fec517c7a8c39d5d51548e96ea8dfaceb5b99f9d1db3b18a7652e0412348ebfd61d32d755d6098bff8cb3"
+            [
+                112, 72, 240, 165, 137, 51, 157, 45, 38, 137, 7, 1, 237, 59, 45, 30, 215, 200, 221,
+                26, 195, 127, 236, 81, 124, 122, 140, 57, 213, 213, 21, 72, 233, 110, 168, 223,
+                172, 235, 91, 153, 249, 209, 219, 59, 24, 167, 101, 46, 4, 18, 52, 142, 191, 214,
+                29, 50, 215, 85, 214, 9, 139, 255, 140, 179
+            ]
         );
     }
 
@@ -400,7 +510,10 @@ mod tests {
     fn verify_sm3() {
         assert_eq!(
             Checksum::digest(HashAlgorithm::Sm3, ("-", b"Hello, world!")).digest,
-            "e3bca101b496880c3653dad85861d0e784b00a8c18f7574472d156060e9096bf"
+            [
+                227, 188, 161, 1, 180, 150, 136, 12, 54, 83, 218, 216, 88, 97, 208, 231, 132, 176,
+                10, 140, 24, 247, 87, 68, 114, 209, 86, 6, 14, 144, 150, 191
+            ]
         );
     }
 
@@ -408,11 +521,19 @@ mod tests {
     fn verify_streebog() {
         assert_eq!(
             Checksum::digest(HashAlgorithm::Streebog256, ("-", b"Hello, world!")).digest,
-            "ccb6fae3553c101715da535328de718f6f6e412db8611a38025c510ac8f85aeb"
+            [
+                204, 182, 250, 227, 85, 60, 16, 23, 21, 218, 83, 83, 40, 222, 113, 143, 111, 110,
+                65, 45, 184, 97, 26, 56, 2, 92, 81, 10, 200, 248, 90, 235
+            ]
         );
         assert_eq!(
             Checksum::digest(HashAlgorithm::Streebog512, ("-", b"Hello, world!")).digest,
-            "a83352d35dc8f07ca8048e6752415e5e991527e29415ade0eaad6e48d67bf37b60dfd7bb4475cbcbe297ed016128391c312dfe3a00e0a9bd0e497389c888eedc"
+            [
+                168, 51, 82, 211, 93, 200, 240, 124, 168, 4, 142, 103, 82, 65, 94, 94, 153, 21, 39,
+                226, 148, 21, 173, 224, 234, 173, 110, 72, 214, 123, 243, 123, 96, 223, 215, 187,
+                68, 117, 203, 203, 226, 151, 237, 1, 97, 40, 57, 28, 49, 45, 254, 58, 0, 224, 169,
+                189, 14, 73, 115, 137, 200, 136, 238, 220
+            ]
         );
     }
 
@@ -420,7 +541,10 @@ mod tests {
     fn verify_tiger() {
         assert_eq!(
             Checksum::digest(HashAlgorithm::Tiger, ("-", b"Hello, world!")).digest,
-            "b5e5dd73a5894236937084131bb845189cdc5477579b9f36"
+            [
+                181, 229, 221, 115, 165, 137, 66, 54, 147, 112, 132, 19, 27, 184, 69, 24, 156, 220,
+                84, 119, 87, 155, 159, 54
+            ]
         );
     }
 
@@ -428,7 +552,12 @@ mod tests {
     fn verify_whirlpool() {
         assert_eq!(
             Checksum::digest(HashAlgorithm::Whirlpool, ("-", b"Hello, world!")).digest,
-            "a1a8703be5312b139b42eb331aa800ccaca0c34d58c6988e44f45489cfb16beb4b6bf0ce20be1db22a10b0e4bb680480a3d2429e6c483085453c098b65852495"
+            [
+                161, 168, 112, 59, 229, 49, 43, 19, 155, 66, 235, 51, 26, 168, 0, 204, 172, 160,
+                195, 77, 88, 198, 152, 142, 68, 244, 84, 137, 207, 177, 107, 235, 75, 107, 240,
+                206, 32, 190, 29, 178, 42, 16, 176, 228, 187, 104, 4, 128, 163, 210, 66, 158, 108,
+                72, 48, 133, 69, 60, 9, 139, 101, 133, 36, 149
+            ]
         );
     }
 }

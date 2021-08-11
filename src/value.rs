@@ -16,7 +16,7 @@ use crate::regex;
 pub struct Checksum {
     pub algorithm: Option<HashAlgorithm>,
     pub file: PathBuf,
-    pub digest: String,
+    pub digest: Vec<u8>,
 }
 
 impl FromStr for Checksum {
@@ -30,7 +30,8 @@ impl FromStr for Checksum {
             return Ok(Self {
                 algorithm: None,
                 file: caps["file"].into(),
-                digest: caps["digest"].to_string(),
+                digest: hex::decode(caps["digest"].to_string())
+                    .expect("Failed to decode a hex string into raw bytes"),
             });
         }
         if let Some(caps) =
@@ -41,7 +42,7 @@ impl FromStr for Checksum {
             return Ok(Self {
                 algorithm: caps["algorithm"].parse().ok(),
                 file: caps["file"].into(),
-                digest: caps["digest"].to_string(),
+                digest: hex::decode(caps["digest"].to_string()).expect("Failed to decode a hex string into raw bytes"),
             });
         }
 
