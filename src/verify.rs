@@ -43,7 +43,7 @@ impl Verify {
 
         let result = Checksum::digest(algorithm, (checksum.file.clone(), data));
 
-        if result.digest == checksum.digest.to_ascii_lowercase() {
+        if result.digest == checksum.digest {
             Ok(Verify {
                 algorithm,
                 file: checksum.file.clone(),
