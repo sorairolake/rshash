@@ -8,7 +8,7 @@ use std::fmt;
 use std::path::PathBuf;
 use std::str::FromStr;
 
-use anyhow::{bail, Error, Result};
+use anyhow::{anyhow, Error, Result};
 use serde_with::{DeserializeFromStr, SerializeDisplay};
 
 use crate::regex;
@@ -46,7 +46,7 @@ impl FromStr for Checksum {
             });
         }
 
-        bail!("Improperly formatted checksum line");
+        Err(anyhow!("Improperly formatted checksum line"))
     }
 }
 
@@ -140,8 +140,8 @@ impl fmt::Display for HashAlgorithm {
 impl FromStr for HashAlgorithm {
     type Err = Error;
 
-    fn from_str(format: &str) -> Result<Self> {
-        match format.to_ascii_lowercase().as_str() {
+    fn from_str(algorithm: &str) -> Result<Self> {
+        match algorithm.to_ascii_lowercase().as_str() {
             "blake2b" => Ok(HashAlgorithm::Blake2b),
             "blake2s" => Ok(HashAlgorithm::Blake2s),
             "blake3" => Ok(HashAlgorithm::Blake3),
@@ -180,7 +180,7 @@ impl FromStr for HashAlgorithm {
             "streebog-512" => Ok(HashAlgorithm::Streebog512),
             "tiger" => Ok(HashAlgorithm::Tiger),
             "whirlpool" => Ok(HashAlgorithm::Whirlpool),
-            _ => unreachable!(),
+            _ => Err(anyhow!("Unknown hash algorithm: {}", algorithm)),
         }
     }
 }
@@ -213,7 +213,7 @@ impl FromStr for Style {
         match style.to_ascii_lowercase().as_str() {
             "sfv" => Ok(Style::Sfv),
             "bsd" => Ok(Style::Bsd),
-            _ => bail!("Unknown style: {}", style),
+            _ => Err(anyhow!("Unknown style: {}", style)),
         }
     }
 }
