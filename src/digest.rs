@@ -10,8 +10,8 @@ use crate::value::{Checksum, HashAlgorithm};
 
 impl Checksum {
     /// Compute message digest for the specified hash algorithm.
-    pub fn digest<P: AsRef<Path>, T: AsRef<[u8]>>(algo: HashAlgorithm, input: (P, T)) -> Self {
-        let digest = match algo {
+    pub fn digest<P: AsRef<Path>, T: AsRef<[u8]>>(algorithm: HashAlgorithm, input: (P, T)) -> Self {
+        let digest = match algorithm {
             HashAlgorithm::Blake2b => {
                 use blake2::{Blake2b, Digest};
 
@@ -203,7 +203,7 @@ impl Checksum {
         };
 
         Checksum {
-            algorithm: Some(algo),
+            algorithm: Some(algorithm),
             file: input.0.as_ref().to_path_buf(),
             digest,
         }

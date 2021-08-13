@@ -23,26 +23,26 @@ impl FromStr for Checksum {
     type Err = Error;
 
     fn from_str(checksum: &str) -> Result<Self> {
-        if let Some(caps) =
+        if let Some(captures) =
             regex!(r"^(?P<digest>[[:xdigit:]]{32,128})  (?P<file>\S.*\S)$").captures(checksum)
         {
             // Parse as SFV-style checksum.
             return Ok(Self {
                 algorithm: None,
-                file: caps["file"].into(),
-                digest: hex::decode(caps["digest"].to_string())
+                file: captures["file"].into(),
+                digest: hex::decode(captures["digest"].to_string())
                     .expect("Failed to decode a hex string into raw bytes"),
             });
         }
-        if let Some(caps) =
+        if let Some(captures) =
             regex!(r"^(?P<algorithm>[[:alnum:]-]+) \((?P<file>\S.*\S)\) = (?P<digest>[[:xdigit:]]{32,128})$")
                 .captures(checksum)
         {
             // Parse as BSD-style checksum.
             return Ok(Self {
-                algorithm: caps["algorithm"].parse().ok(),
-                file: caps["file"].into(),
-                digest: hex::decode(caps["digest"].to_string()).expect("Failed to decode a hex string into raw bytes"),
+                algorithm: captures["algorithm"].parse().ok(),
+                file: captures["file"].into(),
+                digest: hex::decode(captures["digest"].to_string()).expect("Failed to decode a hex string into raw bytes"),
             });
         }
 
@@ -93,46 +93,46 @@ pub enum HashAlgorithm {
 }
 
 impl fmt::Display for HashAlgorithm {
-    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+    fn fmt(&self, fmt: &mut fmt::Formatter<'_>) -> fmt::Result {
         match self {
-            HashAlgorithm::Blake2b => write!(f, "BLAKE2b"),
-            HashAlgorithm::Blake2s => write!(f, "BLAKE2s"),
-            HashAlgorithm::Blake3 => write!(f, "BLAKE3"),
-            HashAlgorithm::Gost => write!(f, "GOST"),
-            HashAlgorithm::GostCryptoPro => write!(f, "GOST-CryptoPro"),
-            HashAlgorithm::Groestl224 => write!(f, "Groestl-224"),
-            HashAlgorithm::Groestl256 => write!(f, "Groestl-256"),
-            HashAlgorithm::Groestl384 => write!(f, "Groestl-384"),
-            HashAlgorithm::Groestl512 => write!(f, "Groestl-512"),
-            HashAlgorithm::Keccak224 => write!(f, "Keccak-224"),
-            HashAlgorithm::Keccak256 => write!(f, "Keccak-256"),
-            HashAlgorithm::Keccak384 => write!(f, "Keccak-384"),
-            HashAlgorithm::Keccak512 => write!(f, "Keccak-512"),
-            HashAlgorithm::Md2 => write!(f, "MD2"),
-            HashAlgorithm::Md4 => write!(f, "MD4"),
-            HashAlgorithm::Md5 => write!(f, "MD5"),
-            HashAlgorithm::Ripemd160 => write!(f, "RIPEMD-160"),
-            HashAlgorithm::Ripemd256 => write!(f, "RIPEMD-256"),
-            HashAlgorithm::Ripemd320 => write!(f, "RIPEMD-320"),
-            HashAlgorithm::Sha1 => write!(f, "SHA1"),
-            HashAlgorithm::Sha224 => write!(f, "SHA224"),
-            HashAlgorithm::Sha256 => write!(f, "SHA256"),
-            HashAlgorithm::Sha384 => write!(f, "SHA384"),
-            HashAlgorithm::Sha512 => write!(f, "SHA512"),
-            HashAlgorithm::Sha3_224 => write!(f, "SHA3-224"),
-            HashAlgorithm::Sha3_256 => write!(f, "SHA3-256"),
-            HashAlgorithm::Sha3_384 => write!(f, "SHA3-384"),
-            HashAlgorithm::Sha3_512 => write!(f, "SHA3-512"),
-            HashAlgorithm::Shabal192 => write!(f, "Shabal-192"),
-            HashAlgorithm::Shabal224 => write!(f, "Shabal-224"),
-            HashAlgorithm::Shabal256 => write!(f, "Shabal-256"),
-            HashAlgorithm::Shabal384 => write!(f, "Shabal-384"),
-            HashAlgorithm::Shabal512 => write!(f, "Shabal-512"),
-            HashAlgorithm::Sm3 => write!(f, "SM3"),
-            HashAlgorithm::Streebog256 => write!(f, "Streebog-256"),
-            HashAlgorithm::Streebog512 => write!(f, "Streebog-512"),
-            HashAlgorithm::Tiger => write!(f, "Tiger"),
-            HashAlgorithm::Whirlpool => write!(f, "Whirlpool"),
+            HashAlgorithm::Blake2b => write!(fmt, "BLAKE2b"),
+            HashAlgorithm::Blake2s => write!(fmt, "BLAKE2s"),
+            HashAlgorithm::Blake3 => write!(fmt, "BLAKE3"),
+            HashAlgorithm::Gost => write!(fmt, "GOST"),
+            HashAlgorithm::GostCryptoPro => write!(fmt, "GOST-CryptoPro"),
+            HashAlgorithm::Groestl224 => write!(fmt, "Groestl-224"),
+            HashAlgorithm::Groestl256 => write!(fmt, "Groestl-256"),
+            HashAlgorithm::Groestl384 => write!(fmt, "Groestl-384"),
+            HashAlgorithm::Groestl512 => write!(fmt, "Groestl-512"),
+            HashAlgorithm::Keccak224 => write!(fmt, "Keccak-224"),
+            HashAlgorithm::Keccak256 => write!(fmt, "Keccak-256"),
+            HashAlgorithm::Keccak384 => write!(fmt, "Keccak-384"),
+            HashAlgorithm::Keccak512 => write!(fmt, "Keccak-512"),
+            HashAlgorithm::Md2 => write!(fmt, "MD2"),
+            HashAlgorithm::Md4 => write!(fmt, "MD4"),
+            HashAlgorithm::Md5 => write!(fmt, "MD5"),
+            HashAlgorithm::Ripemd160 => write!(fmt, "RIPEMD-160"),
+            HashAlgorithm::Ripemd256 => write!(fmt, "RIPEMD-256"),
+            HashAlgorithm::Ripemd320 => write!(fmt, "RIPEMD-320"),
+            HashAlgorithm::Sha1 => write!(fmt, "SHA1"),
+            HashAlgorithm::Sha224 => write!(fmt, "SHA224"),
+            HashAlgorithm::Sha256 => write!(fmt, "SHA256"),
+            HashAlgorithm::Sha384 => write!(fmt, "SHA384"),
+            HashAlgorithm::Sha512 => write!(fmt, "SHA512"),
+            HashAlgorithm::Sha3_224 => write!(fmt, "SHA3-224"),
+            HashAlgorithm::Sha3_256 => write!(fmt, "SHA3-256"),
+            HashAlgorithm::Sha3_384 => write!(fmt, "SHA3-384"),
+            HashAlgorithm::Sha3_512 => write!(fmt, "SHA3-512"),
+            HashAlgorithm::Shabal192 => write!(fmt, "Shabal-192"),
+            HashAlgorithm::Shabal224 => write!(fmt, "Shabal-224"),
+            HashAlgorithm::Shabal256 => write!(fmt, "Shabal-256"),
+            HashAlgorithm::Shabal384 => write!(fmt, "Shabal-384"),
+            HashAlgorithm::Shabal512 => write!(fmt, "Shabal-512"),
+            HashAlgorithm::Sm3 => write!(fmt, "SM3"),
+            HashAlgorithm::Streebog256 => write!(fmt, "Streebog-256"),
+            HashAlgorithm::Streebog512 => write!(fmt, "Streebog-512"),
+            HashAlgorithm::Tiger => write!(fmt, "Tiger"),
+            HashAlgorithm::Whirlpool => write!(fmt, "Whirlpool"),
         }
     }
 }
@@ -198,10 +198,10 @@ impl Default for Style {
 }
 
 impl fmt::Display for Style {
-    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+    fn fmt(&self, fmt: &mut fmt::Formatter<'_>) -> fmt::Result {
         match self {
-            Style::Sfv => write!(f, "SFV"),
-            Style::Bsd => write!(f, "BSD"),
+            Style::Sfv => write!(fmt, "SFV"),
+            Style::Bsd => write!(fmt, "BSD"),
         }
     }
 }

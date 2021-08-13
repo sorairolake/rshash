@@ -140,13 +140,13 @@ pub struct Opt {
 impl Opt {
     /// Apply the config from the config file.
     pub fn apply_config(mut self) -> Result<Self> {
-        if let Some(p) = Config::path() {
-            let config = Config::read(&p)?;
+        if let Some(path) = Config::path() {
+            let config = Config::read(&path)?;
             let matches = Self::clap().get_matches();
 
-            if let Some(s) = config.style {
+            if let Some(style) = config.style {
                 if matches.occurrences_of("style") == 0 {
-                    self.style = s;
+                    self.style = style;
                 }
             }
         }

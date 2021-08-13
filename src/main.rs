@@ -29,11 +29,11 @@ use crate::verify::Verify;
 fn main() -> Result<()> {
     let opt = Opt::from_args().apply_config()?;
 
-    if let Some(s) = opt.generate_completion {
-        if let Some(o) = opt.output {
-            Opt::generate_completion_to_file(s, o)?;
+    if let Some(shell) = opt.generate_completion {
+        if let Some(outdir) = opt.output {
+            Opt::generate_completion_to_file(shell, outdir)?;
         } else {
-            Opt::generate_completion_to_stdout(s);
+            Opt::generate_completion_to_stdout(shell);
         }
 
         return Ok(());
@@ -106,15 +106,20 @@ fn main() -> Result<()> {
 
         btreemap!("-".into() => input)
     } else {
-        let data: Result<Vec<_>> = files
+        files
             .iter()
-            .map(|f| {
-                fs::read(f).with_context(|| format!("Failed to read bytes from {}", f.display()))
-            })
-            .collect();
-        let data = data?;
-
-        files.into_iter().zip(data.into_iter()).collect()
+            .cloned()
+            .zip(
+                files
+                    .iter()
+                    .map(|f| {
+                        fs::read(f)
+                            .with_context(|| format!("Failed to read bytes from {}", f.display()))
+                    })
+                    .collect::<Result<Vec<_>>>()?
+                    .into_iter(),
+            )
+            .collect()
     };
 
     if opt.check {
@@ -313,8 +318,8 @@ fn main() -> Result<()> {
             .map(|c| c.output(opt.style))
             .collect();
         match opt.output {
-            Some(ref f) => fs::write(f, output.join("\n"))
-                .with_context(|| format!("Failed to write to {}", f.display()))?,
+            Some(ref file) => fs::write(file, output.join("\n"))
+                .with_context(|| format!("Failed to write to {}", file.display()))?,
             None => output.into_iter().for_each(|o| println!("{}", o)),
         }
     }

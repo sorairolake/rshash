@@ -60,8 +60,8 @@ impl Verify {
 
     /// Output verification result.
     pub fn output(&self, padding: impl Into<usize>) -> String {
-        if let Some(s) = self.success {
-            if s {
+        if let Some(success) = self.success {
+            if success {
                 format!("{:01$} OK", self.file.display(), padding.into())
             } else {
                 format!("{:01$} FAILED", self.file.display(), padding.into())
