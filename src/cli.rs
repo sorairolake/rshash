@@ -82,7 +82,7 @@ pub struct Opt {
     pub list_hash_algorithms: bool,
 
     /// Read the checksums from the file and check them.
-    #[structopt(short, long, requires = "input", conflicts_with = "output")]
+    #[structopt(short, long, requires = "input", conflicts_with_all = &["output", "style"])]
     pub check: bool,
 
     /// Don't fail or report status for missing files.
@@ -122,7 +122,7 @@ pub struct Opt {
         short,
         long,
         value_name = "STYLE",
-        possible_values = &["sfv", "bsd"],
+        possible_values = &["sfv", "bsd", "json"],
         case_insensitive = true,
         default_value
     )]

@@ -21,6 +21,7 @@ impl Checksum {
                 self.file.display(),
                 hex::encode(self.digest.clone())
             ),
+            _ => unreachable!(),
         }
     }
 }

@@ -6,7 +6,7 @@
 
 = rshash(1)
 // Specify in UTC.
-:docdate: 2021-07-24
+:docdate: 2021-08-13
 :doctype: manpage
 :mansource: RSHash {manversion}
 :manmanual: General Commands Manual
@@ -95,6 +95,7 @@ If _FILE_ is not specified, the input is read from stdin.
 
     * *sfv* (SFV output format, default)
     * *bsd* (BSD output format)
+    * *json* (JSON output format)
 
 === General options
 

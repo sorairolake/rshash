@@ -9,13 +9,17 @@ use std::path::PathBuf;
 use std::str::FromStr;
 
 use anyhow::{anyhow, Error, Result};
-use serde_with::{DeserializeFromStr, SerializeDisplay};
+use serde::{Deserialize, Serialize};
+use serde_with::{serde_as, DeserializeFromStr, SerializeDisplay};
 
 use crate::regex;
 
+#[serde_as]
+#[derive(Deserialize, Serialize)]
 pub struct Checksum {
     pub algorithm: Option<HashAlgorithm>,
     pub file: PathBuf,
+    #[serde_as(as = "serde_with::hex::Hex")]
     pub digest: Vec<u8>,
 }
 
@@ -50,7 +54,7 @@ impl FromStr for Checksum {
     }
 }
 
-#[derive(Clone, Copy, SerializeDisplay)]
+#[derive(Clone, Copy, DeserializeFromStr, SerializeDisplay)]
 pub enum HashAlgorithm {
     Blake2b,
     Blake2s,
@@ -185,10 +189,11 @@ impl FromStr for HashAlgorithm {
     }
 }
 
-#[derive(Clone, Copy, DeserializeFromStr)]
+#[derive(Clone, Copy, DeserializeFromStr, PartialEq)]
 pub enum Style {
     Sfv,
     Bsd,
+    Json,
 }
 
 impl Default for Style {
@@ -202,6 +207,7 @@ impl fmt::Display for Style {
         match self {
             Style::Sfv => write!(fmt, "SFV"),
             Style::Bsd => write!(fmt, "BSD"),
+            Style::Json => write!(fmt, "JSON"),
         }
     }
 }
@@ -213,6 +219,7 @@ impl FromStr for Style {
         match style.to_ascii_lowercase().as_str() {
             "sfv" => Ok(Style::Sfv),
             "bsd" => Ok(Style::Bsd),
+            "json" => Ok(Style::Json),
             _ => Err(anyhow!("Unknown style: {}", style)),
         }
     }

@@ -23,7 +23,7 @@ use maplit::btreemap;
 use structopt::StructOpt;
 
 use crate::cli::Opt;
-use crate::value::{Checksum, HashAlgorithm};
+use crate::value::{Checksum, HashAlgorithm, Style};
 use crate::verify::Verify;
 
 fn main() -> Result<()> {
@@ -127,26 +127,29 @@ fn main() -> Result<()> {
         let mut is_improper = bool::default();
 
         for (i, (path, data)) in inputs.iter().enumerate() {
-            let checksums =
-                str::from_utf8(data).context("Failed to convert from bytes to a string")?;
+            let str = str::from_utf8(data).context("Failed to convert from bytes to a string")?;
 
             let mut impropers = Vec::new();
-            for (i, checksum) in checksums.lines().enumerate() {
-                if let Err(e) = checksum.parse::<Checksum>() {
-                    impropers.push((i, e));
+            let checksums: Vec<_> = if let Ok(checksums) = serde_json::from_str(str) {
+                checksums
+            } else {
+                for (i, line) in str.lines().enumerate() {
+                    if let Err(e) = line.parse::<Checksum>() {
+                        impropers.push((i, e));
+                    }
                 }
-            }
+                str.lines().flat_map(|c| c.parse::<Checksum>()).collect()
+            };
             let impropers = impropers;
+
             let checksums: Vec<_> = checksums
-                .lines()
-                .flat_map(|c| c.parse::<Checksum>())
+                .into_iter()
                 .map(|c| Checksum {
                     algorithm: opt.hash_algorithm.or(c.algorithm),
                     file: c.file,
                     digest: c.digest,
                 })
                 .collect();
-
             ensure!(
                 checksums.iter().all(|c| c.algorithm.is_some()),
                 "Unable to determine hash algorithm"
@@ -312,15 +315,25 @@ fn main() -> Result<()> {
             .hash_algorithm
             .context("Unable to determine hash algorithm")?;
 
-        let output: Vec<_> = inputs
+        let checksums: Vec<_> = inputs
             .into_iter()
             .map(|i| Checksum::digest(algo, i))
-            .map(|c| c.output(opt.style))
             .collect();
+
+        let output = if opt.style == Style::Json {
+            serde_json::to_string_pretty(&checksums)
+                .context("Failed to serialize to a JSON string")?
+        } else {
+            checksums
+                .into_iter()
+                .map(|c| c.output(opt.style))
+                .collect::<Vec<_>>()
+                .join("\n")
+        };
         match opt.output {
-            Some(ref file) => fs::write(file, output.join("\n"))
+            Some(ref file) => fs::write(file, output)
                 .with_context(|| format!("Failed to write to {}", file.display()))?,
-            None => output.into_iter().for_each(|o| println!("{}", o)),
+            None => println!("{}", output),
         }
     }
 
