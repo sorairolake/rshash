@@ -13,6 +13,8 @@ use serde::Serialize;
 
 use crate::value::{Checksum, HashAlgorithm};
 
+pub const VERIFICATION_RESULT_WIDTH: usize = if cfg!(windows) { 79 } else { 80 };
+
 #[derive(Clone, Serialize)]
 pub struct Verify {
     pub algorithm: HashAlgorithm,
@@ -59,18 +61,26 @@ impl Verify {
     }
 
     /// Output verification result.
-    pub fn output(&self, padding: impl Into<usize>) -> String {
+    pub fn output(&self) -> String {
         if let Some(success) = self.success {
             if success {
-                format!("{:01$} OK", self.file.display(), padding.into())
+                format!(
+                    "{:01$} OK",
+                    self.file.display(),
+                    VERIFICATION_RESULT_WIDTH - 30
+                )
             } else {
-                format!("{:01$} FAILED", self.file.display(), padding.into())
+                format!(
+                    "{:01$} FAILED",
+                    self.file.display(),
+                    VERIFICATION_RESULT_WIDTH - 30
+                )
             }
         } else {
             format!(
                 "{:01$} No such file or directory",
                 self.file.display(),
-                padding.into()
+                VERIFICATION_RESULT_WIDTH - 30
             )
         }
     }

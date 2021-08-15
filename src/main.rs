@@ -24,7 +24,7 @@ use structopt::StructOpt;
 
 use crate::cli::Opt;
 use crate::value::{Checksum, HashAlgorithm, Style};
-use crate::verify::Verify;
+use crate::verify::{Verify, VERIFICATION_RESULT_WIDTH};
 
 fn main() -> Result<()> {
     let opt = Opt::from_args().apply_config()?;
@@ -106,20 +106,14 @@ fn main() -> Result<()> {
 
         btreemap!("-".into() => input)
     } else {
-        files
+        let data: Result<Vec<_>> = files
             .iter()
-            .cloned()
-            .zip(
-                files
-                    .iter()
-                    .map(|f| {
-                        fs::read(f)
-                            .with_context(|| format!("Failed to read bytes from {}", f.display()))
-                    })
-                    .collect::<Result<Vec<_>>>()?
-                    .into_iter(),
-            )
-            .collect()
+            .map(|f| {
+                fs::read(f).with_context(|| format!("Failed to read bytes from {}", f.display()))
+            })
+            .collect();
+
+        files.into_iter().zip(data?.into_iter()).collect()
     };
 
     if opt.check {
@@ -155,11 +149,10 @@ fn main() -> Result<()> {
                 "Unable to determine hash algorithm"
             );
 
-            let result: Result<Vec<_>> = checksums
+            let result = checksums
                 .iter()
                 .map(|c| Verify::verify(c).context("Failed to verify a checksum"))
-                .collect();
-            let result = result?;
+                .collect::<Result<Vec<_>>>()?;
 
             let result: Vec<_> = if opt.ignore_missing {
                 result.into_iter().filter(|r| r.success.is_some()).collect()
@@ -220,28 +213,13 @@ fn main() -> Result<()> {
                 }
             }
 
-            let padding: Result<Vec<_>> = result
-                .iter()
-                .map(|r| {
-                    r.file
-                        .to_str()
-                        .context("Failed to convert from a path to a string")
-                })
-                .collect();
-            let padding = padding?;
-            let padding = padding
-                .into_iter()
-                .map(|p| p.chars().count())
-                .max()
-                .expect("Unable to determine the padding")
-                * 2;
             println!("Verifying {} checksums from {}", total, path.display());
-            println!("{}", "-".repeat(padding * 2));
+            println!("{}", "-".repeat(VERIFICATION_RESULT_WIDTH));
             result
                 .into_iter()
-                .map(|r| r.output(padding))
+                .map(|r| r.output())
                 .for_each(|o| println!("{}", o));
-            println!("{}", "-".repeat(padding * 2));
+            println!("{}", "-".repeat(VERIFICATION_RESULT_WIDTH));
             if total == success && !opt.quiet {
                 println!("Everything is successful");
             } else if opt.ignore_missing {
