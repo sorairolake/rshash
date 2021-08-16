@@ -734,6 +734,7 @@ dependencies = [
  "md2",
  "md4",
  "once_cell",
+ "rayon",
  "regex",
  "ripemd160",
  "ripemd256",

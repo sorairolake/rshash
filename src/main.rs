@@ -20,6 +20,7 @@ use std::str;
 use anyhow::{ensure, Context, Result};
 use dialoguer::theme::ColorfulTheme;
 use maplit::btreemap;
+use rayon::iter::{IntoParallelIterator, IntoParallelRefIterator, ParallelIterator};
 use structopt::StructOpt;
 
 use crate::cli::Opt;
@@ -150,7 +151,7 @@ fn main() -> Result<()> {
             );
 
             let result = checksums
-                .iter()
+                .par_iter()
                 .map(|c| Verify::verify(c).context("Failed to verify a checksum"))
                 .collect::<Result<Vec<_>>>()?;
 
@@ -294,7 +295,7 @@ fn main() -> Result<()> {
             .context("Unable to determine hash algorithm")?;
 
         let checksums: Vec<_> = inputs
-            .into_iter()
+            .into_par_iter()
             .map(|i| Checksum::digest(algo, i))
             .collect();
 
