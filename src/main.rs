@@ -297,7 +297,10 @@ fn main() -> Result<()> {
                     .map(|f| f.len())
                     .sum();
 
-                if let Some(speed) = length.checked_div(Duration::from_millis(duration).as_secs()) {
+                if let Some(speed) = length
+                    .checked_div(duration)
+                    .and_then(|s| s.checked_mul(1_000))
+                {
                     eprintln!(
                         "Computed {} in {} ({}/s)",
                         BinaryBytes(length),
@@ -414,7 +417,9 @@ fn main() -> Result<()> {
             .expect("Time interval is too long");
 
         if opt.check {
-            if let Some(speed) = total_length.checked_div(Duration::from_millis(duration).as_secs())
+            if let Some(speed) = total_length
+                .checked_div(duration)
+                .and_then(|s| s.checked_mul(1_000))
             {
                 eprintln!(
                     "Total {} in {} ({}/s)",
@@ -436,7 +441,10 @@ fn main() -> Result<()> {
                 .map(|d| u64::try_from(d.len()).expect("File size exceeds the limit"))
                 .sum();
 
-            if let Some(speed) = length.checked_div(Duration::from_millis(duration).as_secs()) {
+            if let Some(speed) = length
+                .checked_div(duration)
+                .and_then(|s| s.checked_mul(1_000))
+            {
                 eprintln!(
                     "Computed {} in {} ({}/s)",
                     BinaryBytes(length),
