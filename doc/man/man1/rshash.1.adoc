@@ -6,7 +6,7 @@
 
 = rshash(1)
 // Specify in UTC.
-:docdate: 2021-08-13
+:docdate: 2021-08-17
 :doctype: manpage
 :mansource: RSHash {manversion}
 :manmanual: General Commands Manual
@@ -98,6 +98,12 @@ If _FILE_ is not specified, the input is read from stdin.
     * *json* (JSON output format)
 
 === General options
+
+*--progress*::
+  Display a progress bar for reporting progress.
+
+*--speed*::
+  Print the processing speed.
 
 *-h*, *--help*::
   Print help message and exit.

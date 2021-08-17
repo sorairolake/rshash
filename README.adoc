@@ -30,6 +30,8 @@ FLAGS:
     -w, --warn                    Warn about improperly formatted checksum lines
     -j, --json                    Output the verification result as JSON to stdout
     -p, --pretty                  Output as a pretty-printed JSON
+        --progress                Display a progress bar for reporting progress
+        --speed                   Print the processing speed
     -h, --help                    Prints help information
     -V, --version                 Prints version information
 

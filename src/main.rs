@@ -13,19 +13,25 @@ mod value;
 mod verify;
 
 use std::collections::BTreeMap;
+use std::convert::{TryFrom, TryInto};
 use std::fs;
 use std::io::{self, Read};
 use std::str;
+use std::time::{Duration, Instant};
 
 use anyhow::{ensure, Context, Result};
 use dialoguer::theme::ColorfulTheme;
+use indicatif::{BinaryBytes, ParallelProgressIterator, ProgressBar, ProgressStyle};
 use maplit::btreemap;
-use rayon::iter::{IntoParallelIterator, IntoParallelRefIterator, ParallelIterator};
+use rayon::iter::{IntoParallelRefIterator, ParallelIterator};
 use structopt::StructOpt;
 
 use crate::cli::Opt;
 use crate::value::{Checksum, HashAlgorithm, Style};
 use crate::verify::{Verify, VERIFICATION_RESULT_WIDTH};
+
+const PROGRESS_BAR_TEMPLATE: &str =
+    "{spinner:.green} [{elapsed_precise}] {percent}% {wide_bar:.cyan/blue} {pos}/{len} ETA {eta}";
 
 fn main() -> Result<()> {
     let opt = Opt::from_args().apply_config()?;
@@ -117,11 +123,16 @@ fn main() -> Result<()> {
         files.into_iter().zip(data?.into_iter()).collect()
     };
 
+    let start = Instant::now();
+    let mut total_length = u64::default();
+
     if opt.check {
         let mut results = BTreeMap::new();
         let mut is_improper = bool::default();
 
         for (i, (path, data)) in inputs.iter().enumerate() {
+            let start = Instant::now();
+
             let str = str::from_utf8(data).context("Failed to convert from bytes to a string")?;
 
             let mut impropers = Vec::new();
@@ -150,10 +161,31 @@ fn main() -> Result<()> {
                 "Unable to determine hash algorithm"
             );
 
-            let result = checksums
-                .par_iter()
-                .map(|c| Verify::verify(c).context("Failed to verify a checksum"))
-                .collect::<Result<Vec<_>>>()?;
+            let pb = ProgressBar::new(
+                checksums
+                    .len()
+                    .try_into()
+                    .expect("Number of files exceeds the limit"),
+            )
+            .with_style(ProgressStyle::default_bar().template(PROGRESS_BAR_TEMPLATE));
+
+            eprintln!(
+                "Verifying {} checksums from {}",
+                checksums.len(),
+                path.display()
+            );
+            let result = if opt.progress {
+                checksums
+                    .par_iter()
+                    .progress_with(pb)
+                    .map(|c| Verify::verify(c).context("Failed to verify a checksum"))
+                    .collect::<Result<Vec<_>>>()?
+            } else {
+                checksums
+                    .par_iter()
+                    .map(|c| Verify::verify(c).context("Failed to verify a checksum"))
+                    .collect::<Result<Vec<_>>>()?
+            };
 
             let result: Vec<_> = if opt.ignore_missing {
                 result.into_iter().filter(|r| r.success.is_some()).collect()
@@ -202,61 +234,89 @@ fn main() -> Result<()> {
                 is_improper = true;
             }
 
-            if opt.json {
-                continue;
-            }
-
             if opt.status {
-                if result.iter().all(|r| r.success.unwrap_or_default()) {
+                if result.into_iter().all(|r| r.success.unwrap_or_default()) {
                     continue;
                 } else {
                     std::process::exit(exitcode::SOFTWARE);
                 }
             }
 
-            println!("Verifying {} checksums from {}", total, path.display());
-            println!("{}", "-".repeat(VERIFICATION_RESULT_WIDTH));
-            result
-                .into_iter()
-                .map(|r| r.output())
-                .for_each(|o| println!("{}", o));
-            println!("{}", "-".repeat(VERIFICATION_RESULT_WIDTH));
-            if total == success && !opt.quiet {
-                println!("Everything is successful");
-            } else if opt.ignore_missing {
-                println!(
-                    "{} validations failed (Success:{}; Failure:{})",
-                    total - success,
-                    success,
-                    failure
-                );
-            } else {
-                println!(
-                    "{} validations failed (Missing:{}; Success:{}; Failure:{})",
-                    total - success,
-                    missing,
-                    success,
-                    failure
-                );
-            }
-            if !impropers.is_empty() {
-                if opt.warn {
-                    impropers.iter().for_each(|i| {
-                        eprintln!("RSHash: {}: {}: {}", path.display(), i.0 + 1, i.1)
-                    });
-                }
-
-                if impropers.len() == 1 {
-                    eprintln!("RSHash: WARNING: 1 line is improperly formatted");
+            if !opt.json {
+                eprintln!("{}", "-".repeat(VERIFICATION_RESULT_WIDTH));
+                result
+                    .iter()
+                    .map(|r| r.output())
+                    .for_each(|o| println!("{}", o));
+                eprintln!("{}", "-".repeat(VERIFICATION_RESULT_WIDTH));
+                if total == success && !opt.quiet {
+                    eprintln!("Everything is successful");
+                } else if opt.ignore_missing {
+                    eprintln!(
+                        "{} validations failed (Success:{}; Failure:{})",
+                        total - success,
+                        success,
+                        failure
+                    );
                 } else {
                     eprintln!(
-                        "RSHash: WARNING: {} lines are improperly formatted",
-                        impropers.len()
+                        "{} validations failed (Missing:{}; Success:{}; Failure:{})",
+                        total - success,
+                        missing,
+                        success,
+                        failure
                     );
                 }
+                if !impropers.is_empty() {
+                    if opt.warn {
+                        impropers.iter().for_each(|i| {
+                            eprintln!("RSHash: {}: {}: {}", path.display(), i.0 + 1, i.1)
+                        });
+                    }
+
+                    if impropers.len() == 1 {
+                        eprintln!("RSHash: WARNING: 1 line is improperly formatted");
+                    } else {
+                        eprintln!(
+                            "RSHash: WARNING: {} lines are improperly formatted",
+                            impropers.len()
+                        );
+                    }
+                }
             }
-            if i < inputs.len() - 1 {
-                println!();
+
+            if opt.speed {
+                let duration: u64 = start
+                    .elapsed()
+                    .as_millis()
+                    .try_into()
+                    .expect("Time interval is too long");
+                let length: u64 = result
+                    .into_iter()
+                    .flat_map(|r| fs::metadata(r.file.as_path()))
+                    .map(|f| f.len())
+                    .sum();
+
+                if let Some(speed) = length.checked_div(Duration::from_millis(duration).as_secs()) {
+                    eprintln!(
+                        "Computed {} in {} ({}/s)",
+                        BinaryBytes(length),
+                        humantime::format_duration(Duration::from_millis(duration)),
+                        BinaryBytes(speed)
+                    );
+                } else {
+                    eprintln!(
+                        "Computed {} in {}",
+                        BinaryBytes(length),
+                        humantime::format_duration(Duration::from_millis(duration))
+                    );
+                }
+
+                total_length += length;
+            }
+
+            if !opt.json && i < inputs.len() - 1 {
+                eprintln!();
             }
         }
         let results = results;
@@ -294,10 +354,32 @@ fn main() -> Result<()> {
             .hash_algorithm
             .context("Unable to determine hash algorithm")?;
 
-        let checksums: Vec<_> = inputs
-            .into_par_iter()
-            .map(|i| Checksum::digest(algo, i))
-            .collect();
+        let pb = ProgressBar::new(
+            inputs
+                .len()
+                .try_into()
+                .expect("Number of files exceeds the limit"),
+        )
+        .with_style(ProgressStyle::default_bar().template(PROGRESS_BAR_TEMPLATE));
+
+        if opt.progress {
+            eprintln!("Computing {} files", inputs.len());
+        }
+        let checksums: Vec<_> = if opt.progress {
+            inputs
+                .par_iter()
+                .progress_with(pb)
+                .map(|i| Checksum::digest(algo, i))
+                .collect()
+        } else {
+            inputs
+                .par_iter()
+                .map(|i| Checksum::digest(algo, i))
+                .collect()
+        };
+        if opt.progress {
+            eprintln!("Done.");
+        }
 
         let output = if opt.style == Style::Json {
             serde_json::to_string_pretty(&checksums)
@@ -315,12 +397,60 @@ fn main() -> Result<()> {
             None => println!("{}", output),
         }
     }
+    let total_length = total_length;
 
     if !dirs.is_empty() {
         dirs.into_iter()
             .for_each(|d| eprintln!("RSHash: {}: Is a directory", d.display()));
 
         std::process::exit(exitcode::NOINPUT);
+    }
+
+    if opt.speed {
+        let duration: u64 = start
+            .elapsed()
+            .as_millis()
+            .try_into()
+            .expect("Time interval is too long");
+
+        if opt.check {
+            if let Some(speed) = total_length.checked_div(Duration::from_millis(duration).as_secs())
+            {
+                eprintln!(
+                    "Total {} in {} ({}/s)",
+                    BinaryBytes(total_length),
+                    humantime::format_duration(Duration::from_millis(duration)),
+                    BinaryBytes(speed)
+                );
+            } else {
+                eprintln!(
+                    "Total {} in {}",
+                    BinaryBytes(total_length),
+                    humantime::format_duration(Duration::from_millis(duration))
+                );
+            }
+        } else {
+            let length: u64 = inputs
+                .into_iter()
+                .map(|i| i.1)
+                .map(|d| u64::try_from(d.len()).expect("File size exceeds the limit"))
+                .sum();
+
+            if let Some(speed) = length.checked_div(Duration::from_millis(duration).as_secs()) {
+                eprintln!(
+                    "Computed {} in {} ({}/s)",
+                    BinaryBytes(length),
+                    humantime::format_duration(Duration::from_millis(duration)),
+                    BinaryBytes(speed)
+                );
+            } else {
+                eprintln!(
+                    "Computed {} in {}",
+                    BinaryBytes(length),
+                    humantime::format_duration(Duration::from_millis(duration))
+                );
+            }
+        }
     }
 
     Ok(())

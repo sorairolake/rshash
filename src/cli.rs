@@ -128,6 +128,14 @@ pub struct Opt {
     )]
     pub style: Style,
 
+    /// Display a progress bar for reporting progress.
+    #[structopt(long)]
+    pub progress: bool,
+
+    /// Print the processing speed.
+    #[structopt(long)]
+    pub speed: bool,
+
     /// Input from <FILE>.
     #[structopt(value_name = "FILE")]
     pub input: Vec<PathBuf>,
