@@ -53,6 +53,9 @@ assert_cmd = "2.0.0"
 predicates = "2.0.2"
 tempfile = "3.2.0"
 
+[build-dependencies]
+vergen = { version = "5.1.15", features = ["cargo", "git"], default-features = false }
+
 [features]
 # For assembly implementation.
 md5-asm = ["md-5/asm"]
