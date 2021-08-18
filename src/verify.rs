@@ -85,3 +85,50 @@ impl Verify {
         }
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use std::io::Write;
+
+    use tempfile::NamedTempFile;
+
+    use super::*;
+
+    #[test]
+    fn verification_success() {
+        let mut file = NamedTempFile::new().unwrap();
+        let data = "Hello, world!";
+        write!(file, "{}", data).unwrap();
+        let checksum = Checksum::digest(HashAlgorithm::Blake2b, (file.path(), data));
+        let result = Verify::verify(&checksum).unwrap();
+
+        assert!(result.success.unwrap());
+        assert!(result.output().ends_with("OK"));
+    }
+
+    #[test]
+    fn verification_failure() {
+        let mut file = NamedTempFile::new().unwrap();
+        let data = "Hello";
+        write!(file, "{}", data).unwrap();
+        let checksum = Checksum::digest(HashAlgorithm::Blake2b, (file.path(), data));
+        write!(file, ", world!").unwrap();
+        let result = Verify::verify(&checksum).unwrap();
+
+        assert!(!result.success.unwrap());
+        assert!(result.output().ends_with("FAILED"));
+    }
+
+    #[test]
+    fn verification_missing() {
+        let mut file = NamedTempFile::new().unwrap();
+        let data = "Hello, world!";
+        write!(file, "{}", data).unwrap();
+        let checksum = Checksum::digest(HashAlgorithm::Blake2b, (file.path(), data));
+        file.close().unwrap();
+        let result = Verify::verify(&checksum).unwrap();
+
+        assert!(result.success.is_none());
+        assert!(result.output().ends_with("No such file or directory"));
+    }
+}

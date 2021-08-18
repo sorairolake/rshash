@@ -48,6 +48,11 @@ tiger = "0.1.0"
 toml = "0.5.8"
 whirlpool = "0.9.0"
 
+[dev-dependencies]
+assert_cmd = "2.0.0"
+predicates = "2.0.2"
+tempfile = "3.2.0"
+
 [features]
 # For assembly implementation.
 md5-asm = ["md-5/asm"]

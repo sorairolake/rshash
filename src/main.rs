@@ -169,11 +169,13 @@ fn main() -> Result<()> {
             )
             .with_style(ProgressStyle::default_bar().template(PROGRESS_BAR_TEMPLATE));
 
-            eprintln!(
-                "Verifying {} checksums from {}",
-                checksums.len(),
-                path.display()
-            );
+            if opt.progress {
+                eprintln!(
+                    "Verifying {} checksums from {}",
+                    checksums.len(),
+                    path.display()
+                );
+            }
             let result = if opt.progress {
                 checksums
                     .par_iter()
@@ -243,6 +245,7 @@ fn main() -> Result<()> {
             }
 
             if !opt.json {
+                eprintln!("Result of {}", path.display());
                 eprintln!("{}", "-".repeat(VERIFICATION_RESULT_WIDTH));
                 result
                     .iter()
@@ -395,7 +398,7 @@ fn main() -> Result<()> {
                 .join("\n")
         };
         match opt.output {
-            Some(ref file) => fs::write(file, output)
+            Some(ref file) => fs::write(file, format!("{}\n", output))
                 .with_context(|| format!("Failed to write to {}", file.display()))?,
             None => println!("{}", output),
         }

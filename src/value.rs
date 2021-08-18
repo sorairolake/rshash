@@ -28,25 +28,27 @@ impl FromStr for Checksum {
 
     fn from_str(checksum: &str) -> Result<Self> {
         if let Some(captures) =
-            regex!(r"^(?P<digest>[[:xdigit:]]{32,128})  (?P<file>\S.*\S)$").captures(checksum)
+            regex!(r"^(?P<digest>[[:xdigit:]]{32,128})  (?P<file>.*)$").captures(checksum)
         {
             // Parse as SFV-style checksum.
             return Ok(Self {
                 algorithm: None,
-                file: captures["file"].into(),
+                file: captures["file"].trim().into(),
                 digest: hex::decode(captures["digest"].to_string())
                     .expect("Failed to decode a hex string into raw bytes"),
             });
         }
-        if let Some(captures) =
-            regex!(r"^(?P<algorithm>[[:alnum:]-]+) \((?P<file>\S.*\S)\) = (?P<digest>[[:xdigit:]]{32,128})$")
-                .captures(checksum)
+        if let Some(captures) = regex!(
+            r"^(?P<algorithm>[[:alnum:]-]+) \((?P<file>.*)\) = (?P<digest>[[:xdigit:]]{32,128})$"
+        )
+        .captures(checksum)
         {
             // Parse as BSD-style checksum.
             return Ok(Self {
                 algorithm: captures["algorithm"].parse().ok(),
-                file: captures["file"].into(),
-                digest: hex::decode(captures["digest"].to_string()).expect("Failed to decode a hex string into raw bytes"),
+                file: captures["file"].trim().into(),
+                digest: hex::decode(captures["digest"].to_string())
+                    .expect("Failed to decode a hex string into raw bytes"),
             });
         }
 
