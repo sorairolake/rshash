@@ -82,6 +82,10 @@ pub struct Opt {
     )]
     pub style: Style,
 
+    /// Specify the number of threads to use.
+    #[structopt(short = "T", long, value_name = "NUM", default_value)]
+    pub threads: usize,
+
     /// Display a progress bar for reporting progress.
     #[structopt(long)]
     pub progress: bool,

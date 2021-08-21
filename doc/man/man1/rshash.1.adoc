@@ -99,6 +99,10 @@ If _FILE_ is not specified, the input is read from stdin.
 
 === General options
 
+*-T* _NUM_, *--threads*=_NUM_::
+  Specify the number of threads to use.
+  If _NUM_ is *0*, use as many threads as there are CPU cores (default: *0*).
+
 *--progress*::
   Display a progress bar for reporting progress.
 

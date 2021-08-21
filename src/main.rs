@@ -37,6 +37,11 @@ const PROGRESS_BAR_TEMPLATE: &str =
 fn main() -> Result<()> {
     let opt = Opt::from_args().apply_config()?;
 
+    rayon::ThreadPoolBuilder::new()
+        .num_threads(opt.threads)
+        .build_global()
+        .expect("Failed to initialize the global thread pool");
+
     if let Some(shell) = opt.generate_completion {
         if let Some(outdir) = opt.output {
             Opt::generate_completion_to_file(shell, outdir)?;
