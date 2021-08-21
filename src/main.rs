@@ -25,6 +25,7 @@ use indicatif::{BinaryBytes, ParallelProgressIterator, ProgressBar, ProgressStyl
 use maplit::btreemap;
 use rayon::iter::{IntoParallelRefIterator, ParallelIterator};
 use structopt::StructOpt;
+use strum::VariantNames;
 
 use crate::cli::Opt;
 use crate::value::{Checksum, HashAlgorithm, Style};
@@ -47,44 +48,9 @@ fn main() -> Result<()> {
     }
 
     if opt.list_hash_algorithms {
-        println!("{}", HashAlgorithm::Blake2b);
-        println!("{}", HashAlgorithm::Blake2s);
-        println!("{}", HashAlgorithm::Blake3);
-        println!("{}", HashAlgorithm::Gost);
-        println!("{}", HashAlgorithm::GostCryptoPro);
-        println!("{}", HashAlgorithm::Groestl224);
-        println!("{}", HashAlgorithm::Groestl256);
-        println!("{}", HashAlgorithm::Groestl384);
-        println!("{}", HashAlgorithm::Groestl512);
-        println!("{}", HashAlgorithm::Keccak224);
-        println!("{}", HashAlgorithm::Keccak256);
-        println!("{}", HashAlgorithm::Keccak384);
-        println!("{}", HashAlgorithm::Keccak512);
-        println!("{}", HashAlgorithm::Md2);
-        println!("{}", HashAlgorithm::Md4);
-        println!("{}", HashAlgorithm::Md5);
-        println!("{}", HashAlgorithm::Ripemd160);
-        println!("{}", HashAlgorithm::Ripemd256);
-        println!("{}", HashAlgorithm::Ripemd320);
-        println!("{}", HashAlgorithm::Sha1);
-        println!("{}", HashAlgorithm::Sha224);
-        println!("{}", HashAlgorithm::Sha256);
-        println!("{}", HashAlgorithm::Sha384);
-        println!("{}", HashAlgorithm::Sha512);
-        println!("{}", HashAlgorithm::Sha3_224);
-        println!("{}", HashAlgorithm::Sha3_256);
-        println!("{}", HashAlgorithm::Sha3_384);
-        println!("{}", HashAlgorithm::Sha3_512);
-        println!("{}", HashAlgorithm::Shabal192);
-        println!("{}", HashAlgorithm::Shabal224);
-        println!("{}", HashAlgorithm::Shabal256);
-        println!("{}", HashAlgorithm::Shabal384);
-        println!("{}", HashAlgorithm::Shabal512);
-        println!("{}", HashAlgorithm::Sm3);
-        println!("{}", HashAlgorithm::Streebog256);
-        println!("{}", HashAlgorithm::Streebog512);
-        println!("{}", HashAlgorithm::Tiger);
-        println!("{}", HashAlgorithm::Whirlpool);
+        HashAlgorithm::VARIANTS
+            .iter()
+            .for_each(|h| println!("{}", h));
 
         return Ok(());
     }

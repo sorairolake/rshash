@@ -8,95 +8,25 @@ use std::io;
 use std::path::{Path, PathBuf};
 
 use anyhow::{ensure, Context, Result};
-use const_format::formatcp;
-use structopt::clap::{crate_name, crate_version, AppSettings, Shell};
+use structopt::clap::{crate_name, AppSettings, Shell};
 use structopt::StructOpt;
 
 use crate::config::Config;
 use crate::value::{HashAlgorithm, Style};
 
-const COMMIT_HASH: &str = if let Some(hash) = option_env!("VERGEN_GIT_SHA") {
-    hash
-} else {
-    ""
-};
-const COMMIT_DATE: &str = if let Some(date) = option_env!("VERGEN_GIT_COMMIT_DATE") {
-    date
-} else {
-    ""
-};
-const LONG_VERSION: &str = if !COMMIT_HASH.is_empty() && !COMMIT_DATE.is_empty() {
-    formatcp!(
-        "{} (built for {})\n\n{}\n{}\nCommit hash: {}\nCommit date: {}\n{}",
-        crate_version!(),
-        env!("VERGEN_CARGO_TARGET_TRIPLE"),
-        "Copyright (C) 2021 Shun Sakai",
-        "License: GNU General Public License v3.0 or later",
-        COMMIT_HASH,
-        COMMIT_DATE,
-        "Reporting bugs: https://github.com/sorairolake/rshash/issues"
-    )
-} else {
-    formatcp!(
-        "{} (built for {})\n\n{}\n{}\n{}",
-        crate_version!(),
-        env!("VERGEN_CARGO_TARGET_TRIPLE"),
-        "Copyright (C) 2021 Shun Sakai",
-        "License: GNU General Public License v3.0 or later",
-        "Reporting bugs: https://github.com/sorairolake/rshash/issues"
-    )
-};
-const APP_SETTINGS: [AppSettings; 2] = [AppSettings::ColoredHelp, AppSettings::DeriveDisplayOrder];
-const HASH_ALGORITHMS: [&str; 38] = [
-    "blake2b",
-    "blake2s",
-    "blake3",
-    "gost",
-    "gost-cryptopro",
-    "groestl-224",
-    "groestl-256",
-    "groestl-384",
-    "groestl-512",
-    "keccak-224",
-    "keccak-256",
-    "keccak-384",
-    "keccak-512",
-    "md2",
-    "md4",
-    "md5",
-    "ripemd-160",
-    "ripemd-256",
-    "ripemd-320",
-    "sha1",
-    "sha224",
-    "sha256",
-    "sha384",
-    "sha512",
-    "sha3-224",
-    "sha3-256",
-    "sha3-384",
-    "sha3-512",
-    "shabal-192",
-    "shabal-224",
-    "shabal-256",
-    "shabal-384",
-    "shabal-512",
-    "sm3",
-    "streebog-256",
-    "streebog-512",
-    "tiger",
-    "whirlpool",
-];
-
 #[derive(StructOpt)]
-#[structopt(name = "RSHash", long_version = LONG_VERSION, about, settings = &APP_SETTINGS)]
+#[structopt(
+    name = "RSHash",
+    about,
+    settings = &[AppSettings::ColoredHelp, AppSettings::DeriveDisplayOrder]
+)]
 pub struct Opt {
     /// Specify hash algorithm.
     #[structopt(
         short = "H",
         long,
         value_name = "NAME",
-        possible_values = &HASH_ALGORITHMS,
+        possible_values = &HashAlgorithm::VALUES,
         case_insensitive = true
     )]
     pub hash_algorithm: Option<HashAlgorithm>,
@@ -146,7 +76,7 @@ pub struct Opt {
         short,
         long,
         value_name = "STYLE",
-        possible_values = &["sfv", "bsd", "json"],
+        possible_values = &Style::VALUES,
         case_insensitive = true,
         default_value
     )]
