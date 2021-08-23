@@ -10,6 +10,7 @@ use std::path::{Path, PathBuf};
 use anyhow::{ensure, Context, Result};
 use structopt::clap::{crate_name, AppSettings, Shell};
 use structopt::StructOpt;
+use strum::VariantNames;
 
 use crate::config::Config;
 use crate::value::{HashAlgorithm, Style};
@@ -26,7 +27,7 @@ pub struct Opt {
         short = "H",
         long,
         value_name = "NAME",
-        possible_values = &HashAlgorithm::VALUES,
+        possible_values = &HashAlgorithm::VARIANTS,
         case_insensitive = true
     )]
     pub hash_algorithm: Option<HashAlgorithm>,
@@ -76,7 +77,7 @@ pub struct Opt {
         short,
         long,
         value_name = "STYLE",
-        possible_values = &Style::VALUES,
+        possible_values = &Style::VARIANTS,
         case_insensitive = true,
         default_value
     )]

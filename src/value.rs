@@ -131,49 +131,6 @@ pub enum HashAlgorithm {
     Whirlpool,
 }
 
-impl HashAlgorithm {
-    pub const VALUES: [&'static str; Self::COUNT] = [
-        "blake2b",
-        "blake2s",
-        "blake3",
-        "gost",
-        "gost-cryptopro",
-        "groestl-224",
-        "groestl-256",
-        "groestl-384",
-        "groestl-512",
-        "keccak-224",
-        "keccak-256",
-        "keccak-384",
-        "keccak-512",
-        "md2",
-        "md4",
-        "md5",
-        "ripemd-160",
-        "ripemd-256",
-        "ripemd-320",
-        "sha1",
-        "sha224",
-        "sha256",
-        "sha384",
-        "sha512",
-        "sha3-224",
-        "sha3-256",
-        "sha3-384",
-        "sha3-512",
-        "shabal-192",
-        "shabal-224",
-        "shabal-256",
-        "shabal-384",
-        "shabal-512",
-        "sm3",
-        "streebog-256",
-        "streebog-512",
-        "tiger",
-        "whirlpool",
-    ];
-}
-
 #[derive(
     Clone, Copy, DeserializeFromStr, Display, EnumCount, EnumString, EnumVariantNames, PartialEq,
 )]
@@ -182,10 +139,6 @@ pub enum Style {
     Sfv,
     Bsd,
     Json,
-}
-
-impl Style {
-    pub const VALUES: [&'static str; Self::COUNT] = ["sfv", "bsd", "json"];
 }
 
 impl Default for Style {
