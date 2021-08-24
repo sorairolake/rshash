@@ -19,6 +19,7 @@ use crate::value::{HashAlgorithm, Style};
 #[structopt(
     name = "RSHash",
     about,
+    after_help = "See rshash(1) for more details.",
     settings = &[AppSettings::ColoredHelp, AppSettings::DeriveDisplayOrder]
 )]
 pub struct Opt {
