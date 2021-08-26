@@ -43,8 +43,8 @@ fn main() -> Result<()> {
         .expect("Failed to initialize the global thread pool");
 
     if let Some(shell) = opt.generate_completion {
-        if let Some(outdir) = opt.output {
-            Opt::generate_completion_to_file(shell, outdir)?;
+        if let Some(out_dir) = opt.output {
+            Opt::generate_completion_to_file(shell, out_dir)?;
         } else {
             Opt::generate_completion_to_stdout(shell);
         }
@@ -111,8 +111,8 @@ fn main() -> Result<()> {
                 checksums
             } else {
                 for (i, line) in str.lines().enumerate() {
-                    if let Err(e) = line.parse::<Checksum>() {
-                        impropers.push((i, e));
+                    if let Err(error) = line.parse::<Checksum>() {
+                        impropers.push((i, error));
                     }
                 }
                 str.lines().flat_map(|c| c.parse::<Checksum>()).collect()
