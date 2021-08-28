@@ -8,7 +8,7 @@
 // Specify in UTC.
 :docdate: 2021-08-23
 :doctype: manpage
-ifdef::manversion[:mansource: RSHash {manversion}]
+ifdef::revnumber[:mansource: RSHash {revnumber}]
 :manmanual: General Commands Manual
 :includedir: ../include
 
