@@ -9,7 +9,7 @@ toc::[]
 
 === How to build and install
 
-Please refer to the link:BUILD.adoc[Build Guide].
+Please see the link:BUILD.adoc[Build Guide].
 
 == Usage
 
@@ -56,7 +56,7 @@ See link:doc/man/man1/rshash.1.adoc[`rshash(1)`] for more details.
 
 == Changelog
 
-Please refer to the link:CHANGELOG.adoc[Changelog].
+Please see the link:CHANGELOG.adoc[Changelog].
 
 == Configuration
 
@@ -66,7 +66,7 @@ See link:doc/man/man5/rshash-config.toml.5.adoc[`rshash-config.toml(5)`] for mor
 
 == Contributing
 
-Please refer to the link:CONTRIBUTING.adoc[Contribution Guide].
+Please see the link:CONTRIBUTING.adoc[Contribution Guide].
 
 == License
 
