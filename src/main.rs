@@ -151,12 +151,12 @@ fn main() -> Result<()> {
                 checksums
                     .par_iter()
                     .progress_with(pb)
-                    .map(|c| Verify::verify(c).context("Failed to verify a checksum"))
+                    .map(|c| Verify::check(c).context("Failed to verify a checksum"))
                     .collect::<Result<Vec<_>>>()?
             } else {
                 checksums
                     .par_iter()
-                    .map(|c| Verify::verify(c).context("Failed to verify a checksum"))
+                    .map(|c| Verify::check(c).context("Failed to verify a checksum"))
                     .collect::<Result<Vec<_>>>()?
             };
 

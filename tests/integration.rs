@@ -15,6 +15,7 @@ fn command() -> Command {
 }
 
 #[test]
+#[cfg(unix)]
 fn sfv_style_output() {
     command()
         .arg("-H")
@@ -27,6 +28,7 @@ fn sfv_style_output() {
 }
 
 #[test]
+#[cfg(unix)]
 fn bsd_style_output() {
     command()
         .arg("-H")
@@ -39,6 +41,7 @@ fn bsd_style_output() {
 }
 
 #[test]
+#[cfg(unix)]
 fn json_style_output() {
     command()
         .arg("-H")
