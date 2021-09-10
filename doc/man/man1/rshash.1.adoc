@@ -1,0 +1,141 @@
+//
+// SPDX-License-Identifier: GPL-3.0-or-later
+//
+// Copyright (C) 2021 Shun Sakai
+//
+
+= rshash(1)
+// Specify in UTC.
+:docdate: 2021-08-23
+:doctype: manpage
+ifdef::revnumber[:mansource: RSHash {revnumber}]
+:manmanual: General Commands Manual
+:includedir: ../include
+
+== NAME
+
+rshash - a utility for computing various message digests
+
+== SYNOPSIS
+
+*{manname}* [_OPTION_]... [_FILE_]...
+
+== DESCRIPTION
+
+*RSHash* is a command-line utility for computing and checking various message digests.
+If _FILE_ is not specified, the input is read from stdin.
+
+== OPTIONS
+
+Unless otherwise noted, the value of each option is case-insensitive.
+
+=== Hash algorithms options
+
+*-H* _NAME_, *--hash-algorithm*=_NAME_::
+  Specify hash algorithm.
+
+  _NAME_ can be:::
+
+    * *blake2b* and *blake2s* (BLAKE2)
+    * *blake3* (BLAKE3)
+    * *gost* and *gost-cryptopro* (GOST)
+    * *groestl-224*, *groestl-256*, *groestl-384* and *groestl-512* (Groestl)
+    * *keccak-224*, *keccak-256*, *keccak-384* and *keccak-512* (Keccak)
+    * *md2* (MD2)
+    * *md4* (MD4)
+    * *md5* (MD5)
+    * *ripemd-160*, *ripemd-256* and *ripemd-320* (RIPEMD)
+    * *sha1* (SHA-1)
+    * *sha224*, *sha256*, *sha384* and *sha512* (SHA-2)
+    * *sha3-224*, *sha3-256*, *sha3-384* and *sha3-512* (SHA-3)
+    * *shabal-192*, *shabal-224*, *shabal-256*, *shabal-384* and *shabal-512* (Shabal)
+    * *sm3* (SM3)
+    * *streebog-256* and *streebog-512* (Streebog)
+    * *tiger* (Tiger)
+    * *whirlpool* (Whirlpool)
+
+*--list-hash-algorithms*::
+  List supported hash algorithms.
+
+=== Verification options
+
+*-c*, *--check*::
+  Read the checksums from the file and check them.
+
+*--ignore-missing*::
+  Don't fail or report status for missing files.
+
+*--quiet*::
+  Don't print OK for each successfully verified file.
+
+*--status*::
+  Don't output anything, return the verification result as the exit status.
+
+*--strict*::
+  Exit non-zero for improperly formatted checksum lines.
+
+*-w*, *--warn*::
+  Warn about improperly formatted checksum lines.
+
+*-j*, *--json*::
+  Output the verification result as JSON to stdout.
+  If you want to pretty-printing, specify *--pretty* as well.
+
+*-p*, *--pretty*::
+  Output as a pretty-printed JSON.
+
+=== I/O options
+
+*-o* _FILE_, *--output*=_FILE_::
+  Output to _FILE_ instead of stdout.
+
+*-s* _FORMAT_, *--style*=_FORMAT_::
+  Specify style of the checksums.
+  If this option is not specified, it is the same as selecting the default value.
+
+  _FORMAT_ can be:::
+
+    * *sfv* (SFV output format, default)
+    * *bsd* (BSD output format)
+    * *json* (JSON output format)
+
+=== General options
+
+*-T* _NUM_, *--threads*=_NUM_::
+  Specify the number of threads to use.
+  If _NUM_ is *0*, use as many threads as there are CPU cores (default: *0*).
+
+*--progress*::
+  Display a progress bar for reporting progress.
+
+*--speed*::
+  Print the processing speed.
+
+*-h*, *--help*::
+  Print help message and exit.
+
+*-V*, *--version*::
+  Print the version number and exit.
+
+== EXIT STATUS
+
+If successful, return 0 as the exit status.
+Otherwise, return non-zero as the exit status.
+
+== NOTES
+
+Source code repository::
+  https://github.com/sorairolake/rshash
+
+== EXAMPLES
+
+Compute BLAKE2b message digest::
+  $ *{manname} -H blake2b file.txt*
+
+include::{includedir}/section-reporting-bugs.adoc[]
+
+include::{includedir}/section-copyright.adoc[]
+
+== SEE ALSO
+
+*md5sum*(1), *rhash*(1), *rshash-config.toml*(5)

@@ -1,0 +1,64 @@
+//
+// SPDX-License-Identifier: GPL-3.0-or-later
+//
+// Copyright (C) 2021 Shun Sakai
+//
+
+= rshash-config.toml(5)
+// Specify in UTC.
+:docdate: 2021-06-13
+:doctype: manpage
+ifdef::revnumber[:mansource: RSHash {revnumber}]
+:manmanual: File Formats Manual
+:includedir: ../include
+
+== NAME
+
+rshash-config.toml - configuration file for RSHash
+
+== DESCRIPTION
+
+*{manname}* is a configuration file for *rshash*(1).
+This file is optional and not required.
+A file format of this file is TOML.
+
+== FORMAT
+
+*style*::
+  Specify style of the checksums (default: *sfv*).
+
+== FILES
+
+_$XDG_CONFIG_HOME/rshash/config.toml_::
+_$HOME/.config/rshash/config.toml_::
+  The location of the configuration file on Unix.
+
+_$HOME/Library/Application Support/rshash/config.toml_::
+  The location of the configuration file on macOS.
+
+_%APPDATA%\rshash\config\config.toml_::
+  The location of the configuration file on Windows.
+
+== NOTES
+
+Source code repository::
+  https://github.com/sorairolake/rshash
+
+Specifications of TOML::
+  https://toml.io/
+
+== EXAMPLES
+
+.The following is an example of the configuration file
+[source, toml]
+----
+style = "bsd"
+----
+
+include::{includedir}/section-reporting-bugs.adoc[]
+
+include::{includedir}/section-copyright.adoc[]
+
+== SEE ALSO
+
+*rshash*(1)
