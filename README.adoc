@@ -1,13 +1,26 @@
 = RSHash
 :toc: macro
 
-image::https://github.com/sorairolake/rshash/workflows/CI/badge.svg[CI, link=https://github.com/sorairolake/rshash/actions?query=workflow%3ACI]
+image:https://github.com/sorairolake/rshash/workflows/CI/badge.svg[CI, link=https://github.com/sorairolake/rshash/actions?query=workflow%3ACI]
+image:https://img.shields.io/crates/v/rshash[Version, link=https://crates.io/crates/rshash]
+image:https://img.shields.io/crates/l/rshash[License, link=https://www.gnu.org/licenses/gpl-3.0.html]
 
 *RSHash* is a command-line utility for computing and checking various message digests.
 
 toc::[]
 
 == Installation
+
+=== Via a package manager
+
+|===
+|OS |Method |Package |Command
+
+|Any
+|Cargo
+|https://crates.io/crates/rshash[`rshash`]
+|`cargo install rshash`
+|===
 
 === How to build and install
 
@@ -16,7 +29,7 @@ Please see the link:BUILD.adoc[Build Guide].
 == Usage
 
 ....
-RSHash 0.1.0
+RSHash 0.1.1
 A utility for computing various message digests
 
 USAGE:
