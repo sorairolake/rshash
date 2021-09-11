@@ -29,7 +29,7 @@ Please see the link:BUILD.adoc[Build Guide].
 == Usage
 
 ....
-RSHash 0.1.0
+RSHash 0.1.1
 A utility for computing various message digests
 
 USAGE:
