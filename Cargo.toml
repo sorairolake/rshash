@@ -4,6 +4,7 @@ version = "0.1.1"
 authors = ["Shun Sakai <sorairolake@protonmail.ch>"]
 edition = "2018"
 description = "A utility for computing various message digests"
+readme = "doc/crates.io/README.md"
 repository = "https://github.com/sorairolake/rshash"
 license = "GPL-3.0-or-later"
 categories = ["command-line-utilities"]
