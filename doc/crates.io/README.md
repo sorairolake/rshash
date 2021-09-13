@@ -10,7 +10,7 @@ message digests.
 ## Via a package manager
 
 | OS  | Method | Package                                     | Command                |
-| --- | ------ | ------------------------------------------- | ---------------------- |
+|-----|--------|---------------------------------------------|------------------------|
 | Any | Cargo  | [`rshash`](https://crates.io/crates/rshash) | `cargo install rshash` |
 
 ## How to build and install
@@ -21,10 +21,10 @@ Please see the [Build Guide](BUILD.adoc).
 
     RSHash 0.1.1
     A utility for computing various message digests
-    
+
     USAGE:
         rshash [FLAGS] [OPTIONS] [FILE]...
-    
+
     FLAGS:
             --list-hash-algorithms    List supported hash algorithms
         -c, --check                   Read the checksums from the file and check them
@@ -39,7 +39,7 @@ Please see the [Build Guide](BUILD.adoc).
             --speed                   Print the processing speed
         -h, --help                    Prints help information
         -V, --version                 Prints version information
-    
+
     OPTIONS:
         -H, --hash-algorithm <NAME>    Specify hash algorithm [possible values: BLAKE2b, BLAKE2s, BLAKE3, GOST, GOST-
                                        CryptoPro, Groestl-224, Groestl-256, Groestl-384, Groestl-512, Keccak-224,
@@ -50,10 +50,10 @@ Please see the [Build Guide](BUILD.adoc).
         -o, --output <FILE>            Output to <FILE> instead of stdout
         -s, --style <STYLE>            Specify style of the checksums [default: SFV]  [possible values: SFV, BSD, JSON]
         -T, --threads <NUM>            Specify the number of threads to use [default: 0]
-    
+
     ARGS:
         <FILE>...    Input from <FILE>
-    
+
     See rshash(1) for more details.
 
 See [`rshash(1)`](doc/man/man1/rshash.1.adoc) for more details.
