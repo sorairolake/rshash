@@ -10,7 +10,7 @@ use std::str::FromStr;
 use anyhow::{anyhow, Error, Result};
 use serde::{Deserialize, Serialize};
 use serde_with::{serde_as, DeserializeFromStr, SerializeDisplay};
-use strum::{Display, EnumCount, EnumString, EnumVariantNames};
+use strum::{Display, EnumString, EnumVariantNames};
 
 use crate::regex;
 
@@ -57,14 +57,7 @@ impl FromStr for Checksum {
 }
 
 #[derive(
-    Clone,
-    Copy,
-    DeserializeFromStr,
-    Display,
-    EnumCount,
-    EnumString,
-    EnumVariantNames,
-    SerializeDisplay,
+    Clone, Copy, DeserializeFromStr, Display, EnumString, EnumVariantNames, SerializeDisplay,
 )]
 #[strum(serialize_all = "SCREAMING-KEBAB-CASE", ascii_case_insensitive)]
 pub enum HashAlgorithm {
@@ -131,9 +124,7 @@ pub enum HashAlgorithm {
     Whirlpool,
 }
 
-#[derive(
-    Clone, Copy, DeserializeFromStr, Display, EnumCount, EnumString, EnumVariantNames, PartialEq,
-)]
+#[derive(Clone, Copy, DeserializeFromStr, Display, EnumString, EnumVariantNames, PartialEq)]
 #[strum(serialize_all = "UPPERCASE", ascii_case_insensitive)]
 pub enum Style {
     Sfv,
