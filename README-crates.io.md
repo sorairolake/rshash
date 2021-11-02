@@ -26,7 +26,7 @@ Please see [BUILD.adoc](BUILD.adoc).
 
 ## Usage
 
-    RSHash 0.1.1
+    RSHash 0.2.0
     A utility for computing various message digests
 
     USAGE:
