@@ -22,14 +22,18 @@ toc::[]
 |`cargo install rshash`
 |===
 
+=== Via pre-built binaries
+
+Pre-built binaries for Linux, macOS and Windows are available on the https://github.com/sorairolake/rshash/releases[release page].
+
 === How to build and install
 
-Please see the link:BUILD.adoc[Build Guide].
+Please see link:BUILD.adoc[].
 
 == Usage
 
 ....
-RSHash 0.1.1
+RSHash 0.2.0
 A utility for computing various message digests
 
 USAGE:
@@ -71,7 +75,7 @@ See link:doc/man/man1/rshash.1.adoc[`rshash(1)`] for more details.
 
 == Changelog
 
-Please see the link:CHANGELOG.adoc[Changelog].
+Please see link:CHANGELOG.adoc[].
 
 == Configuration
 
@@ -81,7 +85,7 @@ See link:doc/man/man5/rshash-config.toml.5.adoc[`rshash-config.toml(5)`] for mor
 
 == Contributing
 
-Please see the link:CONTRIBUTING.adoc[Contribution Guide].
+Please see link:CONTRIBUTING.adoc[].
 
 == License
 

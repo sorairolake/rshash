@@ -13,7 +13,6 @@ mod value;
 mod verify;
 
 use std::collections::BTreeMap;
-use std::convert::{TryFrom, TryInto};
 use std::fs;
 use std::io::{self, Read};
 use std::str;
