@@ -1,3 +1,5 @@
+# RSHash
+
 ![CI](https://github.com/sorairolake/rshash/workflows/CI/badge.svg)
 ![Version](https://img.shields.io/crates/v/rshash)
 ![License](https://img.shields.io/crates/l/rshash)
@@ -5,24 +7,24 @@
 **RSHash** is a command-line utility for computing and checking various
 message digests.
 
-# Installation
+## Installation
 
-## Via a package manager
+### Via a package manager
 
 | OS  | Method | Package                                     | Command                |
 |-----|--------|---------------------------------------------|------------------------|
 | Any | Cargo  | [`rshash`](https://crates.io/crates/rshash) | `cargo install rshash` |
 
-## Via pre-built binaries
+### Via pre-built binaries
 
 Pre-built binaries for Linux, macOS and Windows are available on the
 [release page](https://github.com/sorairolake/rshash/releases).
 
-## How to build and install
+### How to build and install
 
 Please see the [Build Guide](BUILD.adoc).
 
-# Usage
+## Usage
 
     RSHash 0.1.1
     A utility for computing various message digests
@@ -63,11 +65,11 @@ Please see the [Build Guide](BUILD.adoc).
 
 See [`rshash(1)`](doc/man/man1/rshash.1.adoc) for more details.
 
-# Changelog
+## Changelog
 
 Please see the [Changelog](CHANGELOG.adoc).
 
-# Configuration
+## Configuration
 
 If you want to change the default behavior, you can use the
 configuration file.
@@ -75,11 +77,11 @@ configuration file.
 See [`rshash-config.toml(5)`](doc/man/man5/rshash-config.toml.5.adoc)
 for more details.
 
-# Contributing
+## Contributing
 
 Please see the [Contribution Guide](CONTRIBUTING.adoc).
 
-# License
+## License
 
 Copyright © 2021 Shun Sakai (see [AUTHORS.adoc](AUTHORS.adoc))
 
