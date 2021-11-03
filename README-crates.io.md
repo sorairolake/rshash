@@ -48,15 +48,18 @@ Please see [BUILD.adoc](BUILD.adoc).
         -V, --version                 Prints version information
 
     OPTIONS:
-        -H, --hash-algorithm <NAME>    Specify hash algorithm [possible values: BLAKE2b, BLAKE2s, BLAKE3, GOST, GOST-
-                                       CryptoPro, Groestl-224, Groestl-256, Groestl-384, Groestl-512, Keccak-224,
-                                       Keccak-256, Keccak-384, Keccak-512, MD2, MD4, MD5, RIPEMD-160, RIPEMD-256, RIPEMD-
-                                       320, SHA1, SHA224, SHA256, SHA384, SHA512, SHA3-224, SHA3-256, SHA3-384, SHA3-
-                                       512, Shabal-192, Shabal-224, Shabal-256, Shabal-384, Shabal-512, SM3, Streebog-
-                                       256, Streebog-512, Tiger, Whirlpool]
-        -o, --output <FILE>            Output to <FILE> instead of stdout
-        -s, --style <STYLE>            Specify style of the checksums [default: SFV]  [possible values: SFV, BSD, JSON]
-        -T, --threads <NUM>            Specify the number of threads to use [default: 0]
+        -H, --hash-algorithm <NAME>          Specify hash algorithm [possible values: BLAKE2b, BLAKE2s, BLAKE3, GOST, GOST-
+                                             CryptoPro, Groestl-224, Groestl-256, Groestl-384, Groestl-512, Keccak-224,
+                                             Keccak-256, Keccak-384, Keccak-512, MD2, MD4, MD5, RIPEMD-160, RIPEMD-256,
+                                             RIPEMD-320, SHA1, SHA224, SHA256, SHA384, SHA512, SHA3-224, SHA3-256, SHA3-384,
+                                             SHA3-512, Shabal-192, Shabal-224, Shabal-256, Shabal-384, Shabal-512, SM3,
+                                             Streebog-256, Streebog-512, Tiger, Whirlpool]
+        -o, --output <FILE>                  Output to <FILE> instead of stdout
+        -s, --style <STYLE>                  Specify style of the checksums [default: SFV]  [possible values: SFV, BSD,
+                                             JSON]
+        -T, --threads <NUM>                  Specify the number of threads to use [default: 0]
+            --generate-completion <SHELL>    Generate shell completion [possible values: zsh, bash, fish, powershell,
+                                             elvish]
 
     ARGS:
         <FILE>...    Input from <FILE>
