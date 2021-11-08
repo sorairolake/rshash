@@ -66,6 +66,16 @@ pub enum HashAlgorithm {
     #[strum(to_string = "BLAKE2s")]
     Blake2s,
     Blake3,
+    #[strum(serialize = "FSB-160")]
+    Fsb160,
+    #[strum(serialize = "FSB-224")]
+    Fsb224,
+    #[strum(serialize = "FSB-256")]
+    Fsb256,
+    #[strum(serialize = "FSB-384")]
+    Fsb384,
+    #[strum(serialize = "FSB-512")]
+    Fsb512,
     Gost,
     #[strum(serialize = "GOST-CryptoPro")]
     GostCryptoPro,

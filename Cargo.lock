@@ -365,6 +365,18 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "3f9eec918d3f24069decb9af1554cad7c880e2da24a9afd88aca000531ab82c1"
 
 [[package]]
+name = "fsb"
+version = "0.0.2"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "8e1bd30cd078b536160a3d83be8c53ee84b5d21f53ea3fc326aca82fd59d7e97"
+dependencies = [
+ "block-buffer",
+ "digest",
+ "opaque-debug",
+ "whirlpool",
+]
+
+[[package]]
 name = "generic-array"
 version = "0.14.4"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -835,6 +847,7 @@ dependencies = [
  "dialoguer",
  "directories",
  "exitcode",
+ "fsb",
  "gost94",
  "groestl",
  "hex",

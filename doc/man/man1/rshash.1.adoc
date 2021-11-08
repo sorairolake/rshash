@@ -6,7 +6,7 @@
 
 = rshash(1)
 // Specify in UTC.
-:docdate: 2021-11-03
+:docdate: 2021-11-08
 :doctype: manpage
 ifdef::revnumber[:mansource: RSHash {revnumber}]
 :manmanual: General Commands Manual
@@ -38,6 +38,7 @@ Unless otherwise noted, the value of each option is case-insensitive.
 
     * *blake2b* and *blake2s* (BLAKE2)
     * *blake3* (BLAKE3)
+    * *fsb-160*, *fsb-224*, *fsb-256*, *fsb-384* and *fsb-512* (FSB)
     * *gost* and *gost-cryptopro* (GOST)
     * *groestl-224*, *groestl-256*, *groestl-384* and *groestl-512* (Groestl)
     * *keccak-224*, *keccak-256*, *keccak-384* and *keccak-512* (Keccak)
