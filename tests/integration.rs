@@ -19,12 +19,12 @@ fn command() -> Command {
 fn sfv_style_output() {
     command()
         .arg("-H")
-        .arg("md5")
+        .arg("blake2b")
         .arg("-s")
         .arg("sfv")
         .write_stdin("Hello, world!")
         .assert()
-        .stdout(predicate::eq(include_str!("resource/checksum/sfv.md5")));
+        .stdout(predicate::eq(include_str!("resource/checksum/sfv.b2b")));
 }
 
 #[test]
@@ -32,12 +32,12 @@ fn sfv_style_output() {
 fn bsd_style_output() {
     command()
         .arg("-H")
-        .arg("md5")
+        .arg("blake2b")
         .arg("-s")
         .arg("bsd")
         .write_stdin("Hello, world!")
         .assert()
-        .stdout(predicate::eq(include_str!("resource/checksum/bsd.md5")));
+        .stdout(predicate::eq(include_str!("resource/checksum/bsd.b2b")));
 }
 
 #[test]
@@ -45,12 +45,12 @@ fn bsd_style_output() {
 fn json_style_output() {
     command()
         .arg("-H")
-        .arg("md5")
+        .arg("blake2b")
         .arg("-s")
         .arg("json")
         .write_stdin("Hello, world!")
         .assert()
-        .stdout(predicate::eq(include_str!("resource/checksum/json.md5")));
+        .stdout(predicate::eq(include_str!("resource/checksum/json.b2b")));
 }
 
 #[test]
@@ -58,8 +58,8 @@ fn verification_success() {
     command()
         .arg("-c")
         .arg("-H")
-        .arg("md5")
-        .arg("resource/checksum/sfv.md5")
+        .arg("blake2b")
+        .arg("resource/checksum/sfv.b2b")
         .write_stdin("Hello, world!")
         .assert()
         .success()
@@ -71,8 +71,8 @@ fn verification_failure() {
     command()
         .arg("-c")
         .arg("-H")
-        .arg("md5")
-        .arg("resource/checksum/sfv.md5")
+        .arg("blake2b")
+        .arg("resource/checksum/sfv.b2b")
         .write_stdin("hELLO, WORLD!")
         .assert()
         .failure()

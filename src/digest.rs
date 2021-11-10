@@ -23,11 +23,38 @@ impl Checksum {
                 Blake2s::digest(input.1.as_ref()).as_slice().to_vec()
             }
             HashAlgorithm::Blake3 => blake3::hash(input.1.as_ref()).as_bytes().to_vec(),
+            HashAlgorithm::Fsb160 => {
+                use fsb::{Digest, Fsb160};
+
+                Fsb160::digest(input.1.as_ref()).as_slice().to_vec()
+            }
+            HashAlgorithm::Fsb224 => {
+                use fsb::{Digest, Fsb224};
+
+                Fsb224::digest(input.1.as_ref()).as_slice().to_vec()
+            }
+            HashAlgorithm::Fsb256 => {
+                use fsb::{Digest, Fsb256};
+
+                Fsb256::digest(input.1.as_ref()).as_slice().to_vec()
+            }
+            HashAlgorithm::Fsb384 => {
+                use fsb::{Digest, Fsb384};
+
+                Fsb384::digest(input.1.as_ref()).as_slice().to_vec()
+            }
+            HashAlgorithm::Fsb512 => {
+                use fsb::{Digest, Fsb512};
+
+                Fsb512::digest(input.1.as_ref()).as_slice().to_vec()
+            }
+            #[cfg(feature = "gost94")]
             HashAlgorithm::Gost => {
                 use gost94::{Digest, Gost94Test};
 
                 Gost94Test::digest(input.1.as_ref()).as_slice().to_vec()
             }
+            #[cfg(feature = "gost94")]
             HashAlgorithm::GostCryptoPro => {
                 use gost94::{Digest, Gost94CryptoPro};
 
@@ -75,16 +102,19 @@ impl Checksum {
 
                 Keccak512::digest(input.1.as_ref()).as_slice().to_vec()
             }
+            #[cfg(feature = "md2")]
             HashAlgorithm::Md2 => {
                 use md2::{Digest, Md2};
 
                 Md2::digest(input.1.as_ref()).as_slice().to_vec()
             }
+            #[cfg(feature = "md4")]
             HashAlgorithm::Md4 => {
                 use md4::{Digest, Md4};
 
                 Md4::digest(input.1.as_ref()).as_slice().to_vec()
             }
+            #[cfg(feature = "md-5")]
             HashAlgorithm::Md5 => {
                 use md5::{Digest, Md5};
 
@@ -105,6 +135,7 @@ impl Checksum {
 
                 Ripemd320::digest(input.1.as_ref()).as_slice().to_vec()
             }
+            #[cfg(feature = "sha-1")]
             HashAlgorithm::Sha1 => {
                 use sha1::{Digest, Sha1};
 
@@ -180,11 +211,13 @@ impl Checksum {
 
                 Sm3::digest(input.1.as_ref()).as_slice().to_vec()
             }
+            #[cfg(feature = "streebog")]
             HashAlgorithm::Streebog256 => {
                 use streebog::{Digest, Streebog256};
 
                 Streebog256::digest(input.1.as_ref()).as_slice().to_vec()
             }
+            #[cfg(feature = "streebog")]
             HashAlgorithm::Streebog512 => {
                 use streebog::{Digest, Streebog512};
 
@@ -248,6 +281,52 @@ mod tests {
         );
     }
 
+    #[test]
+    fn verify_fsb() {
+        assert_eq!(
+            Checksum::digest(HashAlgorithm::Fsb160, ("-", b"Hello, world!")).digest,
+            [
+                0x5d, 0xf2, 0xa6, 0x54, 0x6e, 0x87, 0x72, 0x98, 0xb0, 0x72, 0x81, 0x1a, 0xdd, 0x6e,
+                0xbc, 0x9a, 0x80, 0xcb, 0xed, 0xa6
+            ]
+        );
+        assert_eq!(
+            Checksum::digest(HashAlgorithm::Fsb224, ("-", b"Hello, world!")).digest,
+            [
+                0x42, 0x18, 0xc2, 0x45, 0xdf, 0xc0, 0x96, 0x47, 0x3, 0xb5, 0xf, 0xaa, 0x57, 0xf6,
+                0xc1, 0x3f, 0xf3, 0xf1, 0x18, 0x96, 0xc4, 0x9b, 0x95, 0x64, 0xf, 0x78, 0xc7, 0xb2
+            ]
+        );
+        assert_eq!(
+            Checksum::digest(HashAlgorithm::Fsb256, ("-", b"Hello, world!")).digest,
+            [
+                0xb7, 0x5c, 0x25, 0xc, 0x35, 0xcc, 0xeb, 0xeb, 0x67, 0xd6, 0xe9, 0xa5, 0x17, 0x3e,
+                0x63, 0x8a, 0xe, 0xbc, 0x25, 0x45, 0x67, 0x4c, 0x2d, 0xa1, 0x7f, 0xc0, 0x27, 0x5a,
+                0x62, 0xb3, 0xf6, 0x9c
+            ]
+        );
+        assert_eq!(
+            Checksum::digest(HashAlgorithm::Fsb384, ("-", b"Hello, world!")).digest,
+            [
+                0x95, 0xe4, 0xb3, 0x23, 0x81, 0x5, 0x75, 0x4d, 0x1c, 0x54, 0xdc, 0xc6, 0xfa, 0xb0,
+                0xf0, 0x71, 0xe1, 0x52, 0xa6, 0x5d, 0x4a, 0x86, 0x48, 0x55, 0x69, 0x4b, 0x7f, 0x9c,
+                0x7b, 0xad, 0x91, 0x5d, 0xbd, 0x68, 0xb2, 0x8b, 0xb4, 0x56, 0xb7, 0x4b, 0xb5, 0xa6,
+                0x68, 0x6f, 0x85, 0x6e, 0x9f, 0xcb
+            ]
+        );
+        assert_eq!(
+            Checksum::digest(HashAlgorithm::Fsb512, ("-", b"Hello, world!")).digest,
+            [
+                0x75, 0x18, 0x6f, 0x19, 0xcd, 0x5b, 0x7c, 0x57, 0xd4, 0xbe, 0x12, 0x47, 0xd7, 0xf3,
+                0x9b, 0xdc, 0x68, 0x1e, 0xc7, 0x96, 0xce, 0xbb, 0x56, 0x68, 0xea, 0x2e, 0xb4, 0xeb,
+                0x23, 0x32, 0x94, 0x7, 0x1c, 0xa9, 0x15, 0xe5, 0x68, 0x87, 0x54, 0x94, 0x64, 0xdc,
+                0x7d, 0x3e, 0x7, 0x7f, 0x8, 0x49, 0x2e, 0x6e, 0xd0, 0xd3, 0x82, 0x94, 0x3e, 0xfb,
+                0xea, 0xb2, 0xe, 0x19, 0x1a, 0x5f, 0x9, 0xd0
+            ]
+        );
+    }
+
+    #[cfg(feature = "gost94")]
     #[test]
     fn verify_gost() {
         assert_eq!(
@@ -344,6 +423,7 @@ mod tests {
         );
     }
 
+    #[cfg(feature = "md2")]
     #[test]
     fn verify_md2() {
         assert_eq!(
@@ -355,6 +435,7 @@ mod tests {
         );
     }
 
+    #[cfg(feature = "md4")]
     #[test]
     fn verify_md4() {
         assert_eq!(
@@ -366,6 +447,7 @@ mod tests {
         );
     }
 
+    #[cfg(feature = "md-5")]
     #[test]
     fn verify_md5() {
         assert_eq!(
@@ -404,6 +486,7 @@ mod tests {
         );
     }
 
+    #[cfg(feature = "sha-1")]
     #[test]
     fn verify_sha1() {
         assert_eq!(
@@ -548,6 +631,7 @@ mod tests {
         );
     }
 
+    #[cfg(feature = "streebog")]
     #[test]
     fn verify_streebog() {
         assert_eq!(
