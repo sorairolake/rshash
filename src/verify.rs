@@ -100,7 +100,7 @@ mod tests {
         let mut file = NamedTempFile::new().unwrap();
         let data = "Hello, world!";
         write!(file, "{}", data).unwrap();
-        let checksum = Checksum::digest(HashAlgorithm::Md5, (file.path(), data));
+        let checksum = Checksum::digest(HashAlgorithm::Blake2b, (file.path(), data));
         let result = Verify::check(&checksum).unwrap();
 
         assert!(result.success.unwrap());
@@ -113,7 +113,7 @@ mod tests {
         let mut file = NamedTempFile::new().unwrap();
         let data = "Hello";
         write!(file, "{}", data).unwrap();
-        let checksum = Checksum::digest(HashAlgorithm::Md5, (file.path(), data));
+        let checksum = Checksum::digest(HashAlgorithm::Blake2b, (file.path(), data));
         write!(file, ", world!").unwrap();
         let result = Verify::check(&checksum).unwrap();
 
@@ -127,7 +127,7 @@ mod tests {
         let mut file = NamedTempFile::new().unwrap();
         let data = "Hello, world!";
         write!(file, "{}", data).unwrap();
-        let checksum = Checksum::digest(HashAlgorithm::Md5, (file.path(), data));
+        let checksum = Checksum::digest(HashAlgorithm::Blake2b, (file.path(), data));
         file.close().unwrap();
         let result = Verify::check(&checksum).unwrap();
 

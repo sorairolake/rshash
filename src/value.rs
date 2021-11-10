@@ -76,7 +76,9 @@ pub enum HashAlgorithm {
     Fsb384,
     #[strum(serialize = "FSB-512")]
     Fsb512,
+    #[cfg(feature = "gost94")]
     Gost,
+    #[cfg(feature = "gost94")]
     #[strum(serialize = "GOST-CryptoPro")]
     GostCryptoPro,
     #[strum(serialize = "Groestl-224")]
@@ -95,8 +97,11 @@ pub enum HashAlgorithm {
     Keccak384,
     #[strum(serialize = "Keccak-512")]
     Keccak512,
+    #[cfg(feature = "md2")]
     Md2,
+    #[cfg(feature = "md4")]
     Md4,
+    #[cfg(feature = "md-5")]
     Md5,
     #[strum(serialize = "RIPEMD-160")]
     Ripemd160,
@@ -104,6 +109,7 @@ pub enum HashAlgorithm {
     Ripemd256,
     #[strum(serialize = "RIPEMD-320")]
     Ripemd320,
+    #[cfg(feature = "sha-1")]
     Sha1,
     Sha224,
     Sha256,
@@ -124,8 +130,10 @@ pub enum HashAlgorithm {
     #[strum(serialize = "Shabal-512")]
     Shabal512,
     Sm3,
+    #[cfg(feature = "streebog")]
     #[strum(serialize = "Streebog-256")]
     Streebog256,
+    #[cfg(feature = "streebog")]
     #[strum(serialize = "Streebog-512")]
     Streebog512,
     #[strum(to_string = "Tiger")]

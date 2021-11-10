@@ -48,11 +48,13 @@ impl Checksum {
 
                 Fsb512::digest(input.1.as_ref()).as_slice().to_vec()
             }
+            #[cfg(feature = "gost94")]
             HashAlgorithm::Gost => {
                 use gost94::{Digest, Gost94Test};
 
                 Gost94Test::digest(input.1.as_ref()).as_slice().to_vec()
             }
+            #[cfg(feature = "gost94")]
             HashAlgorithm::GostCryptoPro => {
                 use gost94::{Digest, Gost94CryptoPro};
 
@@ -100,16 +102,19 @@ impl Checksum {
 
                 Keccak512::digest(input.1.as_ref()).as_slice().to_vec()
             }
+            #[cfg(feature = "md2")]
             HashAlgorithm::Md2 => {
                 use md2::{Digest, Md2};
 
                 Md2::digest(input.1.as_ref()).as_slice().to_vec()
             }
+            #[cfg(feature = "md4")]
             HashAlgorithm::Md4 => {
                 use md4::{Digest, Md4};
 
                 Md4::digest(input.1.as_ref()).as_slice().to_vec()
             }
+            #[cfg(feature = "md-5")]
             HashAlgorithm::Md5 => {
                 use md5::{Digest, Md5};
 
@@ -130,6 +135,7 @@ impl Checksum {
 
                 Ripemd320::digest(input.1.as_ref()).as_slice().to_vec()
             }
+            #[cfg(feature = "sha-1")]
             HashAlgorithm::Sha1 => {
                 use sha1::{Digest, Sha1};
 
@@ -205,11 +211,13 @@ impl Checksum {
 
                 Sm3::digest(input.1.as_ref()).as_slice().to_vec()
             }
+            #[cfg(feature = "streebog")]
             HashAlgorithm::Streebog256 => {
                 use streebog::{Digest, Streebog256};
 
                 Streebog256::digest(input.1.as_ref()).as_slice().to_vec()
             }
+            #[cfg(feature = "streebog")]
             HashAlgorithm::Streebog512 => {
                 use streebog::{Digest, Streebog512};
 
@@ -318,6 +326,7 @@ mod tests {
         );
     }
 
+    #[cfg(feature = "gost94")]
     #[test]
     fn verify_gost() {
         assert_eq!(
@@ -414,6 +423,7 @@ mod tests {
         );
     }
 
+    #[cfg(feature = "md2")]
     #[test]
     fn verify_md2() {
         assert_eq!(
@@ -425,6 +435,7 @@ mod tests {
         );
     }
 
+    #[cfg(feature = "md4")]
     #[test]
     fn verify_md4() {
         assert_eq!(
@@ -436,6 +447,7 @@ mod tests {
         );
     }
 
+    #[cfg(feature = "md-5")]
     #[test]
     fn verify_md5() {
         assert_eq!(
@@ -474,6 +486,7 @@ mod tests {
         );
     }
 
+    #[cfg(feature = "sha-1")]
     #[test]
     fn verify_sha1() {
         assert_eq!(
@@ -618,6 +631,7 @@ mod tests {
         );
     }
 
+    #[cfg(feature = "streebog")]
     #[test]
     fn verify_streebog() {
         assert_eq!(
