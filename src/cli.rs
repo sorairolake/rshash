@@ -13,11 +13,13 @@ use structopt::StructOpt;
 use strum::VariantNames;
 
 use crate::config::Config;
+use crate::long_version;
 use crate::value::{HashAlgorithm, Style};
 
 #[derive(StructOpt)]
 #[structopt(
     name = "RSHash",
+    long_version = long_version!().as_str(),
     about,
     after_help = "See rshash(1) for more details.",
     settings = &[AppSettings::ColoredHelp, AppSettings::DeriveDisplayOrder]

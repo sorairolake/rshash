@@ -56,6 +56,9 @@ assert_cmd = "2.0.2"
 predicates = "2.0.3"
 tempfile = "3.2.0"
 
+[build-dependencies]
+vergen = { version = "5.1.17", features = ["git"], default-features = false }
+
 [features]
 default = ["deprecated", "obsolete"]
 
