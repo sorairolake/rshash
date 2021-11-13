@@ -259,33 +259,24 @@ fn main() -> Result<()> {
             }
 
             if opt.speed {
-                let duration: u64 = start
-                    .elapsed()
-                    .as_millis()
-                    .try_into()
-                    .expect("Time interval is too long");
+                let duration = start.elapsed();
                 let length: u64 = result
                     .into_iter()
                     .flat_map(|r| fs::metadata(r.file.as_path()))
                     .map(|f| f.len())
                     .sum();
 
-                if let Some(speed) = length
-                    .checked_div(duration)
-                    .and_then(|s| s.checked_mul(1_000))
-                {
+                if duration >= Duration::from_millis(1) {
                     eprintln!(
                         "Computed {} in {} ({}/s)",
                         BinaryBytes(length),
-                        humantime::format_duration(Duration::from_millis(duration)),
-                        BinaryBytes(speed)
+                        humantime::format_duration(Duration::from_millis(
+                            duration.as_millis() as u64
+                        )),
+                        BinaryBytes((length as f64 / duration.as_secs_f64()) as u64),
                     );
                 } else {
-                    eprintln!(
-                        "Computed {} in {}",
-                        BinaryBytes(length),
-                        humantime::format_duration(Duration::from_millis(duration))
-                    );
+                    eprintln!("Computed {}", BinaryBytes(length));
                 }
 
                 total_length += length;
@@ -383,29 +374,18 @@ fn main() -> Result<()> {
     }
 
     if opt.speed {
-        let duration: u64 = start
-            .elapsed()
-            .as_millis()
-            .try_into()
-            .expect("Time interval is too long");
+        let duration = start.elapsed();
 
         if opt.check {
-            if let Some(speed) = total_length
-                .checked_div(duration)
-                .and_then(|s| s.checked_mul(1_000))
-            {
+            if duration >= Duration::from_millis(1) {
                 eprintln!(
                     "Total {} in {} ({}/s)",
                     BinaryBytes(total_length),
-                    humantime::format_duration(Duration::from_millis(duration)),
-                    BinaryBytes(speed)
+                    humantime::format_duration(Duration::from_millis(duration.as_millis() as u64)),
+                    BinaryBytes((total_length as f64 / duration.as_secs_f64()) as u64),
                 );
             } else {
-                eprintln!(
-                    "Total {} in {}",
-                    BinaryBytes(total_length),
-                    humantime::format_duration(Duration::from_millis(duration))
-                );
+                eprintln!("Total {}", BinaryBytes(total_length));
             }
         } else {
             let length: u64 = inputs
@@ -414,22 +394,15 @@ fn main() -> Result<()> {
                 .map(|d| u64::try_from(d.len()).expect("File size exceeds the limit"))
                 .sum();
 
-            if let Some(speed) = length
-                .checked_div(duration)
-                .and_then(|s| s.checked_mul(1_000))
-            {
+            if duration >= Duration::from_millis(1) {
                 eprintln!(
                     "Computed {} in {} ({}/s)",
                     BinaryBytes(length),
-                    humantime::format_duration(Duration::from_millis(duration)),
-                    BinaryBytes(speed)
+                    humantime::format_duration(Duration::from_millis(duration.as_millis() as u64)),
+                    BinaryBytes((length as f64 / duration.as_secs_f64()) as u64),
                 );
             } else {
-                eprintln!(
-                    "Computed {} in {}",
-                    BinaryBytes(length),
-                    humantime::format_duration(Duration::from_millis(duration))
-                );
+                eprintln!("Computed {}", BinaryBytes(length));
             }
         }
     }
