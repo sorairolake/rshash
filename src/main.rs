@@ -16,7 +16,7 @@ use std::collections::BTreeMap;
 use std::fs;
 use std::io::{self, Read};
 use std::str;
-use std::time::{Duration, Instant};
+use std::time::Instant;
 
 use anyhow::{ensure, Context, Result};
 use dialoguer::theme::ColorfulTheme;
@@ -266,13 +266,11 @@ fn main() -> Result<()> {
                     .map(|f| f.len())
                     .sum();
 
-                if duration >= Duration::from_millis(1) {
+                if !duration.is_zero() {
                     eprintln!(
                         "Computed {} in {} ({}/s)",
                         BinaryBytes(length),
-                        humantime::format_duration(Duration::from_millis(
-                            duration.as_millis() as u64
-                        )),
+                        humantime::format_duration(duration),
                         BinaryBytes((length as f64 / duration.as_secs_f64()) as u64),
                     );
                 } else {
@@ -377,11 +375,11 @@ fn main() -> Result<()> {
         let duration = start.elapsed();
 
         if opt.check {
-            if duration >= Duration::from_millis(1) {
+            if !duration.is_zero() {
                 eprintln!(
                     "Total {} in {} ({}/s)",
                     BinaryBytes(total_length),
-                    humantime::format_duration(Duration::from_millis(duration.as_millis() as u64)),
+                    humantime::format_duration(duration),
                     BinaryBytes((total_length as f64 / duration.as_secs_f64()) as u64),
                 );
             } else {
@@ -394,11 +392,11 @@ fn main() -> Result<()> {
                 .map(|d| u64::try_from(d.len()).expect("File size exceeds the limit"))
                 .sum();
 
-            if duration >= Duration::from_millis(1) {
+            if !duration.is_zero() {
                 eprintln!(
                     "Computed {} in {} ({}/s)",
                     BinaryBytes(length),
-                    humantime::format_duration(Duration::from_millis(duration.as_millis() as u64)),
+                    humantime::format_duration(duration),
                     BinaryBytes((length as f64 / duration.as_secs_f64()) as u64),
                 );
             } else {
