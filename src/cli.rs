@@ -51,7 +51,8 @@ pub struct Opt {
     #[structopt(long, requires = "check")]
     pub quiet: bool,
 
-    /// Don't output anything, return the verification result as the exit status.
+    /// Don't output anything, return the verification result as the exit
+    /// status.
     #[structopt(long, requires = "check")]
     pub status: bool,
 
@@ -64,6 +65,8 @@ pub struct Opt {
     pub warn: bool,
 
     /// Output the verification result as JSON to stdout.
+    ///
+    /// If you want to pretty-printing, specify `--pretty` as well.
     #[structopt(short, long, requires = "check")]
     pub json: bool,
 
@@ -87,6 +90,8 @@ pub struct Opt {
     pub style: Style,
 
     /// Specify the number of threads to use.
+    ///
+    /// If <NUM> is `0`, use as many threads as there are CPU cores.
     #[structopt(short = "T", long, value_name = "NUM", default_value)]
     pub threads: usize,
 
@@ -103,6 +108,10 @@ pub struct Opt {
     pub input: Vec<PathBuf>,
 
     /// Generate shell completion.
+    ///
+    /// The generated shell completion is output to stdout.
+    /// To output as a shell completion file, specify the directory to store
+    /// using `--output`=<OUT_DIR>.
     #[structopt(long, value_name = "SHELL", possible_values = &Shell::variants())]
     pub generate_completion: Option<Shell>,
 }
