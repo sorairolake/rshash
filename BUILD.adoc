@@ -41,3 +41,51 @@ $ cargo run -- --generate-completion <SHELL>
 # Output to a file.
 $ cargo run -- --generate-completion <SHELL> -o <OUT_DIR>
 ----
+
+== Crate features
+
+=== Hash algorithm features
+
+`deprecated`::
+  Enable hash algorithms broken in theory.
+  This is the same as enabling `gost94` and `streebog`.
+  This feature is enabled by default.
+
+`obsolete`::
+  Enable hash algorithms broken in practice.
+  This is the same as enabling `md2`, `md4`, `md-5` and `sha-1`.
+  This feature is enabled by default.
+
+=== Assembly implementation features
+
+`fsb-asm`::
+  Enable assembly implementation of FSB.
+  This is available in IA-32 and x86-64.
+
+`md5-asm`::
+  Enable assembly implementation of MD5.
+  This is available in IA-32 and x86-64.
+
+`sha1-asm`::
+  Enable assembly implementation of SHA-1.
+  This is available in IA-32, x86-64 and AArch64.
+
+`sha2-asm`::
+  Enable assembly implementation of SHA-2.
+  This is available in IA-32, x86-64 and AArch64.
+
+`whirlpool-asm`::
+  Enable assembly implementation of Whirlpool.
+  This is available in IA-32 and x86-64.
+
+`asm`::
+  Enable assembly implementations.
+  This is the same as enabling `fsb-asm`, `md5-asm`, `sha1-asm`, `sha2-asm` and `whirlpool-asm`.
+
+=== BLAKE3 optimization features
+
+`blake3-neon`::
+  Enable the Neon implementation.
+
+`blake3-rayon`::
+  Enable https://github.com/rayon-rs/rayon[Rayon] for multithreading.
