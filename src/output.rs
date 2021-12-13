@@ -21,7 +21,7 @@ impl Checksum {
                 self.file.display(),
                 hex::encode(self.digest.clone())
             ),
-            _ => unreachable!(),
+            Style::Json => unreachable!(),
         }
     }
 }
@@ -33,16 +33,30 @@ mod tests {
     #[test]
     fn sfv_style_checksum() {
         assert_eq!(
-            Checksum::digest(crate::value::HashAlgorithm::Blake2b, ("-", b"Hello, world!")).output(Style::Sfv),
-            "a2764d133a16816b5847a737a786f2ece4c148095c5faa73e24b4cc5d666c3e45ec271504e14dc6127ddfce4e144fb23b91a6f7b04b53d695502290722953b0f  -"
+            Checksum::digest(
+                crate::value::HashAlgorithm::Blake2b,
+                &("-", b"Hello, world!")
+            )
+            .output(Style::Sfv),
+            include_str!("../tests/resource/checksum/sfv.b2b")
+                .lines()
+                .next()
+                .unwrap()
         );
     }
 
     #[test]
     fn bsd_style_checksum() {
         assert_eq!(
-            Checksum::digest(crate::value::HashAlgorithm::Blake2b, ("-", b"Hello, world!")).output(Style::Bsd),
-            "BLAKE2b (-) = a2764d133a16816b5847a737a786f2ece4c148095c5faa73e24b4cc5d666c3e45ec271504e14dc6127ddfce4e144fb23b91a6f7b04b53d695502290722953b0f"
+            Checksum::digest(
+                crate::value::HashAlgorithm::Blake2b,
+                &("-", b"Hello, world!")
+            )
+            .output(Style::Bsd),
+            include_str!("../tests/resource/checksum/bsd.b2b")
+                .lines()
+                .next()
+                .unwrap()
         );
     }
 }

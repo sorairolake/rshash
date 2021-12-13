@@ -152,6 +152,6 @@ pub enum Style {
 
 impl Default for Style {
     fn default() -> Self {
-        Style::Sfv
+        Self::Sfv
     }
 }

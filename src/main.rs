@@ -52,9 +52,9 @@ fn main() -> Result<()> {
     }
 
     if opt.list_hash_algorithms {
-        HashAlgorithm::VARIANTS
-            .iter()
-            .for_each(|h| println!("{}", h));
+        for hash_algorithm in HashAlgorithm::VARIANTS {
+            println!("{}", hash_algorithm);
+        }
 
         return Ok(());
     }
@@ -106,7 +106,7 @@ fn main() -> Result<()> {
             let str = str::from_utf8(data).context("Failed to convert from bytes to a string")?;
 
             let mut impropers = Vec::new();
-            let checksums: Vec<_> = if let Ok(checksums) = serde_json::from_str(str) {
+            let checksums: Vec<Checksum> = if let Ok(checksums) = serde_json::from_str(str) {
                 checksums
             } else {
                 for (i, line) in str.lines().enumerate() {
@@ -114,7 +114,7 @@ fn main() -> Result<()> {
                         impropers.push((i, error));
                     }
                 }
-                str.lines().flat_map(|c| c.parse::<Checksum>()).collect()
+                str.lines().flat_map(str::parse).collect()
             };
             let impropers = impropers;
 
@@ -209,9 +209,9 @@ fn main() -> Result<()> {
             if opt.status {
                 if result.into_iter().all(|r| r.success.unwrap_or_default()) {
                     continue;
-                } else {
-                    std::process::exit(exitcode::SOFTWARE);
                 }
+
+                std::process::exit(exitcode::SOFTWARE);
             }
 
             if !opt.json {
@@ -219,7 +219,7 @@ fn main() -> Result<()> {
                 eprintln!("{}", "-".repeat(VERIFICATION_RESULT_WIDTH));
                 result
                     .iter()
-                    .map(|r| r.output())
+                    .map(Verify::output)
                     .for_each(|o| println!("{}", o));
                 eprintln!("{}", "-".repeat(VERIFICATION_RESULT_WIDTH));
                 if total == success && !opt.quiet {
@@ -242,9 +242,14 @@ fn main() -> Result<()> {
                 }
                 if !impropers.is_empty() {
                     if opt.warn {
-                        impropers.iter().for_each(|i| {
-                            eprintln!("RSHash: {}: {}: {}", path.display(), i.0 + 1, i.1)
-                        });
+                        for improper in &impropers {
+                            eprintln!(
+                                "RSHash: {}: {}: {}",
+                                path.display(),
+                                improper.0 + 1,
+                                improper.1
+                            );
+                        }
                     }
 
                     if impropers.len() == 1 {
@@ -266,15 +271,15 @@ fn main() -> Result<()> {
                     .map(|f| f.len())
                     .sum();
 
-                if !duration.is_zero() {
+                if duration.is_zero() {
+                    eprintln!("Computed {}", BinaryBytes(length));
+                } else {
                     eprintln!(
                         "Computed {} in {} ({}/s)",
                         BinaryBytes(length),
                         humantime::format_duration(duration),
                         BinaryBytes((length as f64 / duration.as_secs_f64()) as u64),
                     );
-                } else {
-                    eprintln!("Computed {}", BinaryBytes(length));
                 }
 
                 total_length += length;
@@ -299,7 +304,7 @@ fn main() -> Result<()> {
             return Ok(());
         }
 
-        if results.values().any(|r| r.is_empty()) {
+        if results.values().any(Vec::is_empty) {
             std::process::exit(exitcode::NOINPUT);
         }
 
@@ -334,12 +339,12 @@ fn main() -> Result<()> {
             inputs
                 .par_iter()
                 .progress_with(pb)
-                .map(|i| Checksum::digest(algo, i))
+                .map(|i| Checksum::digest(algo, &i))
                 .collect()
         } else {
             inputs
                 .par_iter()
-                .map(|i| Checksum::digest(algo, i))
+                .map(|i| Checksum::digest(algo, &i))
                 .collect()
         };
         if opt.progress {
@@ -365,8 +370,9 @@ fn main() -> Result<()> {
     let total_length = total_length;
 
     if !dirs.is_empty() {
-        dirs.into_iter()
-            .for_each(|d| eprintln!("RSHash: {}: Is a directory", d.display()));
+        for dir in dirs {
+            eprintln!("RSHash: {}: Is a directory", dir.display());
+        }
 
         std::process::exit(exitcode::NOINPUT);
     }
@@ -375,15 +381,15 @@ fn main() -> Result<()> {
         let duration = start.elapsed();
 
         if opt.check {
-            if !duration.is_zero() {
+            if duration.is_zero() {
+                eprintln!("Total {}", BinaryBytes(total_length));
+            } else {
                 eprintln!(
                     "Total {} in {} ({}/s)",
                     BinaryBytes(total_length),
                     humantime::format_duration(duration),
                     BinaryBytes((total_length as f64 / duration.as_secs_f64()) as u64),
                 );
-            } else {
-                eprintln!("Total {}", BinaryBytes(total_length));
             }
         } else {
             let length: u64 = inputs
@@ -392,15 +398,15 @@ fn main() -> Result<()> {
                 .map(|d| u64::try_from(d.len()).expect("File size exceeds the limit"))
                 .sum();
 
-            if !duration.is_zero() {
+            if duration.is_zero() {
+                eprintln!("Computed {}", BinaryBytes(length));
+            } else {
                 eprintln!(
                     "Computed {} in {} ({}/s)",
                     BinaryBytes(length),
                     humantime::format_duration(duration),
                     BinaryBytes((length as f64 / duration.as_secs_f64()) as u64),
                 );
-            } else {
-                eprintln!("Computed {}", BinaryBytes(length));
             }
         }
     }
