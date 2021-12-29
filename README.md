@@ -1,38 +1,30 @@
-= RSHash
-:toc: macro
+# RSHash
 
-image:https://github.com/sorairolake/rshash/workflows/CI/badge.svg[CI, link=https://github.com/sorairolake/rshash/actions?query=workflow%3ACI]
-image:https://img.shields.io/crates/v/rshash[Version, link=https://crates.io/crates/rshash]
-image:https://img.shields.io/crates/l/rshash[License, link=https://www.gnu.org/licenses/gpl-3.0.html]
+[![CI](https://github.com/sorairolake/rshash/workflows/CI/badge.svg)](https://github.com/sorairolake/rshash/actions?query=workflow%3ACI)
+[![Version](https://img.shields.io/crates/v/rshash)](https://crates.io/crates/rshash)
+[![License](https://img.shields.io/crates/l/rshash)](https://www.gnu.org/licenses/gpl-3.0.html)
 
-*RSHash* is a command-line utility for computing and checking various message digests.
+**RSHash** is a command-line utility for computing and checking various message digests.
 
-toc::[]
+## Installation
 
-== Installation
+### Via a package manager
 
-=== Via a package manager
+| OS  | Method | Package                                     | Command                |
+| --- | ------ | ------------------------------------------- | ---------------------- |
+| Any | Cargo  | [`rshash`](https://crates.io/crates/rshash) | `cargo install rshash` |
 
-|===
-|OS |Method |Package |Command
+### Via pre-built binaries
 
-|Any
-|Cargo
-|https://crates.io/crates/rshash[`rshash`]
-|`cargo install rshash`
-|===
+Pre-built binaries for Linux, macOS and Windows are available on the [release page](https://github.com/sorairolake/rshash/releases).
 
-=== Via pre-built binaries
+### How to build and install
 
-Pre-built binaries for Linux, macOS and Windows are available on the https://github.com/sorairolake/rshash/releases[release page].
+Please see [BUILD.adoc](BUILD.adoc).
 
-=== How to build and install
+## Usage
 
-Please see link:BUILD.adoc[].
-
-== Usage
-
-....
+```text
 RSHash 0.3.0
 A utility for computing various message digests
 
@@ -73,28 +65,28 @@ ARGS:
     <FILE>...    Input from <FILE>
 
 See rshash(1) for more details.
-....
+```
 
-See link:doc/man/man1/rshash.1.adoc[`rshash(1)`] for more details.
+See [`rshash(1)`](doc/man/man1/rshash.1.adoc) for more details.
 
-== Changelog
+## Changelog
 
-Please see link:CHANGELOG.adoc[].
+Please see [CHANGELOG.adoc](CHANGELOG.adoc).
 
-== Configuration
+## Configuration
 
 If you want to change the default behavior, you can use the configuration file.
 
-See link:doc/man/man5/rshash-config.toml.5.adoc[`rshash-config.toml(5)`] for more details.
+See [`rshash-config.toml(5)`](doc/man/man5/rshash-config.toml.5.adoc) for more details.
 
-== Contributing
+## Contributing
 
-Please see link:CONTRIBUTING.adoc[].
+Please see [CONTRIBUTING.adoc](CONTRIBUTING.adoc).
 
-== License
+## License
 
-Copyright (C) 2021 Shun Sakai (see link:AUTHORS.adoc[])
+Copyright (C) 2021 Shun Sakai (see [AUTHORS.adoc](AUTHORS.adoc))
 
 This program is distributed under the terms of the _GNU General Public License v3.0 or later_.
 
-See link:COPYING[] for more details.
+See [COPYING](COPYING) for more details.
