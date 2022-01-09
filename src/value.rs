@@ -8,6 +8,7 @@ use std::path::PathBuf;
 use std::str::FromStr;
 
 use anyhow::{anyhow, Error, Result};
+use clap::ArgEnum;
 use serde::{Deserialize, Serialize};
 use serde_with::{serde_as, DeserializeFromStr, SerializeDisplay};
 use strum::{Display, EnumString, EnumVariantNames};
@@ -57,7 +58,14 @@ impl FromStr for Checksum {
 }
 
 #[derive(
-    Clone, Copy, DeserializeFromStr, Display, EnumString, EnumVariantNames, SerializeDisplay,
+    ArgEnum,
+    Clone,
+    Copy,
+    DeserializeFromStr,
+    Display,
+    EnumString,
+    EnumVariantNames,
+    SerializeDisplay,
 )]
 #[strum(serialize_all = "SCREAMING-KEBAB-CASE", ascii_case_insensitive)]
 pub enum HashAlgorithm {
@@ -142,8 +150,11 @@ pub enum HashAlgorithm {
     Whirlpool,
 }
 
-#[derive(Clone, Copy, DeserializeFromStr, Display, EnumString, EnumVariantNames, PartialEq)]
+#[derive(
+    ArgEnum, Clone, Copy, DeserializeFromStr, Display, EnumString, EnumVariantNames, PartialEq,
+)]
 #[strum(serialize_all = "UPPERCASE", ascii_case_insensitive)]
+#[clap(rename_all = "lower")]
 pub enum Style {
     Sfv,
     Bsd,

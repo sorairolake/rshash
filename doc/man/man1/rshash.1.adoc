@@ -6,7 +6,7 @@
 
 = rshash(1)
 // Specify in UTC.
-:docdate: 2021-11-08
+:docdate: 2022-01-09
 :doctype: manpage
 ifdef::revnumber[:mansource: RSHash {revnumber}]
 :manmanual: General Commands Manual
@@ -38,12 +38,12 @@ Unless otherwise noted, the value of each option is case-insensitive.
 
     * *blake2b* and *blake2s* (BLAKE2)
     * *blake3* (BLAKE3)
-    * *fsb-160*, *fsb-224*, *fsb-256*, *fsb-384* and *fsb-512* (FSB)
+    * *fsb160*, *fsb224*, *fsb256*, *fsb384* and *fsb512* (FSB)
 ifdef::gost94[]
-    * *gost* and *gost-cryptopro* (GOST)
+    * *gost* and *gost-crypto-pro* (GOST)
 endif::[]
-    * *groestl-224*, *groestl-256*, *groestl-384* and *groestl-512* (Groestl)
-    * *keccak-224*, *keccak-256*, *keccak-384* and *keccak-512* (Keccak)
+    * *groestl224*, *groestl256*, *groestl384* and *groestl512* (Groestl)
+    * *keccak224*, *keccak256*, *keccak384* and *keccak512* (Keccak)
 ifdef::md2[]
     * *md2* (MD2)
 endif::[]
@@ -53,16 +53,16 @@ endif::[]
 ifdef::md-5[]
     * *md5* (MD5)
 endif::[]
-    * *ripemd-160*, *ripemd-256* and *ripemd-320* (RIPEMD)
+    * *ripemd160*, *ripemd256* and *ripemd320* (RIPEMD)
 ifdef::sha-1[]
     * *sha1* (SHA-1)
 endif::[]
     * *sha224*, *sha256*, *sha384* and *sha512* (SHA-2)
     * *sha3-224*, *sha3-256*, *sha3-384* and *sha3-512* (SHA-3)
-    * *shabal-192*, *shabal-224*, *shabal-256*, *shabal-384* and *shabal-512* (Shabal)
+    * *shabal192*, *shabal224*, *shabal256*, *shabal384* and *shabal512* (Shabal)
     * *sm3* (SM3)
 ifdef::streebog[]
-    * *streebog-256* and *streebog-512* (Streebog)
+    * *streebog256* and *streebog512* (Streebog)
 endif::[]
     * *tiger* (Tiger)
     * *whirlpool* (Whirlpool)

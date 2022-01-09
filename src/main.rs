@@ -19,11 +19,11 @@ use std::str;
 use std::time::Instant;
 
 use anyhow::{ensure, Context, Result};
+use clap::Parser;
 use dialoguer::theme::ColorfulTheme;
 use indicatif::{BinaryBytes, ParallelProgressIterator, ProgressBar, ProgressStyle};
 use maplit::btreemap;
 use rayon::iter::{IntoParallelRefIterator, ParallelIterator};
-use structopt::StructOpt;
 use strum::VariantNames;
 
 use crate::cli::Opt;
@@ -34,7 +34,7 @@ const PROGRESS_BAR_TEMPLATE: &str =
     "{spinner:.green} [{elapsed_precise}] {percent}% {wide_bar:.cyan/blue} {pos}/{len} ETA {eta}";
 
 fn main() -> Result<()> {
-    let opt = Opt::from_args().apply_config()?;
+    let opt = Opt::parse().apply_config()?;
 
     rayon::ThreadPoolBuilder::new()
         .num_threads(opt.threads)
