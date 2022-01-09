@@ -16,14 +16,14 @@ impl Checksum {
     ) -> Self {
         let digest = match algorithm {
             HashAlgorithm::Blake2b => {
-                use blake2::{Blake2b, Digest};
+                use blake2::{Blake2b512, Digest};
 
-                Blake2b::digest(input.1.as_ref()).as_slice().to_vec()
+                Blake2b512::digest(input.1.as_ref()).as_slice().to_vec()
             }
             HashAlgorithm::Blake2s => {
-                use blake2::{Blake2s, Digest};
+                use blake2::{Blake2s256, Digest};
 
-                Blake2s::digest(input.1.as_ref()).as_slice().to_vec()
+                Blake2s256::digest(input.1.as_ref()).as_slice().to_vec()
             }
             HashAlgorithm::Blake3 => blake3::hash(input.1.as_ref()).as_bytes().to_vec(),
             HashAlgorithm::Fsb160 => {
@@ -124,17 +124,17 @@ impl Checksum {
                 Md5::digest(input.1.as_ref()).as_slice().to_vec()
             }
             HashAlgorithm::Ripemd160 => {
-                use ripemd160::{Digest, Ripemd160};
+                use ripemd::{Digest, Ripemd160};
 
                 Ripemd160::digest(input.1.as_ref()).as_slice().to_vec()
             }
             HashAlgorithm::Ripemd256 => {
-                use ripemd256::{Digest, Ripemd256};
+                use ripemd::{Digest, Ripemd256};
 
                 Ripemd256::digest(input.1.as_ref()).as_slice().to_vec()
             }
             HashAlgorithm::Ripemd320 => {
-                use ripemd320::{Digest, Ripemd320};
+                use ripemd::{Digest, Ripemd320};
 
                 Ripemd320::digest(input.1.as_ref()).as_slice().to_vec()
             }
