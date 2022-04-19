@@ -35,7 +35,7 @@ impl FromStr for Checksum {
             return Ok(Self {
                 algorithm: None,
                 file: captures["file"].trim().into(),
-                digest: hex::decode(captures["digest"].to_string())
+                digest: hex::decode(&captures["digest"])
                     .expect("Failed to decode a hex string into raw bytes"),
             });
         }
@@ -48,7 +48,7 @@ impl FromStr for Checksum {
             return Ok(Self {
                 algorithm: captures["algorithm"].parse().ok(),
                 file: captures["file"].trim().into(),
-                digest: hex::decode(captures["digest"].to_string())
+                digest: hex::decode(&captures["digest"])
                     .expect("Failed to decode a hex string into raw bytes"),
             });
         }
