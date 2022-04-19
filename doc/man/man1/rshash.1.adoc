@@ -6,7 +6,7 @@
 
 = rshash(1)
 // Specify in UTC.
-:docdate: 2022-01-09
+:docdate: 2022-04-19
 :doctype: manpage
 ifdef::revnumber[:mansource: RSHash {revnumber}]
 :manmanual: General Commands Manual
@@ -31,10 +31,10 @@ Unless otherwise noted, the value of each option is case-insensitive.
 
 === Hash algorithms options
 
-*-H* _NAME_, *--hash-algorithm*=_NAME_::
+*-H*, *--hash-algorithm* _NAME_::
   Specify hash algorithm.
 
-  _NAME_ can be:::
+  Possible values:{blank}:::
 
     * *blake2b* and *blake2s* (BLAKE2)
     * *blake3* (BLAKE3)
@@ -99,14 +99,14 @@ endif::[]
 
 === I/O options
 
-*-o* _FILE_, *--output*=_FILE_::
+*-o*, *--output* _FILE_::
   Output to _FILE_ instead of stdout.
 
-*-s* _FORMAT_, *--style*=_FORMAT_::
+*-s*, *--style* _FORMAT_::
   Specify style of the checksums.
   If this option is not specified, it is the same as selecting the default value.
 
-  _FORMAT_ can be:::
+  Possible values:{blank}:::
 
     * *sfv* (SFV output format, default)
     * *bsd* (BSD output format)
@@ -114,9 +114,10 @@ endif::[]
 
 === General options
 
-*-T* _NUM_, *--threads*=_NUM_::
+*-T*, *--threads* _NUM_::
   Specify the number of threads to use.
-  If _NUM_ is *0*, use as many threads as there are CPU cores (default: *0*).
+  If _NUM_ is *0*, use as many threads as there are CPU cores.
+  Default is *0*.
 
 *--progress*::
   Display a progress bar for reporting progress.
@@ -130,12 +131,12 @@ endif::[]
 *-V*, *--version*::
   Print the version number and exit.
 
-*--generate-completion*=_SHELL_::
+*--generate-completion* _SHELL_::
   Generate shell completion.
   The generated shell completion is output to stdout.
-  To output as a shell completion file, specify the directory to store using *--output*=_OUT_DIR_.
+  To output as a shell completion file, specify the directory to store using *--output* _OUT_DIR_.
 
-  _SHELL_ can be:::
+  Possible values:{blank}:::
 
     * *bash* (Bash)
     * *elvish* (Elvish)
@@ -148,15 +149,10 @@ endif::[]
 If successful, return 0 as the exit status.
 Otherwise, return non-zero as the exit status.
 
-== NOTES
-
-Source code repository::
-  https://github.com/sorairolake/rshash
-
 == EXAMPLES
 
-Compute BLAKE2b message digest::
-  $ *{manname} -H blake2b file.txt*
+Compute BLAKE2b message digest:{blank}::
+  $ *{manname} -H blake2b input.txt*
 
 include::{includedir}/section-reporting-bugs.adoc[]
 
