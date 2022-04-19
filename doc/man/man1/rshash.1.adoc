@@ -22,7 +22,8 @@ rshash - a utility for computing various message digests
 
 == DESCRIPTION
 
-*RSHash* is a command-line utility for computing and checking various message digests.
+*RSHash* is a command-line utility for computing and checking various message
+digests.
 If _FILE_ is not specified, the input is read from stdin.
 
 == OPTIONS
@@ -59,7 +60,8 @@ ifdef::sha-1[]
 endif::[]
     * *sha224*, *sha256*, *sha384* and *sha512* (SHA-2)
     * *sha3-224*, *sha3-256*, *sha3-384* and *sha3-512* (SHA-3)
-    * *shabal192*, *shabal224*, *shabal256*, *shabal384* and *shabal512* (Shabal)
+    * *shabal192*, *shabal224*, *shabal256*, *shabal384* and *shabal512*
+      (Shabal)
     * *sm3* (SM3)
 ifdef::streebog[]
     * *streebog256* and *streebog512* (Streebog)
@@ -104,7 +106,8 @@ endif::[]
 
 *-s*, *--style* _FORMAT_::
   Specify style of the checksums.
-  If this option is not specified, it is the same as selecting the default value.
+  If this option is not specified, it is the same as selecting the default
+  value.
 
   Possible values:{blank}:::
 
@@ -134,7 +137,8 @@ endif::[]
 *--generate-completion* _SHELL_::
   Generate shell completion.
   The generated shell completion is output to stdout.
-  To output as a shell completion file, specify the directory to store using *--output* _OUT_DIR_.
+  To output as a shell completion file, specify the directory to store using
+  *--output* _OUT_DIR_.
 
   Possible values:{blank}:::
 

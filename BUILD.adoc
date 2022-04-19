@@ -12,7 +12,8 @@ This document describes how to build and install *RSHash* from source code.
 
 == Building and installing from source
 
-First, either download the source archive or clone the https://github.com/sorairolake/rshash[Git repository].
+First, either download the source archive or clone the
+https://github.com/sorairolake/rshash[Git repository].
 
 .To clone the Git repository
 [source, shell]
@@ -28,9 +29,11 @@ $ cargo build --release
 ----
 
 NOTE: If Asciidoctor is available, man pages are generated.
-Run `fd -I . target/{asterisk}/build/rshash-{asterisk}/out` to find the generated.
+Run `fd -I . target/{asterisk}/build/rshash-{asterisk}/out` to find the
+generated.
 
-Now an executable is generated in `$CARGO_TARGET_DIR/release`, so copy this wherever you like.
+Now an executable is generated in `$CARGO_TARGET_DIR/release`, so copy this
+wherever you like.
 
 .To generate shell completion
 [source, shell]
@@ -80,7 +83,8 @@ $ cargo run -- --generate-completion <SHELL> -o <OUT_DIR>
 
 `asm`::
   Enable assembly implementations.
-  This is the same as enabling `fsb-asm`, `md5-asm`, `sha1-asm`, `sha2-asm` and `whirlpool-asm`.
+  This is the same as enabling `fsb-asm`, `md5-asm`, `sha1-asm`, `sha2-asm` and
+  `whirlpool-asm`.
 
 === BLAKE3 optimization features
 
