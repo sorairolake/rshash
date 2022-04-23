@@ -35,7 +35,7 @@ Unless otherwise noted, the value of each option is case-insensitive.
 *-H*, *--hash-algorithm* _NAME_::
   Specify hash algorithm.
 
-  Possible values:{blank}:::
+  Possible values for this option are:{blank}:::
 
     * *blake2b* and *blake2s* (BLAKE2)
     * *blake3* (BLAKE3)
@@ -109,7 +109,7 @@ endif::[]
   If this option is not specified, it is the same as selecting the default
   value.
 
-  Possible values:{blank}:::
+  Possible values for this option are:{blank}:::
 
     * *sfv* (SFV output format, default)
     * *bsd* (BSD output format)
@@ -140,7 +140,7 @@ endif::[]
   To output as a shell completion file, specify the directory to store using
   *--output* _OUT_DIR_.
 
-  Possible values:{blank}:::
+  Possible values for this option are:{blank}:::
 
     * *bash* (Bash)
     * *elvish* (Elvish)
